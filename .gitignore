@@ -1,1 +1,38 @@
+# macOS system files
 .DS_Store
+
+# Certificate files
+certs/localhost.key
+certs/localhost.crt
+
+# Node dependencies
+node_modules
+
+# Build outputs
+dist
+dist-ssr
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local-only or dev tools
+*.local
+.env
+
+# VSCode and JetBrains IDEs
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Misc editor files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

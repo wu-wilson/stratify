@@ -1,8 +1,11 @@
-[dn]
-CN=localhost
-
 [req]
+prompt = no
+default_md = sha256
 distinguished_name = dn
+req_extensions = EXT
+
+[dn]
+CN = localhost
 
 [EXT]
 subjectAltName = DNS:localhost
