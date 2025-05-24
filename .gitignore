@@ -2,8 +2,8 @@
 .DS_Store
 
 # Certificate files
-certs/localhost.key
-certs/localhost.crt
+certs/localhost-key.pem
+certs/localhost.pem
 
 # Node dependencies
 node_modules
