@@ -13,7 +13,7 @@ const Toggle = ({
   return (
     <label className={styles["switch"]}>
       <input type="checkbox" onChange={onToggle} checked={checked} />
-      <span className={styles["slider"]}></span>
+      <span className={styles["slider"]} />
       <span className={styles["icon-container"]}>
         {icons?.checked && icons?.unchecked ? (
           checked ? (
