@@ -1,1 +1,13 @@
+$primary-color: rgb(31, 185, 134);
 $font-family: Poppins;
+
+$themes: (
+  light: (
+    page-bg: white,
+    grid-bg: rgb(233, 233, 233),
+  ),
+  dark: (
+    page-bg: #1c1c1c,
+    grid-bg: rgb(59, 59, 59),
+  ),
+);
