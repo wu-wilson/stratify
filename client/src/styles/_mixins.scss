@@ -1,0 +1,24 @@
+@use "sass:map";
+@use "variables" as vars;
+
+@mixin themed {
+  @each $theme, $props in vars.$themes {
+    :global(.theme--#{$theme}) & {
+      @content ($props);
+    }
+  }
+}
+
+@mixin grid-bg {
+  background-size: 3rem 3rem;
+  background-position: center;
+
+  @include themed using ($props) {
+    $grid-bg: map.get($props, "grid-bg");
+    $page-bg: map.get($props, "page-bg");
+
+    background-color: $page-bg;
+    background-image: linear-gradient($grid-bg 1px, transparent 1px),
+      linear-gradient(90deg, $grid-bg 1px, transparent 1px);
+  }
+}
