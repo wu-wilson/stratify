@@ -3,7 +3,7 @@
 
 @mixin themed {
   @each $theme, $props in vars.$themes {
-    :global(.theme--#{$theme}) & {
+    :global(.#{$theme}-mode) & {
       @content ($props);
     }
   }
