@@ -6,10 +6,16 @@ $themes: (
   light: (
     page-bg: white,
     grid-bg: rgb(233, 233, 233),
+    border-color: rgb(213, 212, 212),
+    font-color: rgb(72, 76, 80),
+    toggle-bg: #ccc,
   ),
   dark: (
     page-bg: #1c1c1c,
     grid-bg: rgb(59, 59, 59),
+    border-color: black,
+    font-color: white,
+    toggle-bg: rgb(99, 99, 99),
   ),
 );
 
