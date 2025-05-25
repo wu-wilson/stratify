@@ -22,3 +22,15 @@
       linear-gradient(90deg, $grid-bg 1px, transparent 1px);
   }
 }
+
+@mixin respond($breakpoint) {
+  $size: map.get(vars.$breakpoints, $breakpoint);
+
+  @if $size == null {
+    @error "Breakpoint `#{$breakpoint}` not found in \$breakpoints map.";
+  }
+
+  @media (max-width: $size) {
+    @content;
+  }
+}
