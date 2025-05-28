@@ -1,0 +1,11 @@
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+
+.spinner {
+  height: 100vh;
+  width: 100vw;
+  @include mixins.themed using ($props) {
+    color: map.get($props, "font-color");
+  }
+  @include mixins.grid-bg;
+}

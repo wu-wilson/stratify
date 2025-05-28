@@ -2,19 +2,24 @@ $primary-color: rgb(31, 185, 134);
 $font-family: Poppins;
 $nav-height: 5rem;
 
+:root {
+  --light-mode-font-color: rgb(72, 76, 80);
+  --dark-mode-font-color: white;
+}
+
 $themes: (
   light: (
     page-bg: white,
     grid-bg: rgb(233, 233, 233),
     border-color: rgb(213, 212, 212),
-    font-color: rgb(72, 76, 80),
+    font-color: var(--light-mode-font-color),
     toggle-bg: #ccc,
   ),
   dark: (
     page-bg: #1c1c1c,
     grid-bg: rgb(59, 59, 59),
     border-color: black,
-    font-color: white,
+    font-color: var(--dark-mode-font-color),
     toggle-bg: rgb(99, 99, 99),
   ),
 );
