@@ -1,0 +1,7 @@
+@use "../../styles/mixins" as mixins;
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  @include mixins.grid-bg;
+}

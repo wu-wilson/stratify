@@ -1,3 +1,4 @@
+import { accountsRouter } from "./controllers/accounts";
 import { json as bodyParser } from "body-parser";
 import { Pool } from "pg";
 import express from "express";
@@ -33,6 +34,8 @@ const testDbConnection = async () => {
 };
 
 testDbConnection();
+
+app.use("/accounts", accountsRouter);
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, "../../certs/localhost-key.pem")),
