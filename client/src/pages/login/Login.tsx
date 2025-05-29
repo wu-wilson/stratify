@@ -21,8 +21,12 @@ const Login = () => {
     await signInWithRedirect(auth, provider);
   };
 
-  if (!user && loading) {
-    return <Spinner size={50} text="Authenticating..." />;
+  if (user && !loading) {
+    return (
+      <div className={styles["container"]}>
+        <Spinner size={50} text={"Redirecting..."} />
+      </div>
+    );
   }
 
   return (
@@ -48,6 +52,9 @@ const Login = () => {
             </span>
           </button>
         ))}
+        <span className={styles["footer"]}>
+          Stratify will never post on your behalf or access your private data.
+        </span>
       </div>
     </div>
   );

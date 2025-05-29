@@ -5,10 +5,10 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Login from "./pages/login/Login";
 
 const App = () => {
-  const theme = useTheme();
+  const { darkMode } = useTheme();
 
   return (
-    <div className={theme.darkMode ? "dark-mode" : "light-mode"}>
+    <div className={darkMode ? "dark-mode" : "light-mode"}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
