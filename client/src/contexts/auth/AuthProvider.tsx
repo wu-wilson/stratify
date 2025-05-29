@@ -1,4 +1,5 @@
 import { type User, onAuthStateChanged } from "firebase/auth";
+import { type UserContextType } from "./types";
 import { auth } from "./config";
 import {
   type ReactNode,
@@ -7,11 +8,6 @@ import {
   useEffect,
   useState,
 } from "react";
-
-type UserContextType = {
-  user: User | null;
-  loading: boolean;
-};
 
 const AuthContext = createContext<UserContextType | null>(null);
 

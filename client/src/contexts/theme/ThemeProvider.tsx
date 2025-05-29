@@ -1,3 +1,4 @@
+import type { ThemeContextType } from "./types";
 import {
   createContext,
   useContext,
@@ -6,15 +7,10 @@ import {
   type ReactNode,
 } from "react";
 
-type ThemeContextType = {
-  darkMode: boolean;
-  setDarkMode: (value: boolean) => void;
-};
-
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
     const stored = localStorage.getItem("dark-mode");

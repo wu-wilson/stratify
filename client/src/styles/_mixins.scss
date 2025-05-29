@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "sass:color";
 @use "variables" as vars;
 
 @mixin themed {
@@ -14,12 +15,12 @@
   background-position: center;
 
   @include themed using ($props) {
-    $grid-bg: map.get($props, "grid-bg");
+    $grid-lines: map.get($props, "grid-lines");
     $page-bg: map.get($props, "page-bg");
 
     background-color: $page-bg;
-    background-image: linear-gradient($grid-bg 1px, transparent 1px),
-      linear-gradient(90deg, $grid-bg 1px, transparent 1px);
+    background-image: linear-gradient($grid-lines 1px, transparent 1px),
+      linear-gradient(90deg, $grid-lines 1px, transparent 1px);
   }
 }
 
@@ -32,5 +33,49 @@
 
   @media (max-width: $size) {
     @content;
+  }
+}
+
+@mixin card($width: auto, $height: auto, $padding: 1rem, $border-radius: 10px) {
+  width: $width;
+  height: $height;
+  padding: $padding;
+  border-radius: $border-radius;
+  @include themed using ($props) {
+    background-color: map.get($props, "card-bg");
+    border: map.get($props, "card-border");
+  }
+}
+
+@mixin button(
+  $width: auto,
+  $height: auto,
+  $padding: 0.5rem 1rem,
+  $border-radius: 30px
+) {
+  width: $width;
+  height: $height;
+  padding: $padding;
+  border-radius: $border-radius;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+
+  @include themed using ($props) {
+    background-color: map.get($props, "btn-bg");
+    color: map.get($props, "font-color");
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    @include themed using ($props) {
+      background-color: color.adjust(
+        map.get($props, "btn-bg"),
+        $lightness: -8%
+      );
+    }
   }
 }

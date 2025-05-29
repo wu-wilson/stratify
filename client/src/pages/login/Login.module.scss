@@ -1,4 +1,6 @@
+@use "../../styles/variables" as vars;
 @use "../../styles/mixins" as mixins;
+@use "sass:map";
 
 .container {
   width: 100vw;
@@ -7,4 +9,59 @@
   align-items: center;
   justify-content: center;
   @include mixins.grid-bg;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @include mixins.card($width: 18rem, $padding: 2rem);
+  @include mixins.themed using ($props) {
+    color: map.get($props, "font-color");
+  }
+
+  .title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    span {
+      color: vars.$primary-color;
+    }
+  }
+
+  .subtext {
+    margin-top: 0.5rem;
+    margin-bottom: 3rem;
+    font-size: 0.85rem;
+  }
+
+  .login-button {
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    @include mixins.button($width: 16rem, $padding: 0.8rem);
+    .icon {
+      padding: 0 1rem;
+      height: 1.3rem;
+      width: 1.3rem;
+
+      @include mixins.themed using ($props) {
+        border-right: 1px solid map.get($props, "font-color");
+      }
+
+      &.twitter {
+        color: #26a7de;
+      }
+
+      &.github {
+        @include mixins.themed using ($props) {
+          color: map.get($props, "font-color");
+        }
+      }
+    }
+
+    .label {
+      padding: 0 1rem;
+    }
+  }
 }
