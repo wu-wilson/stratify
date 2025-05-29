@@ -1,0 +1,12 @@
+@use "../../styles/mixins" as mixins;
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  @include mixins.grid-bg;
+  .sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
