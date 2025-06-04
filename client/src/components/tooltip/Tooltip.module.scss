@@ -1,0 +1,41 @@
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+
+.trigger {
+  display: flex;
+}
+
+.container {
+  position: absolute;
+  z-index: 100;
+  border-radius: 5px;
+  padding: 5px 10px;
+  opacity: 0;
+  visibility: hidden;
+  @include mixins.themed using ($props) {
+    color: map.get($props, "font-color");
+    background-color: map.get($props, "tooltip-bg");
+  }
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    @include mixins.transition(opacity);
+  }
+
+  &.top {
+    transform: translateY(-100%);
+  }
+
+  &.bottom {
+    transform: translateY(0%);
+  }
+
+  &.left {
+    transform: translateX(-100%);
+  }
+
+  &.right {
+    transform: translateX(0%);
+  }
+}

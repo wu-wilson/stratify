@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "sass:color";
+@use "sass:list";
 @use "variables" as vars;
 
 @mixin themed {
@@ -78,4 +79,8 @@
       );
     }
   }
+}
+
+@mixin transition($properties, $duration: 0.2s, $timing: ease) {
+  transition: #{list.join($properties, ", ")} #{$duration} #{$timing};
 }

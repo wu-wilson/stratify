@@ -1,12 +1,11 @@
 @use "../../styles/mixins" as mixins;
+@use "sass:map";
 
 .container {
   width: 100vw;
   height: 100vh;
   @include mixins.grid-bg;
-  .sidebar {
-    position: absolute;
-    top: 0;
-    left: 0;
+  @include mixins.themed using ($props) {
+    color: map.get($props, "font-color");
   }
 }
