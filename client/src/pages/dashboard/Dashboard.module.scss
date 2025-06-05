@@ -4,6 +4,7 @@
 .container {
   width: 100vw;
   height: 100vh;
+  display: flex;
   @include mixins.grid-bg;
   @include mixins.themed using ($props) {
     color: map.get($props, "font-color");

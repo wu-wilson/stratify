@@ -1,5 +1,6 @@
 import { json as bodyParser } from "body-parser";
 import { Pool } from "pg";
+import { projectRouter } from "./controllers/project/project.router";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -33,6 +34,8 @@ const testDbConnection = async () => {
 };
 
 testDbConnection();
+
+app.use("/project", projectRouter);
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, "../../certs/localhost-key.pem")),
