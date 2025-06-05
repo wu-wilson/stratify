@@ -2,8 +2,8 @@ const Sidebar = ({
   projectId,
   setProjectId,
 }: {
-  projectId: string | null;
-  setProjectId: (id: string | null) => void;
+  projectId: number | null;
+  setProjectId: (id: number | null) => void;
 }) => {
   return <div>Project Selected: {projectId}</div>;
 };

@@ -1,0 +1,41 @@
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+
+.card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  @include mixins.themed using ($props) {
+    color: map.get($props, "font-color");
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+
+    .icon {
+      color: vars.$primary-color;
+      margin-left: 0.5rem;
+      font-size: 2rem;
+    }
+  }
+
+  .subtext {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .error {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: red;
+  }
+}
