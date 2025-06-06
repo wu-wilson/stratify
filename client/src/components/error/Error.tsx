@@ -1,21 +1,21 @@
 import { TbFaceIdError } from "react-icons/tb";
+import { SUBTEXT } from "./util";
 import styles from "./Error.module.scss";
 
-const Error = ({ msgs }: { msgs?: string[] }) => {
+const Error = ({
+  subtext = SUBTEXT,
+  errorMsg,
+}: {
+  subtext?: string;
+  errorMsg?: string;
+}) => {
   return (
-    <div className={styles["card"]}>
+    <div className={styles["container"]}>
       <span className={styles["title"]}>
         Oopsie! <TbFaceIdError className={styles["icon"]} />
       </span>
-      <span className={styles["subtext"]}>
-        Something went wrong. Refresh the page or come back later.
-      </span>
-      {msgs &&
-        msgs.map((msg) => (
-          <span key={msg} className={styles["error"]}>
-            Error: {msg}
-          </span>
-        ))}
+      <span className={styles["subtext"]}>{subtext}</span>
+      {errorMsg && <span className={styles["error"]}>({errorMsg})</span>}
     </div>
   );
 };

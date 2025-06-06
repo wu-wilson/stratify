@@ -1,11 +1,29 @@
+import { useState } from "react";
+import Header from "./header/Header";
+import Footer from "./footer/Footer";
+import styles from "./Sidebar.module.scss";
+
 const Sidebar = ({
-  projectId,
-  setProjectId,
+  project,
+  setProject,
 }: {
-  projectId: number | null;
-  setProjectId: (id: number | null) => void;
+  project: number | null;
+  setProject: (id: number | null) => void;
 }) => {
-  return <div>Project Selected: {projectId}</div>;
+  const [loading, setLoading] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(true);
+
+  return (
+    <div
+      className={`${styles["container"]} ${
+        expanded ? null : styles["collapsed"]
+      }`}
+    >
+      <Header expanded={expanded} setExpanded={setExpanded} />
+      {project}
+      <Footer expanded={expanded} />
+    </div>
+  );
 };
 
 export default Sidebar;

@@ -1,0 +1,49 @@
+@use "../../../../styles/variables" as vars;
+@use "../../../../styles/mixins" as mixins;
+@use "sass:map";
+
+.sign-out-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  @include mixins.grid-bg;
+}
+
+.container {
+  padding-top: 1rem;
+  @include mixins.themed using ($props) {
+    border-top: 1px solid map.get($props, "font-color");
+  }
+
+  .item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    @include mixins.transition(color);
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+
+    &:hover {
+      color: vars.$primary-color;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .icon {
+      min-width: 1.5rem;
+      min-height: 1.5rem;
+      margin-left: 0.5rem;
+    }
+
+    .label {
+      margin-left: 0.5rem;
+      white-space: nowrap;
+      overflow-x: hidden;
+      font-size: 0.8rem;
+    }
+  }
+}

@@ -18,7 +18,13 @@ const Login = () => {
   }, [user, loading]);
 
   const login = async (provider: AuthProvider) => {
-    await signInWithRedirect(auth, provider);
+    try {
+      await signInWithRedirect(auth, provider);
+    } catch (error) {
+      navigate("/error", {
+        state: { message: "Firebase authentication endpoint failed" },
+      });
+    }
   };
 
   if (user && !loading) {

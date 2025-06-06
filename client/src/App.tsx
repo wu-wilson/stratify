@@ -3,6 +3,7 @@ import { useTheme } from "./contexts/theme/ThemeProvider";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Login from "./pages/login/Login";
+import ErrorPage from "./pages/error-page/ErrorPage";
 
 const App = () => {
   const { darkMode } = useTheme();
@@ -21,6 +22,7 @@ const App = () => {
             }
           />
           <Route path="/login" element={<Login />} />
+          <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </div>

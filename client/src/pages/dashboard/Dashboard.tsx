@@ -3,11 +3,11 @@ import Sidebar from "./sidebar/Sidebar";
 import styles from "./Dashboard.module.scss";
 
 const Dashboard = () => {
-  const [projectId, setProjectId] = useState<number | null>(null);
+  const [project, setProject] = useState<number | null>(null);
 
   return (
     <div className={styles["container"]}>
-      <Sidebar projectId={projectId} setProjectId={setProjectId} />
+      <Sidebar project={project} setProject={setProject} />
     </div>
   );
 };

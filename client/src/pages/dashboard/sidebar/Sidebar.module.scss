@@ -1,0 +1,23 @@
+@use "../../../styles/variables" as vars;
+@use "../../../styles/mixins" as mixins;
+@use "sass:map";
+@use "sass:color";
+
+.container {
+  height: 100%;
+  width: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 1rem;
+  @include mixins.themed using ($props) {
+    background-color: map.get($props, "sidebar-bg");
+    border-right: map.get($props, "sidebar-border");
+  }
+  @include mixins.transition(width);
+}
+
+.collapsed {
+  width: 4.5rem;
+}

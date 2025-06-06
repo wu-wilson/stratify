@@ -15,6 +15,8 @@ $themes: (
     card-border: 1px solid rgb(213, 212, 212),
     btn-bg: #f5f5f5,
     tooltip-bg: #f5f5f5,
+    sidebar-bg: white,
+    sidebar-border: 1px solid rgb(213, 212, 212),
   ),
   dark: (
     page-bg: #1c1c1c,
@@ -24,6 +26,8 @@ $themes: (
     card-border: none,
     btn-bg: #1c1c1c,
     tooltip-bg: #242426,
+    sidebar-bg: #242426,
+    sidebar-border: none,
   ),
 );
 
