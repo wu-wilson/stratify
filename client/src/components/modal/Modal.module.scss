@@ -27,11 +27,6 @@ $transition-duration: 300ms;
       $duration: $transition-duration
     );
     @include mixins.card($padding: 1rem, $show-border: false);
-    @include mixins.respond(phone) {
-      width: 100%;
-      height: 100%;
-      border-radius: 0;
-    }
   }
 
   .open {
