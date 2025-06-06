@@ -5,6 +5,7 @@ import { auth } from "../../../../contexts/auth/config";
 import { RiLogoutBoxLine, RiSettings3Line } from "react-icons/ri";
 import { type SidebarFooterItem } from "./types";
 import Spinner from "../../../../components/spinner/Spinner";
+import Tooltip from "../../../../components/tooltip/Tooltip";
 import styles from "./Footer.module.scss";
 
 const Footer = ({ expanded }: { expanded: boolean }) => {
@@ -56,7 +57,13 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
     <div className={styles["container"]}>
       {footerItems.map((item) => (
         <div key={item.label} className={styles["item"]} onClick={item.onClick}>
-          <item.icon className={styles["icon"]} />
+          {expanded ? (
+            <item.icon className={styles["icon"]} />
+          ) : (
+            <Tooltip content={item.label} offset={10}>
+              <item.icon className={styles["icon"]} />
+            </Tooltip>
+          )}
           {expanded && <span className={styles["label"]}>{item.label}</span>}
         </div>
       ))}

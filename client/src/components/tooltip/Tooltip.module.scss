@@ -12,6 +12,7 @@
   padding: 5px 10px;
   opacity: 0;
   visibility: hidden;
+  font-size: 0.8rem;
   @include mixins.themed using ($props) {
     color: map.get($props, "font-color");
     background-color: map.get($props, "tooltip-bg");
@@ -28,7 +29,7 @@
   }
 
   &.bottom {
-    transform: translateY(0%);
+    transform: translateY(0);
   }
 
   &.left {
@@ -36,6 +37,6 @@
   }
 
   &.right {
-    transform: translateX(0%);
+    transform: translateX(0);
   }
 }

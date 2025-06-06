@@ -15,7 +15,7 @@ const Tooltip = ({
   content,
   children,
   offset = 0,
-  placement = "top",
+  placement = "right",
   hoverDelay = 1000,
 }: {
   content: ReactNode;
@@ -48,6 +48,10 @@ const Tooltip = ({
       setPosition(position);
     }
   };
+
+  useEffect(() => {
+    updatePosition();
+  }, [placement, offset]);
 
   useLayoutEffect(() => {
     updatePosition();
