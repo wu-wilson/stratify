@@ -6,8 +6,9 @@ import { RiLogoutBoxLine, RiSettings3Line } from "react-icons/ri";
 import { type SidebarFooterItem } from "./types";
 import Spinner from "../../../../components/spinner/Spinner";
 import Tooltip from "../../../../components/tooltip/Tooltip";
-import styles from "./Footer.module.scss";
 import Modal from "../../../../components/modal/Modal";
+import AccountSettings from "./account-settings/AccountSettings";
+import styles from "./Footer.module.scss";
 
 const Footer = ({ expanded }: { expanded: boolean }) => {
   const [openSettings, setOpenSettings] = useState<boolean>(false);
@@ -58,8 +59,7 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
     <div className={styles["container"]}>
       {openSettings && (
         <Modal setOpen={setOpenSettings}>
-          <span>Account Settings</span>
-          <div>Toggle your account settings here</div>
+          <AccountSettings />
         </Modal>
       )}
       {footerItems.map((item) => (
