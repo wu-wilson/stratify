@@ -48,6 +48,7 @@
   height: $height;
   padding: $padding;
   border-radius: $border-radius;
+
   @include themed using ($props) {
     background-color: map.get($props, "card-bg");
     @if $show-border {

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { IoMdCloseCircle } from "react-icons/io";
 import styles from "./Modal.module.scss";
 
 const Modal = ({
@@ -68,6 +69,10 @@ const Modal = ({
           .join(" ")}
         ref={cardRef}
       >
+        <IoMdCloseCircle
+          className={styles["icon"]}
+          onClick={() => setClosing(true)}
+        />
         {children}
       </div>
     </div>

@@ -1,4 +1,6 @@
 @use "../../styles/mixins" as mixins;
+@use "sass:map";
+@use "sass:color";
 
 $transition-duration: 300ms;
 
@@ -37,6 +39,25 @@ $transition-duration: 300ms;
   .close {
     transform: scale(0);
     opacity: 0;
+  }
+
+  .icon {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    height: 1.2rem;
+    width: 1.2rem;
+    @include mixins.themed using ($props) {
+      color: map.get($props, "modal-btn");
+    }
+    @include mixins.transition(color);
+
+    &:hover {
+      cursor: pointer;
+      @include mixins.themed using ($props) {
+        color: color.adjust(map.get($props, "modal-btn"), $lightness: -20%);
+      }
+    }
   }
 }
 

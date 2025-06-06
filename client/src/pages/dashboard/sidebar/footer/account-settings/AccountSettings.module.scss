@@ -1,0 +1,21 @@
+.container {
+  min-width: 20rem;
+  min-height: 15rem;
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .icon {
+      height: 1.3rem;
+      width: 1.3rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
