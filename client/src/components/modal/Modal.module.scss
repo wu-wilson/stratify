@@ -1,0 +1,56 @@
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+
+$transition-duration: 300ms;
+
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  z-index: 2;
+  @include mixins.transition(
+    $properties: "background-color",
+    $duration: $transition-duration
+  );
+
+  .card {
+    position: relative;
+    transform: scale(0);
+    opacity: 0;
+    @include mixins.transition(
+      $properties: "transform, opacity",
+      $duration: $transition-duration
+    );
+    @include mixins.card($padding: 1rem, $show-border: false);
+    @include mixins.respond(phone) {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+  }
+
+  .open {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  .close {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.open {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.close {
+  background-color: transparent;
+}

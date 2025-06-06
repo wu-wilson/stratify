@@ -37,14 +37,24 @@
   }
 }
 
-@mixin card($width: auto, $height: auto, $padding: 1rem, $border-radius: 10px) {
+@mixin card(
+  $width: auto,
+  $height: auto,
+  $padding: 1rem,
+  $border-radius: 10px,
+  $show-border: true
+) {
   width: $width;
   height: $height;
   padding: $padding;
   border-radius: $border-radius;
   @include themed using ($props) {
     background-color: map.get($props, "card-bg");
-    border: map.get($props, "card-border");
+    @if $show-border {
+      border: map.get($props, "card-border");
+    } @else {
+      border: none;
+    }
   }
 }
 

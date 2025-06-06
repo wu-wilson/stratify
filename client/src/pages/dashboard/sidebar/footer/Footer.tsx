@@ -7,9 +7,24 @@ import { type SidebarFooterItem } from "./types";
 import Spinner from "../../../../components/spinner/Spinner";
 import Tooltip from "../../../../components/tooltip/Tooltip";
 import styles from "./Footer.module.scss";
+import Modal from "../../../../components/modal/Modal";
 
 const Footer = ({ expanded }: { expanded: boolean }) => {
+  const [openSettings, setOpenSettings] = useState<boolean>(false);
   const [signingOut, setSigningOut] = useState<boolean>(false);
+
+  const footerItems: SidebarFooterItem[] = [
+    {
+      icon: RiSettings3Line,
+      label: "Account Settings",
+      onClick: () => setOpenSettings(true),
+    },
+    {
+      icon: RiLogoutBoxLine,
+      label: "Sign Out",
+      onClick: () => setSigningOut(true),
+    },
+  ];
 
   useEffect(() => {
     if (signingOut) {
@@ -18,7 +33,6 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
   }, [signingOut]);
 
   const navigate = useNavigate();
-
   const logout = async () => {
     try {
       await signOut(auth);
@@ -32,19 +46,6 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
     }
   };
 
-  const footerItems: SidebarFooterItem[] = [
-    {
-      icon: RiSettings3Line,
-      label: "Account Settings",
-      onClick: () => {},
-    },
-    {
-      icon: RiLogoutBoxLine,
-      label: "Sign Out",
-      onClick: () => setSigningOut(true),
-    },
-  ];
-
   if (signingOut) {
     return (
       <div className={styles["sign-out-container"]}>
@@ -55,6 +56,12 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
 
   return (
     <div className={styles["container"]}>
+      {openSettings && (
+        <Modal setOpen={setOpenSettings}>
+          <span>Account Settings</span>
+          <div>Toggle your account settings here</div>
+        </Modal>
+      )}
       {footerItems.map((item) => (
         <div key={item.label} className={styles["item"]} onClick={item.onClick}>
           {expanded ? (
