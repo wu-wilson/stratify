@@ -10,7 +10,7 @@ const AccountSettings = ({}: {}) => {
     <div className={styles["container"]}>
       <div className={styles["title"]}>Account Settings</div>
       <Toggle
-        checked={darkMode}
+        checked={darkMode ? darkMode : false}
         setChecked={setDarkMode}
         icons={{ checked: FaMoon, unchecked: FaSun }}
       />

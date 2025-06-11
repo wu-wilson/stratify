@@ -10,7 +10,7 @@ import {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState<boolean | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("dark-mode");
@@ -20,7 +20,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("dark-mode", JSON.stringify(darkMode));
+    if (darkMode !== null) {
+      localStorage.setItem("dark-mode", JSON.stringify(darkMode));
+    }
   }, [darkMode]);
 
   return (

@@ -1,4 +1,4 @@
 export type ThemeContextType = {
-  darkMode: boolean;
-  setDarkMode: (value: boolean) => void;
+  darkMode: boolean | null;
+  setDarkMode: (value: boolean | null) => void;
 };
