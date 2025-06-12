@@ -36,7 +36,7 @@
     font-size: 0.85rem;
   }
 
-  .login-button {
+  .loginButton {
     margin-bottom: 1rem;
     font-size: 0.8rem;
     @include mixins.button($width: 15rem, $padding: 0.8rem);

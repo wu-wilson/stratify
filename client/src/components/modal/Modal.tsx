@@ -52,25 +52,25 @@ const Modal = ({
   return (
     <div
       className={[
-        styles["container"],
-        opening && styles["open"],
-        closing && styles["close"],
+        styles.container,
+        opening && styles.open,
+        closing && styles.close,
       ]
         .filter(Boolean)
         .join(" ")}
     >
       <div
         className={[
-          styles["card"],
-          opening && styles["open"],
-          closing && styles["close"],
+          styles.card,
+          opening && styles.open,
+          closing && styles.close,
         ]
           .filter(Boolean)
           .join(" ")}
         ref={cardRef}
       >
         <IoMdCloseCircle
-          className={styles["icon"]}
+          className={styles.icon}
           onClick={() => setClosing(true)}
         />
         {children}

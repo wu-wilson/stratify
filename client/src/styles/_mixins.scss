@@ -74,6 +74,7 @@
   align-items: center;
   justify-content: center;
   border: none;
+  cursor: pointer;
 
   @include themed using ($props) {
     background-color: map.get($props, "btn-bg");
@@ -81,8 +82,6 @@
   }
 
   &:hover {
-    cursor: pointer;
-
     @include themed using ($props) {
       background-color: color.adjust(
         map.get($props, "btn-bg"),

@@ -13,10 +13,10 @@ const Logo = ({
   const spacing = `${0.3 * scale}rem`;
 
   return (
-    <div className={styles["container"]} style={{ fontSize }}>
-      <FiLayers className={styles["icon"]} size={iconSize} />
+    <div className={styles.container} style={{ fontSize }}>
+      <FiLayers className={styles.icon} size={iconSize} />
       {text && (
-        <span className={styles["text"]} style={{ marginLeft: spacing }}>
+        <span className={styles.text} style={{ marginLeft: spacing }}>
           Stratify
         </span>
       )}

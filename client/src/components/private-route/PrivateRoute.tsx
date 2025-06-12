@@ -16,7 +16,7 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
 
   if (loading) {
     return (
-      <div className={styles["container"]}>
+      <div className={styles.container}>
         <Spinner size={50} text="Authenticating..." />
       </div>
     );

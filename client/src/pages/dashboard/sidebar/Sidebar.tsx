@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import styles from "./Sidebar.module.scss";
+import Tooltip from "../../../components/tooltip/Tooltip";
 
 const Sidebar = ({
   project,
@@ -15,12 +16,15 @@ const Sidebar = ({
 
   return (
     <div
-      className={`${styles["container"]} ${
-        expanded ? null : styles["collapsed"]
-      }`}
+      className={`${styles.container} ${expanded ? null : styles.collapsed}`}
     >
       <Header expanded={expanded} setExpanded={setExpanded} />
       {project}
+      <div style={{ height: "100%", overflow: "scroll" }}>
+        {Array.from({ length: 100 }).map((_n, i) => (
+          <Tooltip content={`test ${i}`}>test {i}</Tooltip>
+        ))}
+      </div>
       <Footer expanded={expanded} />
     </div>
   );

@@ -15,11 +15,11 @@
   .icon {
     min-height: 1.5rem;
     min-width: 1.5rem;
+    cursor: pointer;
     @include mixins.transition(color);
 
     &:hover {
       color: vars.$primary-color;
-      cursor: pointer;
     }
   }
 }

@@ -11,9 +11,9 @@ const Spinner = ({ size, text }: { size: number; text?: string }) => {
   );
 
   return (
-    <div className={styles["container"]}>
+    <div className={styles.container}>
       <HashLoader size={size} color={color} />
-      {text && <span className={styles["text"]}>{text}</span>}
+      {text && <span className={styles.text}>{text}</span>}
     </div>
   );
 };

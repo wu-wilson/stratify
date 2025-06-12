@@ -23,7 +23,7 @@
     color: map.get($props, "font-color");
   }
 
-  .home-btn {
+  .home {
     margin-top: 1rem;
     @include mixins.button($width: 8rem, $height: 2.5rem);
 

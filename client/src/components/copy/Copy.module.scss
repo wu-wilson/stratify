@@ -1,0 +1,17 @@
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixins;
+
+.container {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    position: relative;
+    cursor: pointer;
+    @include mixins.transition(color);
+
+    &:hover {
+      color: vars.$primary-color;
+    }
+  }
+}

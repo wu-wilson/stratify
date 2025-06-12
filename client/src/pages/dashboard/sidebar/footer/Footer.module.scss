@@ -2,7 +2,7 @@
 @use "../../../../styles/mixins" as mixins;
 @use "sass:map";
 
-.sign-out-container {
+.signOutContainer {
   position: absolute;
   top: 0;
   left: 0;
@@ -21,6 +21,7 @@
     display: flex;
     width: 100%;
     align-items: center;
+    cursor: pointer;
     @include mixins.transition(color);
 
     &:not(:last-child) {
@@ -29,7 +30,6 @@
 
     &:hover {
       color: vars.$primary-color;
-      cursor: pointer;
       font-weight: bold;
     }
 

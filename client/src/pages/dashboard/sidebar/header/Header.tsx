@@ -14,19 +14,17 @@ const Header = ({
 }) => {
   return (
     <div
-      className={`${styles["container"]} ${
-        expanded ? null : styles["collapsed"]
-      }`}
+      className={`${styles.container} ${expanded ? null : styles.collapsed}`}
     >
       {expanded && <Logo />}
       {expanded ? (
         <TbLayoutSidebarLeftCollapse
-          className={styles["icon"]}
+          className={styles.icon}
           onClick={() => setExpanded(false)}
         />
       ) : (
         <TbLayoutSidebarRightCollapse
-          className={styles["icon"]}
+          className={styles.icon}
           onClick={() => setExpanded(true)}
         />
       )}

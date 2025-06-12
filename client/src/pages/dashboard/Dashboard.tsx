@@ -6,7 +6,7 @@ const Dashboard = () => {
   const [project, setProject] = useState<number | null>(null);
 
   return (
-    <div className={styles["container"]}>
+    <div className={styles.container}>
       <Sidebar project={project} setProject={setProject} />
     </div>
   );

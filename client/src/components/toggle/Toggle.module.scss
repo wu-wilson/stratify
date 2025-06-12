@@ -12,10 +12,7 @@ $knob-size: calc($height - $padding * 2);
   display: flex;
   align-items: center;
   user-select: none;
-
-  &:hover {
-    cursor: pointer;
-  }
+  cursor: pointer;
 
   input {
     opacity: 0;
@@ -56,7 +53,16 @@ $knob-size: calc($height - $padding * 2);
     }
   }
 
-  &.checked .knob {
-    transform: translateX(calc($width - $knob-size - $padding * 2));
+  &.checked {
+    .slider {
+      background-color: vars.$primary-color;
+    }
+    .knob {
+      transform: translateX(calc($width - $knob-size - $padding * 2));
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
   }
 }

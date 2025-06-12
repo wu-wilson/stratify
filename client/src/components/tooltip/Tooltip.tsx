@@ -26,12 +26,14 @@ const Tooltip = ({
 }) => {
   const { darkMode } = useTheme();
 
-  const [visible, setVisible] = useState(false);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [visible, setVisible] = useState<boolean>(false);
+  const [position, setPosition] = useState<{
+    top: number;
+    left: number;
+  }>({ top: 0, left: 0 });
 
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
-
   const delayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updatePosition = () => {
@@ -51,7 +53,7 @@ const Tooltip = ({
 
   useEffect(() => {
     updatePosition();
-  }, [placement, offset]);
+  }, [placement, offset, visible]);
 
   useLayoutEffect(() => {
     updatePosition();
@@ -92,7 +94,7 @@ const Tooltip = ({
         ref={triggerRef}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={styles["trigger"]}
+        className={styles.trigger}
       >
         {children}
       </div>
@@ -101,8 +103,8 @@ const Tooltip = ({
         <div className={darkMode ? "dark-mode" : "light-mode"}>
           <div
             ref={tooltipRef}
-            className={`${styles["container"]} ${styles[placement]} ${
-              visible ? styles["visible"] : ""
+            className={`${styles.container} ${styles[placement]} ${
+              visible ? styles.visible : null
             }`}
             style={{
               top: `${position.top}px`,

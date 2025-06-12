@@ -15,12 +15,12 @@ const ErrorPage = () => {
   };
 
   return (
-    <div className={styles["container"]}>
-      <div className={styles["card"]}>
+    <div className={styles.container}>
+      <div className={styles.card}>
         <Error errorMsg={errorMsg} subtext={SUBTEXT} />
-        <button className={styles["home-btn"]} onClick={redirect}>
+        <button className={styles.home} onClick={redirect}>
           <RiArrowLeftDoubleFill /> Home
-          <RiHome2Line className={styles["icon"]} />
+          <RiHome2Line className={styles.icon} />
         </button>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { type SidebarFooterItem } from "./types";
 import Spinner from "../../../../components/spinner/Spinner";
 import Tooltip from "../../../../components/tooltip/Tooltip";
 import Modal from "../../../../components/modal/Modal";
-import AccountSettings from "./account-settings/AccountSettings";
+import Settings from "./settings/Settings";
 import styles from "./Footer.module.scss";
 
 const Footer = ({ expanded }: { expanded: boolean }) => {
@@ -49,29 +49,29 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
 
   if (signingOut) {
     return (
-      <div className={styles["sign-out-container"]}>
+      <div className={styles.signOutContainer}>
         <Spinner size={50} text={"Signing out..."} />
       </div>
     );
   }
 
   return (
-    <div className={styles["container"]}>
+    <div className={styles.container}>
       {openSettings && (
         <Modal setOpen={setOpenSettings}>
-          <AccountSettings />
+          <Settings />
         </Modal>
       )}
       {footerItems.map((item) => (
-        <div key={item.label} className={styles["item"]} onClick={item.onClick}>
+        <div key={item.label} className={styles.item} onClick={item.onClick}>
           {expanded ? (
-            <item.icon className={styles["icon"]} />
+            <item.icon className={styles.icon} />
           ) : (
             <Tooltip content={item.label} offset={10}>
-              <item.icon className={styles["icon"]} />
+              <item.icon className={styles.icon} />
             </Tooltip>
           )}
-          {expanded && <span className={styles["label"]}>{item.label}</span>}
+          {expanded && <span className={styles.label}>{item.label}</span>}
         </div>
       ))}
     </div>

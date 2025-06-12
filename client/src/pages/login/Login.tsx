@@ -29,36 +29,34 @@ const Login = () => {
 
   if (user && !loading) {
     return (
-      <div className={styles["container"]}>
+      <div className={styles.container}>
         <Spinner size={50} text={"Redirecting..."} />
       </div>
     );
   }
 
   return (
-    <div className={styles["container"]}>
-      <div className={styles["card"]}>
-        <span className={styles["title"]}>
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <span className={styles.title}>
           Welcome to <span>Stratify</span>
         </span>
-        <span className={styles["subtext"]}>
+        <span className={styles.subtext}>
           Organize your work, one layer at a time.
         </span>
         {providers.map((provider) => (
           <button
             key={provider.label}
             onClick={() => login(provider.provider)}
-            className={styles["login-button"]}
+            className={styles.loginButton}
           >
             <provider.icon
-              className={`${styles["icon"]} ${styles[provider.class]}`}
+              className={`${styles.icon} ${styles[provider.class]}`}
             />
-            <span className={styles["label"]}>
-              Continue with {provider.label}
-            </span>
+            <span className={styles.label}>Continue with {provider.label}</span>
           </button>
         ))}
-        <span className={styles["footer"]}>
+        <span className={styles.footer}>
           Stratify will never post on your behalf or access your private data.
         </span>
       </div>

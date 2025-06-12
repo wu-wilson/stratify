@@ -10,12 +10,12 @@ const Error = ({
   errorMsg?: string;
 }) => {
   return (
-    <div className={styles["container"]}>
-      <span className={styles["title"]}>
-        Oopsie! <TbFaceIdError className={styles["icon"]} />
+    <div className={styles.container}>
+      <span className={styles.title}>
+        Oopsie! <TbFaceIdError className={styles.icon} />
       </span>
-      <span className={styles["subtext"]}>{subtext}</span>
-      {errorMsg && <span className={styles["error"]}>({errorMsg})</span>}
+      <span className={styles.subtext}>{subtext}</span>
+      {errorMsg && <span className={styles.error}>({errorMsg})</span>}
     </div>
   );
 };

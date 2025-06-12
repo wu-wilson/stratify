@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   if (loading) {
     return (
       <div className={darkMode ? "dark-mode" : "light-mode"}>
-        <div className={styles["container"]}>
+        <div className={styles.container}>
           <Spinner size={50} text={"Authenticating..."} />
         </div>
       </div>
