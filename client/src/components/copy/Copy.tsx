@@ -2,7 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { FaCopy } from "react-icons/fa";
 import styles from "./Copy.module.scss";
 
-const Copy = ({ text, scale = 1 }: { text: string; scale?: number }) => {
+const Copy = ({
+  text,
+  fontSize = "0.75rem",
+  iconSize = "0.9rem",
+  spacing = "0.3rem",
+}: {
+  text: string;
+  fontSize?: string;
+  iconSize?: string;
+  spacing?: string;
+}) => {
   const [jump, setJump] = useState(false);
   const iconRef = useRef<HTMLDivElement | null>(null);
 
@@ -30,10 +40,6 @@ const Copy = ({ text, scale = 1 }: { text: string; scale?: number }) => {
       }
     };
   }, [jump]);
-
-  const fontSize = `${0.75 * scale}rem`;
-  const iconSize = `${0.9 * scale}rem`;
-  const spacing = `${0.3 * scale}rem`;
 
   return (
     <div className={styles.container} style={{ fontSize }}>
