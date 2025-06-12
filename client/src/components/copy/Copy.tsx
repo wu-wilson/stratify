@@ -5,7 +5,7 @@ import styles from "./Copy.module.scss";
 const Copy = ({
   text,
   fontSize = "0.75rem",
-  iconSize = "0.9rem",
+  iconSize = "1rem",
   spacing = "0.3rem",
 }: {
   text: string;
