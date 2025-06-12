@@ -1,25 +1,35 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaCopy } from "react-icons/fa";
-import Tooltip from "../tooltip/Tooltip";
 import styles from "./Copy.module.scss";
 
 const Copy = ({ text, scale = 1 }: { text: string; scale?: number }) => {
-  const [copied, setCopied] = useState(false);
+  const [jump, setJump] = useState(false);
+  const iconRef = useRef<HTMLDivElement | null>(null);
 
   const copyText = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      setCopied(true);
+      setJump(true);
     } catch (err) {
       console.error("Failed to copy:", err);
     }
   };
 
-  const handleMouseLeave = () => {
-    if (copied) {
-      setCopied(false);
+  useEffect(() => {
+    const handleAnimationEnd = () => {
+      setJump(false);
+    };
+
+    if (iconRef.current && jump) {
+      iconRef.current.addEventListener("animationend", handleAnimationEnd);
     }
-  };
+
+    return () => {
+      if (iconRef.current) {
+        iconRef.current.removeEventListener("animationend", handleAnimationEnd);
+      }
+    };
+  }, [jump]);
 
   const fontSize = `${0.75 * scale}rem`;
   const iconSize = `${0.9 * scale}rem`;
@@ -28,19 +38,14 @@ const Copy = ({ text, scale = 1 }: { text: string; scale?: number }) => {
   return (
     <div className={styles.container} style={{ fontSize }}>
       {text}
-      <Tooltip
-        content={copied ? "Copied!" : "Copy UID"}
-        placement="top"
-        offset={10}
+      <div
+        ref={iconRef}
+        className={`${styles.icon} ${jump ? styles.jump : null}`}
+        style={{ marginLeft: spacing }}
+        onClick={copyText}
       >
-        <FaCopy
-          onClick={copyText}
-          onMouseLeave={handleMouseLeave}
-          className={styles.icon}
-          style={{ marginLeft: spacing }}
-          size={iconSize}
-        />
-      </Tooltip>
+        <FaCopy size={iconSize} />
+      </div>
     </div>
   );
 };

@@ -8,8 +8,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "../../contexts/theme/ThemeProvider";
-import styles from "./Tooltip.module.scss";
 import { calculateTooltipPosition } from "./util";
+import styles from "./Tooltip.module.scss";
 
 const Tooltip = ({
   content,
@@ -50,10 +50,6 @@ const Tooltip = ({
       setPosition(position);
     }
   };
-
-  useEffect(() => {
-    updatePosition();
-  }, [placement, offset, visible]);
 
   useLayoutEffect(() => {
     updatePosition();

@@ -1,5 +1,6 @@
 @use "../../styles/variables" as vars;
 @use "../../styles/mixins" as mixins;
+@import "../../styles/animations";
 
 .container {
   display: flex;
@@ -7,11 +8,18 @@
 
   .icon {
     position: relative;
+    display: flex;
+    align-items: center;
     cursor: pointer;
     @include mixins.transition(color);
 
-    &:hover {
+    &:hover,
+    &.copied {
       color: vars.$primary-color;
+    }
+
+    &.jump {
+      animation: jump 0.5s ease forwards;
     }
   }
 }
