@@ -19,7 +19,7 @@
     }
 
     &.jump {
-      animation: jump 0.5s ease forwards;
+      @include mixins.animate(jump);
     }
   }
 }

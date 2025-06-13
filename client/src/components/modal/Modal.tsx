@@ -30,24 +30,11 @@ const Modal = ({
     };
   }, []);
 
-  useEffect(() => {
-    if (!closing) return;
-
-    const handleTransitionEnd = () => {
+  const handleTransitionEnd = () => {
+    if (closing) {
       setOpen(false);
-    };
-
-    const card = cardRef.current;
-    if (card) {
-      card.addEventListener("transitionend", handleTransitionEnd);
     }
-
-    return () => {
-      if (card) {
-        card.removeEventListener("transitionend", handleTransitionEnd);
-      }
-    };
-  }, [closing]);
+  };
 
   return (
     <div
@@ -68,6 +55,7 @@ const Modal = ({
           .filter(Boolean)
           .join(" ")}
         ref={cardRef}
+        onTransitionEnd={handleTransitionEnd}
       >
         <IoMdCloseCircle
           className={styles.icon}
