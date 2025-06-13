@@ -1,5 +1,5 @@
 import { type Row, type SettingsPage } from "./types";
-import { pages } from "../util";
+import { pages } from "../config";
 import styles from "./Page.module.scss";
 
 const Page = ({
@@ -18,7 +18,7 @@ const Page = ({
   return (
     <div className={styles.container}>
       <span className={styles["title"]} onClick={goBack}>
-        {page.id === 1
+        {/* {page.id === 1
           ? "Settings"
           : page.parent
           ? `< ${
@@ -27,7 +27,7 @@ const Page = ({
                 .sections.find((s) => s.id === page.parent!.sectionId)
                 ?.rows.find((r) => r.id === page.parent!.rowId)!.label
             }`
-          : null}
+          : null} */}
       </span>
       {page.sections.map((section) => (
         <div key={section.id}>
