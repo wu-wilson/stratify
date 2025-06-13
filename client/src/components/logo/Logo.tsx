@@ -1,4 +1,5 @@
 import { FiLayers } from "react-icons/fi";
+import { type EmRemPx } from "../../types";
 import styles from "./Logo.module.scss";
 
 const Logo = ({
@@ -7,9 +8,9 @@ const Logo = ({
   spacing = "0.3rem",
   text = true,
 }: {
-  fontSize?: string;
-  iconSize?: string;
-  spacing?: string;
+  fontSize?: EmRemPx;
+  iconSize?: EmRemPx;
+  spacing?: EmRemPx;
   text?: boolean;
 }) => {
   return (

@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useTheme } from "../../../../../contexts/theme/ThemeProvider";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { timezone, fallback, formatCreationTime } from "./util";
 import { useAuth } from "../../../../../contexts/auth/AuthProvider";
 import Copy from "../../../../../components/copy/Copy";
+import Edit from "../../../../../components/edit/Edit";
 import Toggle from "../../../../../components/toggle/Toggle";
 import styles from "./Settings.module.scss";
 
@@ -14,6 +16,8 @@ const Settings = ({}: {}) => {
     ? formatCreationTime(user.metadata.creationTime)
     : fallback;
 
+  const [name, setName] = useState<string>(user?.displayName || fallback);
+
   return (
     <div className={styles.container}>
       <span className={styles.title}>Settings</span>
@@ -24,18 +28,20 @@ const Settings = ({}: {}) => {
         </div>
         <div className={styles.row}>
           Name
-          <span>{user?.displayName || fallback}</span>
+          <div style={{ width: "10rem" }}>
+            <Edit text={name} setText={setName} />
+          </div>
         </div>
         <div className={styles.row}>
           Created
           <span>{createdOn}</span>
         </div>
-      </section>
-      <section className={styles.section}>
         <div className={styles.row}>
           Timezone
           <span>{timezone}</span>
         </div>
+      </section>
+      <section className={styles.section}>
         <div className={styles.row}>
           Appearance
           <Toggle

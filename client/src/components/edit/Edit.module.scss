@@ -1,0 +1,38 @@
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: 100%;
+
+  .input {
+    width: 100%;
+    color: inherit;
+    padding: 0.5rem;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "edit-bg");
+    }
+  }
+
+  .text {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .icon {
+    cursor: pointer;
+    @include mixins.transition(color);
+
+    &:hover {
+      color: vars.$primary-color;
+    }
+  }
+}

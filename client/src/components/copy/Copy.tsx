@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { type EmRemPx } from "../../types";
 import { FaCopy } from "react-icons/fa";
 import styles from "./Copy.module.scss";
 
@@ -9,9 +10,9 @@ const Copy = ({
   spacing = "0.3rem",
 }: {
   text: string;
-  fontSize?: string;
-  iconSize?: string;
-  spacing?: string;
+  fontSize?: EmRemPx;
+  iconSize?: EmRemPx;
+  spacing?: EmRemPx;
 }) => {
   const [jump, setJump] = useState(false);
   const iconRef = useRef<HTMLDivElement | null>(null);

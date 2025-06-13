@@ -17,7 +17,7 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
   const footerItems: SidebarFooterItem[] = [
     {
       icon: RiSettings3Line,
-      label: "Account Settings",
+      label: "Settings",
       onClick: () => setOpenSettings(true),
     },
     {
