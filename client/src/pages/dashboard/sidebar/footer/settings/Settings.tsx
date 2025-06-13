@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { getPage, getParentProp } from "./util";
-import { type SettingsPage } from "./Page/types";
-import Page from "./Page/Page";
+import { type Page } from "./types";
 import styles from "./Settings.module.scss";
 
 const Settings = () => {
-  const [page, setPage] = useState<SettingsPage>(getPage(1));
+  const [page, setPage] = useState<Page>(getPage(1));
 
   const goToSubpage = (id: number) => {
     const subpage = getPage(id);
@@ -18,11 +17,7 @@ const Settings = () => {
     setPage(parentPage);
   };
 
-  return (
-    <div className={styles.container}>
-      {page && <Page page={page} goBack={goBack} goToSubpage={goToSubpage} />}
-    </div>
-  );
+  return <div className={styles.container}>{page.id}</div>;
 };
 
 export default Settings;

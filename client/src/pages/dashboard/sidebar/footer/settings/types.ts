@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export type Row = {
+type Row = {
   id: number;
   label: string;
   content: ReactNode;
@@ -13,7 +13,7 @@ type Section = {
   onSave?: () => void;
 };
 
-export type SettingsPage = {
+export type Page = {
   id: number;
   parent?: { pageId: number; sectionId: number; rowId: number };
   sections: Section[];

@@ -1,6 +1,6 @@
-import type { SettingsPage } from "./Page/types";
+import type { Page } from "./types";
 
-export const pages: SettingsPage[] = [
+export const pages: Page[] = [
   {
     id: 1,
     sections: [
