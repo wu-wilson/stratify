@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { IoMdCloseCircle } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import styles from "./Modal.module.scss";
 
 const Modal = ({
@@ -57,10 +57,9 @@ const Modal = ({
         ref={cardRef}
         onTransitionEnd={handleTransitionEnd}
       >
-        <IoMdCloseCircle
-          className={styles.icon}
-          onClick={() => setClosing(true)}
-        />
+        <button className={styles.closeBtn}>
+          <IoMdClose className={styles.icon} onClick={() => setClosing(true)} />
+        </button>
         {children}
       </div>
     </div>
