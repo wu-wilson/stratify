@@ -63,7 +63,9 @@
   $width: auto,
   $height: auto,
   $padding: 0.5rem 1rem,
-  $border-radius: 30px
+  $border-radius: 30px,
+  $bg-key: "primary-btn-bg",
+  $color-key: "primary-btn-color"
 ) {
   width: $width;
   height: $height;
@@ -77,15 +79,15 @@
   cursor: pointer;
 
   @include themed using ($props) {
-    background-color: map.get($props, "btn-bg");
-    color: map.get($props, "font-color");
+    background-color: map.get($props, $bg-key);
+    color: map.get($props, $color-key);
   }
 
   &:hover {
     @include themed using ($props) {
       background-color: color.adjust(
-        map.get($props, "btn-bg"),
-        $lightness: -8%
+        map.get($props, $bg-key),
+        $lightness: -10%
       );
     }
   }
