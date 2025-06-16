@@ -1,11 +1,6 @@
-@use "../../../../../styles/variables" as vars;
-@use "../../../../../styles/mixins" as mixins;
-@use "sass:map";
-@use "sass:color";
-
 .container {
-  width: 20rem;
-  height: 28rem;
+  width: 21rem;
+  height: 22rem;
   display: flex;
   flex-direction: column;
 }

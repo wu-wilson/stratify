@@ -26,7 +26,6 @@ const Root = ({ setView }: { setView: (view: View) => void }) => {
   return (
     <>
       <span className={styles.title}>Settings</span>
-      <span className={styles.subtitle}>Account</span>
       <div className={styles.section}>
         <div className={styles.row}>
           UID <Copy text={user!.uid} />
@@ -41,7 +40,6 @@ const Root = ({ setView }: { setView: (view: View) => void }) => {
           </span>
         </div>
       </div>
-      <span className={styles.subtitle}>Date & Time</span>
       <div className={styles.section}>
         <div className={styles.row}>
           Use 24hr Time
@@ -55,7 +53,6 @@ const Root = ({ setView }: { setView: (view: View) => void }) => {
           Timezone <span>{timezone}</span>
         </div>
       </div>
-      <span className={styles.subtitle}>Appearance</span>
       <div className={styles.section}>
         <div className={styles.row}>
           Set Theme Automatically

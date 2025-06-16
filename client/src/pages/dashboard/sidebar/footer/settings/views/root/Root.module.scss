@@ -7,19 +7,13 @@
   display: flex;
   justify-content: center;
   font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-}
-
-.subtitle {
-  font-size: 0.75rem;
-  margin-bottom: 0.5rem;
-  text-decoration: underline;
+  margin-bottom: 2rem;
 }
 
 .section {
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
   @include mixins.themed using ($props) {
     background-color: map.get($props, "settings-bg");
