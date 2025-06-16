@@ -2,14 +2,14 @@ import { useTime } from "../../../../../../../contexts/time/TimeProvider";
 import { useAuth } from "../../../../../../../contexts/auth/AuthProvider";
 import { useTheme } from "../../../../../../../contexts/theme/ThemeProvider";
 import { getTimezone } from "../../../../../../../util";
-import { FaMoon, FaSun } from "react-icons/fa";
 import { type View } from "../../types";
 import Copy from "../../../../../../../components/copy/Copy";
 import Toggle from "../../../../../../../components/toggle/Toggle";
+import ThemeToggle from "../../../../../../../components/toggle/theme/ThemeToggle";
 import styles from "./Root.module.scss";
 
 const Root = ({ setView }: { setView: (view: View) => void }) => {
-  const { darkMode, setDarkMode, auto, setAuto } = useTheme();
+  const { auto, setAuto } = useTheme();
   const { user } = useAuth();
   const { format, setFormat } = useTime();
 
@@ -67,13 +67,7 @@ const Root = ({ setView }: { setView: (view: View) => void }) => {
         </div>
         <div className={styles.row}>
           Theme
-          <Toggle
-            id="settings-theme-toggle"
-            checked={darkMode ? darkMode : false}
-            setChecked={setDarkMode}
-            icons={{ checked: FaMoon, unchecked: FaSun }}
-            disabled={auto}
-          />
+          <ThemeToggle id="settings-theme-toggle" disabled={auto} />
         </div>
       </div>
     </>
