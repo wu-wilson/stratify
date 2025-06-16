@@ -45,7 +45,7 @@
     margin-bottom: 1rem;
 
     @include mixins.themed using ($props) {
-      background-color: map.get($props, "view-bg");
+      background-color: map.get($props, "settings-bg");
       color: map.get($props, "font-color");
     }
   }
@@ -69,7 +69,7 @@
     margin-bottom: 2rem;
 
     @include mixins.themed using ($props) {
-      background-color: map.get($props, "view-bg");
+      background-color: map.get($props, "settings-bg");
     }
 
     .row {
@@ -90,7 +90,7 @@
         &:hover {
           @include mixins.themed using ($props) {
             background-color: color.adjust(
-              map.get($props, "view-bg"),
+              map.get($props, "settings-bg"),
               $lightness: -5%
             );
           }
