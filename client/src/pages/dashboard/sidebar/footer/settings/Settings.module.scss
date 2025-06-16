@@ -1,4 +1,105 @@
+@use "../../../../../styles/variables" as vars;
+@use "../../../../../styles/mixins" as mixins;
+@use "sass:map";
+@use "sass:color";
+
 .container {
   min-width: 20rem;
-  min-height: 15rem;
+  height: 28rem;
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    display: flex;
+    justify-content: center;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+    text-decoration: underline;
+  }
+
+  .back {
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+    text-decoration: underline;
+    @include mixins.transition(color);
+    cursor: pointer;
+
+    &:hover {
+      color: vars.$primary-color;
+    }
+  }
+
+  .input {
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem;
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "view-bg");
+      color: map.get($props, "font-color");
+    }
+  }
+
+  .save {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      font-size: 0.75rem;
+      font-family: inherit;
+      cursor: pointer;
+
+      @include mixins.button($border-radius: 10px);
+    }
+  }
+
+  .group {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "view-bg");
+    }
+
+    .row {
+      height: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0.7rem;
+      font-size: 0.75rem;
+
+      &:not(:last-child) {
+        border-bottom: 1px dashed rgba(128, 128, 128, 0.2);
+      }
+
+      &.actionable {
+        cursor: pointer;
+
+        &:hover {
+          @include mixins.themed using ($props) {
+            background-color: color.adjust(
+              map.get($props, "view-bg"),
+              $lightness: -5%
+            );
+          }
+        }
+
+        .chevron {
+          padding-left: 0.3rem;
+        }
+      }
+    }
+  }
 }
