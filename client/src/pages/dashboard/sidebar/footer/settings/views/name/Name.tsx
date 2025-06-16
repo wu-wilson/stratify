@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../../../contexts/auth/AuthProvider";
 import { updateProfile } from "firebase/auth";
+import { validateDisplayName } from "./util";
 import { type View } from "../../types";
 import Error from "../../../../../../../components/error/Error";
 import Spinner from "../../../../../../../components/spinner/Spinner";
@@ -10,16 +11,18 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
   const { user } = useAuth();
 
   const [name, setName] = useState<string>(user?.displayName ?? "");
-  const [error, setError] = useState<string | null>(null);
+  const [requestError, setRequestError] = useState<string | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const [updating, setUpdating] = useState<boolean>(false);
+  const [disableSave, setDisableSave] = useState<boolean>(true);
 
   const updateName = async () => {
     if (!user) return;
     try {
       await updateProfile(user, { displayName: name });
-      setError(null);
+      setView("root");
     } catch (err) {
-      setError("Failed to update display name.");
+      setRequestError("Update profile endpoint failed");
     } finally {
       setUpdating(false);
     }
@@ -31,12 +34,22 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
     }
   }, [updating]);
 
+  useEffect(() => {
+    const { valid, msg } = validateDisplayName(name, user?.displayName ?? "");
+    if (valid) {
+      setDisableSave(false);
+    } else {
+      setDisableSave(true);
+    }
+    setValidationError(msg);
+  }, [name]);
+
   if (updating) {
     return <Spinner size={50} text={"Updating..."} />;
   }
 
-  if (error) {
-    return <Error errorMsg={error} />;
+  if (requestError) {
+    return <Error errorMsg={requestError} />;
   }
 
   return (
@@ -52,8 +65,11 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
         placeholder="Display name"
         autoFocus
       />
+      <div className={styles.inputError}>{validationError}</div>
       <div className={styles.save}>
-        <button onClick={() => setUpdating(true)}>Save</button>
+        <button onClick={() => setUpdating(true)} disabled={disableSave}>
+          Save
+        </button>
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 $primary-color: rgb(31, 185, 134);
 $font-family: Poppins;
+$error-color: rgb(231, 112, 112);
 
 :root {
   --light-mode-font-color: rgb(72, 76, 80);
@@ -16,13 +17,15 @@ $themes: (
     btn-bg: #f5f5f5,
     primary-btn-bg: $primary-color,
     primary-btn-color: var(--dark-mode-font-color),
-    secondary-btn-bg: #f3f3f3,
+    secondary-btn-bg: #f5f5f5,
     secondary-btn-color: var(--light-mode-font-color),
+    disabled-btn-bg: #f5f5f5,
+    disabled-btn-color: rgb(181, 181, 181),
     tooltip-bg: #f5f5f5,
     sidebar-bg: white,
     sidebar-border: 1px solid rgb(213, 212, 212),
     toggle-bg: #ccc,
-    settings-bg: #f3f3f3,
+    settings-bg: #f5f5f5,
     copy-icon: rgb(178, 178, 178),
   ),
   dark: (
@@ -35,6 +38,8 @@ $themes: (
     primary-btn-color: var(--dark-mode-font-color),
     secondary-btn-bg: #1c1c1c,
     secondary-btn-color: var(--dark-mode-font-color),
+    disabled-btn-bg: rgb(174, 174, 174),
+    disabled-btn-color: white,
     tooltip-bg: #131313,
     sidebar-bg: #242426,
     sidebar-border: none,

@@ -22,13 +22,20 @@
   }
 }
 
+.inputError {
+  height: 1rem;
+  font-size: 0.7rem;
+  margin-bottom: 1rem;
+  padding-left: 0.3rem;
+  color: vars.$error-color;
+}
+
 .input {
   outline: none;
   border: none;
   border-radius: 10px;
   padding: 0.7rem;
   font-size: 0.75rem;
-  margin-bottom: 1rem;
 
   @include mixins.themed using ($props) {
     background-color: map.get($props, "settings-bg");

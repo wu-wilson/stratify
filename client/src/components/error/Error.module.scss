@@ -37,6 +37,6 @@
   .error {
     margin-top: 1rem;
     font-size: 0.75rem;
-    color: red;
+    color: vars.$error-color;
   }
 }

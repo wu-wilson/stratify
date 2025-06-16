@@ -83,12 +83,20 @@
     color: map.get($props, $color-key);
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     @include themed using ($props) {
       background-color: color.adjust(
         map.get($props, $bg-key),
         $lightness: -10%
       );
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    @include themed using ($props) {
+      background-color: map.get($props, "disabled-btn-bg");
+      color: map.get($props, "disabled-btn-color");
     }
   }
 }
