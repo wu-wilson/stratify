@@ -1,0 +1,57 @@
+@use "../../../../../../../styles/variables" as vars;
+@use "../../../../../../../styles/mixins" as mixins;
+@use "sass:map";
+@use "sass:color";
+
+.title {
+  display: flex;
+  justify-content: center;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  text-decoration: underline;
+}
+
+.section {
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+
+  @include mixins.themed using ($props) {
+    background-color: map.get($props, "settings-bg");
+  }
+
+  .row {
+    height: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.7rem;
+    font-size: 0.75rem;
+
+    &:not(:last-child) {
+      border-bottom: 1px dashed rgba(128, 128, 128, 0.2);
+    }
+
+    &.actionable {
+      cursor: pointer;
+
+      &:hover {
+        @include mixins.themed using ($props) {
+          background-color: color.adjust(
+            map.get($props, "settings-bg"),
+            $lightness: -5%
+          );
+        }
+      }
+
+      .chevron {
+        padding-left: 0.3rem;
+      }
+    }
+  }
+}
