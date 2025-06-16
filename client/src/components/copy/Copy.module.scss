@@ -1,5 +1,6 @@
 @use "../../styles/variables" as vars;
 @use "../../styles/mixins" as mixins;
+@use "sass:map";
 @import "../../styles/animations";
 
 .container {
@@ -12,6 +13,9 @@
     align-items: center;
     cursor: pointer;
     @include mixins.transition(color);
+    @include mixins.themed using ($props) {
+      color: map.get($props, "copy-icon");
+    }
 
     &:hover,
     &.copied {

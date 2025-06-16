@@ -4,7 +4,7 @@
 @use "sass:color";
 
 .container {
-  min-width: 20rem;
+  width: 20rem;
   height: 28rem;
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@
   .title {
     display: flex;
     justify-content: center;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     margin-bottom: 0.5rem;
   }
 
@@ -28,7 +28,6 @@
     font-size: 0.75rem;
     margin-bottom: 1rem;
     text-decoration: underline;
-    @include mixins.transition(color);
     cursor: pointer;
 
     &:hover {
