@@ -1,23 +1,30 @@
-import { useState } from "react";
-import { getPage, getParentProp } from "./util";
-import { type Page } from "./types";
+import { useState, type FC } from "react";
+import { type View, type Props } from "./types";
+import Root from "./views/Root";
+import Personal from "./views/Personal";
+import Time from "./views/Time";
+import Appearance from "./views/Appearance";
+import Name from "./views/Name";
 import styles from "./Settings.module.scss";
 
 const Settings = () => {
-  const [page, setPage] = useState<Page>(getPage(1));
+  const [view, setView] = useState<View>("root");
 
-  const goToSubpage = (id: number) => {
-    const subpage = getPage(id);
-    setPage(subpage);
+  const viewMapping: Record<View, FC<Props>> = {
+    root: Root,
+    personal: Personal,
+    time: Time,
+    appearance: Appearance,
+    name: Name,
   };
 
-  const goBack = () => {
-    const parentId = getParentProp(page, "pageId");
-    const parentPage = getPage(parentId);
-    setPage(parentPage);
-  };
+  const View = viewMapping[view];
 
-  return <div className={styles.container}>{page.id}</div>;
+  return (
+    <div className={styles.container}>
+      <View setView={setView} />
+    </div>
+  );
 };
 
 export default Settings;

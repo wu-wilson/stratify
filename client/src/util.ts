@@ -1,4 +1,4 @@
-import moment from "moment-timezone";
+import moment, { type Moment } from "moment-timezone";
 
 export const getTimezone = (abbreviate: boolean = false): string => {
   const tz = moment.tz.guess();

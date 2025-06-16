@@ -7,7 +7,7 @@ const Copy = ({
   text,
   fontSize = "0.75rem",
   iconSize = "1rem",
-  spacing = "0.3rem",
+  spacing = "0.5rem",
 }: {
   text: string;
   fontSize?: EmRemPx;

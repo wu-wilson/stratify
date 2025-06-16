@@ -1,20 +1,5 @@
-import type { ReactNode } from "react";
+export type View = "root" | "personal" | "time" | "appearance" | "name";
 
-type Row = {
-  id: number;
-  label: string;
-  content: ReactNode;
-  subpage?: number;
-};
-
-type Section = {
-  id: number;
-  rows: Row[];
-  onSave?: () => void;
-};
-
-export type Page = {
-  id: number;
-  parent?: { pageId: number; sectionId: number; rowId: number };
-  sections: Section[];
+export type Props = {
+  setView: (view: View) => void;
 };
