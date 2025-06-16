@@ -12,7 +12,6 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    @include mixins.transition(color);
     @include mixins.themed using ($props) {
       color: map.get($props, "copy-icon");
     }

@@ -42,8 +42,7 @@ $knob-size: calc($height - $padding * 2);
       width: $knob-size;
       border-radius: 50%;
       background-color: white;
-
-      @include mixins.transition(transform);
+      transition: ease transform 200ms;
 
       .icon {
         height: 0.8rem;

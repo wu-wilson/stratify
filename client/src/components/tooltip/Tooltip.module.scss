@@ -21,7 +21,7 @@
   &.visible {
     opacity: 1;
     visibility: visible;
-    @include mixins.transition($properties: opacity);
+    transition: ease opacity 200ms;
   }
 
   &.top {

@@ -91,10 +91,6 @@
   }
 }
 
-@mixin transition($properties, $duration: 0.2s, $timing: ease) {
-  transition: #{list.join($properties, ", ")} #{$duration} #{$timing};
-}
-
 @mixin animate($name, $duration: 0.5s, $timing: ease, $direction: forwards) {
   animation-name: $name;
   animation-duration: $duration;

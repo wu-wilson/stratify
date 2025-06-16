@@ -11,11 +11,12 @@
   justify-content: space-between;
   box-sizing: border-box;
   padding: 1rem;
+  transition: ease width 200ms;
+
   @include mixins.themed using ($props) {
     background-color: map.get($props, "sidebar-bg");
     border-right: map.get($props, "sidebar-border");
   }
-  @include mixins.transition(width);
 }
 
 .collapsed {

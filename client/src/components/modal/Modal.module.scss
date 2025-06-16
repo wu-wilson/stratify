@@ -2,7 +2,7 @@
 @use "sass:map";
 @use "sass:color";
 
-$transition-duration: 300ms;
+$transition-duration: 200ms;
 
 .container {
   position: absolute;
@@ -13,21 +13,15 @@ $transition-duration: 300ms;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: transparent;
   z-index: 2;
-  @include mixins.transition(
-    $properties: "background-color",
-    $duration: $transition-duration
-  );
+  transition: ease background-color $transition-duration;
 
   .card {
     position: relative;
     transform: scale(0);
     opacity: 0;
-    @include mixins.transition(
-      $properties: "transform, opacity",
-      $duration: $transition-duration
-    );
+    transition: ease transform $transition-duration,
+      ease opacity $transition-duration;
     @include mixins.card($padding: 1rem, $show-border: false);
   }
 
@@ -53,7 +47,6 @@ $transition-duration: 300ms;
     @include mixins.themed using ($props) {
       color: map.get($props, "modal-btn");
     }
-    @include mixins.transition(color);
 
     &:hover {
       @include mixins.themed using ($props) {
