@@ -48,7 +48,7 @@ const Time = ({ setView }: { setView: (view: View) => void }) => {
       </span>
       <section>
         <div className={styles.row}>
-          Use 24hr Time{" "}
+          Use 24hr Time
           <Toggle
             id="settings-time-24hr-toggle"
             checked={format === "24hr"}

@@ -15,7 +15,7 @@ const Appearance = ({ setView }: { setView: (view: View) => void }) => {
       </span>
       <section>
         <div className={styles.row}>
-          Set Automatically
+          Set Theme Automatically
           <Toggle
             id="settings-theme-auto-toggle"
             checked={auto}
