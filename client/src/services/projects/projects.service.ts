@@ -1,7 +1,6 @@
-import type { CreateProjectPayload, Project } from "./types";
+import { BASE_URL } from "./constants";
+import { type CreateProjectPayload, type Project } from "./types";
 import axios from "axios";
-
-const BASE_URL = import.meta.env.VITE_REACT_APP_API_DOMAIN + "/projects";
 
 export const getProjects = async (ownerId: string): Promise<Project[]> => {
   const response = await axios.get<Project[]>(BASE_URL, {

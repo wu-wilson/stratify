@@ -1,6 +1,6 @@
 import { RiHome2Line, RiArrowLeftDoubleFill } from "react-icons/ri";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SUBTEXT } from "./util";
+import { SUBTEXT } from "./constants";
 import Error from "../../components/error/Error";
 import styles from "./ErrorPage.module.scss";
 

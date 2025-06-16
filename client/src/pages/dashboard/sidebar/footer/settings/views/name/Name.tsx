@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../../../contexts/auth/AuthProvider";
 import { updateProfile } from "firebase/auth";
 import { validateDisplayName } from "./util";
+import { DISPLAY_NAME } from "./constants";
 import { type View } from "../../types";
 import Error from "../../../../../../../components/error/Error";
 import Spinner from "../../../../../../../components/spinner/Spinner";
@@ -10,7 +11,7 @@ import styles from "./Name.module.scss";
 const Name = ({ setView }: { setView: (view: View) => void }) => {
   const { user } = useAuth();
 
-  const [name, setName] = useState<string>(user?.displayName ?? "");
+  const [name, setName] = useState<string>(user?.displayName ?? DISPLAY_NAME);
   const [requestError, setRequestError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [updating, setUpdating] = useState<boolean>(false);

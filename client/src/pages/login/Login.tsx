@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/auth/AuthProvider";
 import { useEffect } from "react";
-import { providers } from "./util";
+import { providers } from "./config";
 import { signInWithRedirect, type AuthProvider } from "firebase/auth";
 import { auth } from "../../contexts/auth/config";
 import Spinner from "../../components/spinner/Spinner";

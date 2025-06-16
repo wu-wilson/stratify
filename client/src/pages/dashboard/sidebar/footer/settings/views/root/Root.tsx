@@ -2,6 +2,7 @@ import { useTime } from "../../../../../../../contexts/time/TimeProvider";
 import { useAuth } from "../../../../../../../contexts/auth/AuthProvider";
 import { useTheme } from "../../../../../../../contexts/theme/ThemeProvider";
 import { getTimezone } from "../../../../../../../util";
+import { getDisplayName } from "./util";
 import { type View } from "../../types";
 import Copy from "../../../../../../../components/copy/Copy";
 import Toggle from "../../../../../../../components/toggle/Toggle";
@@ -23,12 +24,14 @@ const Root = ({ setView }: { setView: (view: View) => void }) => {
 
   const timezone = getTimezone(true);
 
+  const displayName = getDisplayName(user);
+
   return (
     <>
       <span className={styles.title}>Settings</span>
       <div className={styles.section}>
         <div className={styles.row}>
-          UID <Copy text={user!.uid} />
+          UID <Copy text={user!.uid} maxTextLength={20} />
         </div>
         <div
           className={`${styles.row} ${styles.actionable}`}
@@ -36,7 +39,7 @@ const Root = ({ setView }: { setView: (view: View) => void }) => {
         >
           Display Name
           <span>
-            {user!.displayName} <span className={styles.chevron}>&gt;</span>
+            {displayName} <span className={styles.chevron}>&gt;</span>
           </span>
         </div>
       </div>

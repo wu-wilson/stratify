@@ -1,5 +1,5 @@
 import { TbFaceIdError } from "react-icons/tb";
-import { SUBTEXT } from "./util";
+import { SUBTEXT } from "./constants";
 import styles from "./Error.module.scss";
 
 const Error = ({

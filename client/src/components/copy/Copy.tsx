@@ -8,11 +8,13 @@ const Copy = ({
   fontSize = "0.75rem",
   iconSize = "1rem",
   spacing = "0.5rem",
+  maxTextLength = null,
 }: {
   text: string;
   fontSize?: EmRemPx;
   iconSize?: EmRemPx;
   spacing?: EmRemPx;
+  maxTextLength?: number | null;
 }) => {
   const [jump, setJump] = useState(false);
   const iconRef = useRef<HTMLDivElement | null>(null);
@@ -42,9 +44,13 @@ const Copy = ({
     };
   }, [jump]);
 
+  const truncatedText = maxTextLength
+    ? text.slice(0, maxTextLength - 3) + "…"
+    : text;
+
   return (
     <div className={styles.container} style={{ fontSize }}>
-      {text}
+      {truncatedText}
       <div
         ref={iconRef}
         className={`${styles.icon} ${jump ? styles.jump : null}`}
