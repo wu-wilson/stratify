@@ -7,10 +7,12 @@ import styles from "./Sidebar.module.scss";
 
 const Sidebar = ({
   projects,
+  setProjects,
   project,
   setProject,
 }: {
   projects: ProjectEntity[];
+  setProjects: (projects: ProjectEntity[]) => void;
   project: ProjectEntity | null;
   setProject: (project: ProjectEntity | null) => void;
 }) => {
@@ -24,6 +26,7 @@ const Sidebar = ({
       <Body
         expanded={expanded}
         projects={projects}
+        setProjects={setProjects}
         project={project}
         setProject={setProject}
       />

@@ -5,31 +5,32 @@ import { getTruncatedText } from "../../../../../util";
 
 const Project = ({
   project,
+  text = project.name,
   selected = false,
   expanded = false,
   maxTextLength = null,
 }: {
   project: ProjectEntity;
+  text: string;
   selected?: boolean;
   expanded?: boolean;
   maxTextLength?: number | null;
 }) => {
-  const truncatedName = getTruncatedText(
-    project.name,
-    maxTextLength ?? project.name.length
-  );
+  const truncatedText = getTruncatedText(text, maxTextLength ?? text.length);
 
   return (
-    <Tooltip content={project.name}>
-      <div className={styles.container}>
-        <div
-          className={`${styles.profile} ${selected ? styles.selected : null}`}
-        >
-          {project.name[0]}
+    <div className={styles.container}>
+      <Tooltip content={text} offset={10}>
+        <div className={styles.content}>
+          <div
+            className={`${styles.profile} ${selected ? styles.selected : null}`}
+          >
+            {project.name[0]}
+          </div>
+          {expanded && <span className={styles.text}>{truncatedText}</span>}
         </div>
-        {expanded && <span className={styles.name}>{truncatedName}</span>}
-      </div>
-    </Tooltip>
+      </Tooltip>
+    </div>
   );
 };
 

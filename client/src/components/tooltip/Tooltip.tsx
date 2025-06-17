@@ -84,6 +84,10 @@ const Tooltip = ({
     };
   }, []);
 
+  useEffect(() => {
+    updatePosition();
+  }, [children, content]);
+
   return (
     <>
       <div
