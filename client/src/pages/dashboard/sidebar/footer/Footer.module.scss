@@ -19,7 +19,6 @@
 
   .item {
     display: flex;
-    width: 100%;
     align-items: center;
     cursor: pointer;
 
@@ -40,9 +39,9 @@
 
     .label {
       margin-left: 0.5rem;
+      font-size: 0.8rem;
       white-space: nowrap;
       overflow-x: hidden;
-      font-size: 0.8rem;
     }
   }
 }

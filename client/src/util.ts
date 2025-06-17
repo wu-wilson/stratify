@@ -9,3 +9,10 @@ export const getTimezone = (abbreviate: boolean = false): string => {
     return tz;
   }
 };
+
+export const getTruncatedText = (text: string, maxLength: number): string => {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return text.slice(0, maxLength - 3) + "...";
+};

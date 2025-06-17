@@ -35,7 +35,7 @@ const testDbConnection = async () => {
 
 testDbConnection();
 
-app.use("/project", projectsRouter);
+app.use("/projects", projectsRouter);
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, "../../certs/localhost-key.pem")),

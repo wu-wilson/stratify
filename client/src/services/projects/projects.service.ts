@@ -1,9 +1,11 @@
 import { BASE_URL } from "./constants";
-import { type CreateProjectPayload, type Project } from "./types";
+import { type CreateProjectPayload, type ProjectEntity } from "./types";
 import axios from "axios";
 
-export const getProjects = async (ownerId: string): Promise<Project[]> => {
-  const response = await axios.get<Project[]>(BASE_URL, {
+export const getProjects = async (
+  ownerId: string
+): Promise<ProjectEntity[]> => {
+  const response = await axios.get<ProjectEntity[]>(BASE_URL, {
     params: { owner_id: ownerId },
   });
   return response.data;
@@ -11,8 +13,8 @@ export const getProjects = async (ownerId: string): Promise<Project[]> => {
 
 export const createProject = async (
   projectPayload: CreateProjectPayload
-): Promise<Project> => {
-  const response = await axios.post<Project>(
+): Promise<ProjectEntity> => {
+  const response = await axios.post<ProjectEntity>(
     `${BASE_URL}/create`,
     projectPayload
   );

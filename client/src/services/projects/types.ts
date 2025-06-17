@@ -1,4 +1,4 @@
-export type Project = {
+export type ProjectEntity = {
   id: number;
   owner_id: string;
   name: string;

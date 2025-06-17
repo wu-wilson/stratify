@@ -1,0 +1,43 @@
+@use "../../../../../styles/variables" as vars;
+@use "../../../../../styles/mixins" as mixins;
+@use "sass:map";
+
+.container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    .profile {
+      border-radius: 10px;
+    }
+  }
+
+  .profile {
+    height: 2.5rem;
+    width: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 100%;
+    transition: ease border-radius 200ms;
+
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "project-bg");
+    }
+
+    &.selected {
+      border-radius: 10px;
+      background-color: vars.$primary-color;
+      color: var(--dark-mode-font-color);
+    }
+  }
+
+  .name {
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow-x: hidden;
+  }
+}

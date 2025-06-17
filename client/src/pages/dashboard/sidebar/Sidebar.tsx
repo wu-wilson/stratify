@@ -1,16 +1,19 @@
 import { useState } from "react";
-import Header from "./header/Header";
+import { type ProjectEntity } from "../../../services/projects/types";
+import Body from "./body/Body";
 import Footer from "./footer/Footer";
+import Header from "./header/Header";
 import styles from "./Sidebar.module.scss";
 
 const Sidebar = ({
+  projects,
   project,
   setProject,
 }: {
-  project: number | null;
-  setProject: (id: number | null) => void;
+  projects: ProjectEntity[];
+  project: ProjectEntity | null;
+  setProject: (project: ProjectEntity | null) => void;
 }) => {
-  const [loading, setLoading] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<boolean>(true);
 
   return (
@@ -18,7 +21,12 @@ const Sidebar = ({
       className={`${styles.container} ${expanded ? null : styles.collapsed}`}
     >
       <Header expanded={expanded} setExpanded={setExpanded} />
-      {project}
+      <Body
+        expanded={expanded}
+        projects={projects}
+        project={project}
+        setProject={setProject}
+      />
       <Footer expanded={expanded} />
     </div>
   );

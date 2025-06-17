@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { type EmRemPx } from "../../types";
 import { FaCopy } from "react-icons/fa";
 import styles from "./Copy.module.scss";
+import { getTruncatedText } from "../../util";
 
 const Copy = ({
   text,
@@ -44,9 +45,7 @@ const Copy = ({
     };
   }, [jump]);
 
-  const truncatedText = maxTextLength
-    ? text.slice(0, maxTextLength - 3) + "…"
-    : text;
+  const truncatedText = getTruncatedText(text, maxTextLength ?? text.length);
 
   return (
     <div className={styles.container} style={{ fontSize }}>
