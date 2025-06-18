@@ -28,26 +28,24 @@ const Body = ({
         </Modal>
       )}
       {projects.map((p) => (
-        <div
-          key={p.id}
-          className={styles.project}
-          onClick={() => setProject(p)}
-        >
+        <div key={p.id} className={styles.project}>
           <Project
             text={p.name}
             expanded={expanded}
             project={p}
             selected={p.id === project?.id}
             maxTextLength={26}
+            onClick={() => setProject(p)}
           />
         </div>
       ))}
-      <div className={styles.project} onClick={() => setOpenAddProject(true)}>
+      <div className={styles.project}>
         <Project
           text={"Add Project"}
           expanded={expanded}
           project={{ id: -1, owner_id: "", name: "+" } as ProjectEntity}
           selected={false}
+          onClick={() => setOpenAddProject(true)}
         />
       </div>
     </div>

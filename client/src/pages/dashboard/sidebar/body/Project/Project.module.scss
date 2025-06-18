@@ -4,15 +4,6 @@
 
 .container {
   position: relative;
-  cursor: pointer;
-
-  &:hover {
-    .content {
-      .profile {
-        border-radius: 10px;
-      }
-    }
-  }
 
   .content {
     display: flex;
@@ -27,9 +18,14 @@
       flex-shrink: 0;
       border-radius: 100%;
       transition: ease border-radius 200ms;
+      cursor: pointer;
 
       @include mixins.themed using ($props) {
         background-color: map.get($props, "project-bg");
+      }
+
+      &:hover {
+        border-radius: 10px;
       }
 
       &.selected {

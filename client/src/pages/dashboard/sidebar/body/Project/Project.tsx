@@ -9,12 +9,14 @@ const Project = ({
   selected = false,
   expanded = true,
   maxTextLength = null,
+  onClick = () => {},
 }: {
   project: ProjectEntity;
   text: string;
   selected?: boolean;
   expanded?: boolean;
   maxTextLength?: number | null;
+  onClick?: () => void;
 }) => {
   const truncatedText = getTruncatedText(text, maxTextLength ?? text.length);
 
@@ -28,6 +30,7 @@ const Project = ({
         <div className={styles.content}>
           <div
             className={`${styles.profile} ${selected ? styles.selected : null}`}
+            onClick={onClick}
           >
             {project.name[0]}
           </div>
