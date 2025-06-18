@@ -7,7 +7,7 @@ const Project = ({
   project,
   text = project.name,
   selected = false,
-  expanded = false,
+  expanded = true,
   maxTextLength = null,
 }: {
   project: ProjectEntity;
@@ -20,7 +20,11 @@ const Project = ({
 
   return (
     <div className={styles.container}>
-      <Tooltip content={text} offset={10}>
+      <Tooltip
+        content={text}
+        condition={!expanded || truncatedText !== text}
+        offset={expanded ? 0 : 10}
+      >
         <div className={styles.content}>
           <div
             className={`${styles.profile} ${selected ? styles.selected : null}`}

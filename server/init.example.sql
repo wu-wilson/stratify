@@ -5,7 +5,7 @@
 
 -- Create projects table
 CREATE TABLE IF NOT EXISTS projects (
-    id BIGSERIAL PRIMARY KEY, 
+    id BIGSERIAL PRIMARY KEY CHECK (id > 0), 
     owner_id TEXT NOT NULL,
     name TEXT NOT NULL,
     description TEXT,

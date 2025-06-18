@@ -17,12 +17,14 @@ const Tooltip = ({
   offset = 0,
   placement = "right",
   hoverDelay = 1000,
+  condition = true,
 }: {
   content: ReactNode;
   children: ReactNode;
   offset?: number;
   placement?: Placement;
   hoverDelay?: number;
+  condition?: boolean;
 }) => {
   const { darkMode } = useTheme();
 
@@ -64,6 +66,7 @@ const Tooltip = ({
   }, []);
 
   const handleMouseEnter = () => {
+    updatePosition();
     delayTimer.current = setTimeout(() => {
       setVisible(true);
     }, hoverDelay);
@@ -84,10 +87,6 @@ const Tooltip = ({
     };
   }, []);
 
-  useEffect(() => {
-    updatePosition();
-  }, [children, content]);
-
   return (
     <>
       <div
@@ -98,24 +97,24 @@ const Tooltip = ({
       >
         {children}
       </div>
-
-      {createPortal(
-        <div className={darkMode ? "dark-mode" : "light-mode"}>
-          <div
-            ref={tooltipRef}
-            className={`${styles.container} ${styles[placement]} ${
-              visible ? styles.visible : null
-            }`}
-            style={{
-              top: `${position.top}px`,
-              left: `${position.left}px`,
-            }}
-          >
-            {content}
-          </div>
-        </div>,
-        document.body
-      )}
+      {condition &&
+        createPortal(
+          <div className={darkMode ? "dark-mode" : "light-mode"}>
+            <div
+              ref={tooltipRef}
+              className={`${styles.container} ${styles[placement]} ${
+                visible ? styles.visible : null
+              }`}
+              style={{
+                top: `${position.top}px`,
+                left: `${position.left}px`,
+              }}
+            >
+              {content}
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 };
