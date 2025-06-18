@@ -18,13 +18,20 @@ const Body = ({
   project: ProjectEntity | null;
   setProject: (project: ProjectEntity | null) => void;
 }) => {
-  const [openAddProject, setOpenAddProject] = useState<boolean>(false);
+  const [openCreate, setOpenCreate] = useState<boolean>(false);
 
   return (
     <div className={styles.container}>
-      {openAddProject && (
-        <Modal setOpen={setOpenAddProject}>
-          <Create projects={projects} setProjects={setProjects} />
+      {openCreate && (
+        <Modal setOpen={setOpenCreate}>
+          <Create
+            projects={projects}
+            setProjects={setProjects}
+            setProject={setProject}
+            closeModal={() => {
+              setOpenCreate(false);
+            }}
+          />
         </Modal>
       )}
       {projects.map((p) => (
@@ -44,7 +51,7 @@ const Body = ({
           expanded={expanded}
           project={{ id: -1, owner_id: "", name: "+" } as ProjectEntity}
           selected={false}
-          onClick={() => setOpenAddProject(true)}
+          onClick={() => setOpenCreate(true)}
         />
       </div>
     </div>

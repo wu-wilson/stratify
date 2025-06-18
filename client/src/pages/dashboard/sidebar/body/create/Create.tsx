@@ -6,9 +6,13 @@ import styles from "./Create.module.scss";
 const Create = ({
   projects,
   setProjects,
+  setProject,
+  closeModal,
 }: {
   projects: ProjectEntity[];
   setProjects: (projects: ProjectEntity[]) => void;
+  setProject: (project: ProjectEntity) => void;
+  closeModal: () => void;
 }) => {
   const [height, setHeight] = useState<number | null>(null);
   const ref = useRef<HTMLDivElement>(null);
@@ -28,7 +32,12 @@ const Create = ({
       ref={ref}
       style={{ height: height ? `${height}px` : undefined }}
     >
-      <Form projects={projects} setProjects={setProjects} />
+      <Form
+        projects={projects}
+        setProjects={setProjects}
+        setProject={setProject}
+        closeModal={closeModal}
+      />
     </div>
   );
 };

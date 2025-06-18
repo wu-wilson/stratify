@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { validateProjectName } from "./util";
 import { useAuth } from "../../../../../../contexts/auth/AuthProvider";
-import { type ProjectEntity } from "../../../../../../services/projects/types";
+import {
+  type ProjectEntity,
+  type CreateProjectPayload,
+} from "../../../../../../services/projects/types";
+import { createProject } from "../../../../../../services/projects/projects.service";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
 import styles from "./Form.module.scss";
@@ -9,9 +13,13 @@ import styles from "./Form.module.scss";
 const Form = ({
   projects,
   setProjects,
+  setProject,
+  closeModal,
 }: {
   projects: ProjectEntity[];
   setProjects: (projects: ProjectEntity[]) => void;
+  setProject: (project: ProjectEntity) => void;
+  closeModal: () => void;
 }) => {
   const { user } = useAuth();
 
@@ -25,7 +33,15 @@ const Form = ({
   const addProject = async () => {
     if (!user) return;
     try {
-      console.log(`created project: ${name}`);
+      const projectInfo: CreateProjectPayload = {
+        owner_id: user.uid,
+        name: name.trim(),
+        description: description ?? undefined,
+      };
+      const newProject = await createProject(projectInfo);
+      setProjects([newProject, ...projects]);
+      setProject(newProject);
+      closeModal();
     } catch (err) {
       setRequestError("createProject endpoint failed");
     } finally {
