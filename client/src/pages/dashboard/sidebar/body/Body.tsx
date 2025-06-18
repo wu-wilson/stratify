@@ -7,8 +7,7 @@ import Project from "./project/Project";
 import styles from "./Body.module.scss";
 
 const Body = ({ expanded }: { expanded: boolean }) => {
-  const { projects, selectedProject, setSelectedProject } = useProjects();
-
+  const { projects, setSelectedProject } = useProjects();
   const [openCreate, setOpenCreate] = useState<boolean>(false);
 
   return (
