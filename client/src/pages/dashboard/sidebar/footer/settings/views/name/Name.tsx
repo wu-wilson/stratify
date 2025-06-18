@@ -14,7 +14,7 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
   const [name, setName] = useState<string>(user?.displayName ?? DISPLAY_NAME);
   const [requestError, setRequestError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
-  const [updating, setUpdating] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [disableSave, setDisableSave] = useState<boolean>(true);
 
   const updateName = async () => {
@@ -25,15 +25,15 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
     } catch (err) {
       setRequestError("Update profile endpoint failed");
     } finally {
-      setUpdating(false);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (updating) {
+    if (loading) {
       updateName();
     }
-  }, [updating]);
+  }, [loading]);
 
   useEffect(() => {
     const { valid, msg } = validateDisplayName(name, user?.displayName ?? "");
@@ -45,7 +45,7 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
     setValidationError(msg);
   }, [name]);
 
-  if (updating) {
+  if (loading) {
     return <Spinner size={50} text={"Updating..."} />;
   }
 
@@ -68,7 +68,7 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
       />
       <div className={styles.inputError}>{validationError}</div>
       <div className={styles.save}>
-        <button onClick={() => setUpdating(true)} disabled={disableSave}>
+        <button onClick={() => setLoading(true)} disabled={disableSave}>
           Save
         </button>
       </div>

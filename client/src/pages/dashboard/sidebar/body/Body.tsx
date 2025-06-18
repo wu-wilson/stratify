@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { type ProjectEntity } from "../../../../services/projects/types";
-import AddProject from "./add-project/AddProject";
+import Create from "./create/Create";
 import Modal from "../../../../components/modal/Modal";
 import Project from "./project/Project";
 import styles from "./Body.module.scss";
@@ -24,7 +24,7 @@ const Body = ({
     <div className={styles.container}>
       {openAddProject && (
         <Modal setOpen={setOpenAddProject}>
-          <AddProject projects={projects} setProjects={setProjects} />
+          <Create projects={projects} setProjects={setProjects} />
         </Modal>
       )}
       {projects.map((p) => (
@@ -40,7 +40,7 @@ const Body = ({
       ))}
       <div className={styles.project}>
         <Project
-          text={"Add Project"}
+          text="Add Project"
           expanded={expanded}
           project={{ id: -1, owner_id: "", name: "+" } as ProjectEntity}
           selected={false}
