@@ -21,7 +21,7 @@ const Body = ({ expanded }: { expanded: boolean }) => {
           />
         </Modal>
       )}
-      {projects!.map((p) => (
+      {projects?.map((p) => (
         <div key={p.id} className={styles.project}>
           <Project
             text={p.name}

@@ -1,4 +1,4 @@
-import { useTime } from "../../../../../../../contexts/time/TimeProvider";
+import { useTime } from "../../../../../../../contexts/time-format/TimeFormatProvider";
 import { useAuth } from "../../../../../../../contexts/auth/AuthProvider";
 import { useTheme } from "../../../../../../../contexts/theme/ThemeProvider";
 import { getTimezone } from "../../../../../../../util";

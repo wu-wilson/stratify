@@ -5,11 +5,13 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { type TimeContextType, type TimeFormat } from "./type";
+import { type TimeFormatContextType, type TimeFormat } from "./type";
 
-const TimeContext = createContext<TimeContextType | undefined>(undefined);
+const TimeFormatContext = createContext<TimeFormatContextType | undefined>(
+  undefined
+);
 
-export const TimeProvider = ({ children }: { children: ReactNode }) => {
+export const TimeFormatProvider = ({ children }: { children: ReactNode }) => {
   const [format, setFormat] = useState<TimeFormat>("12hr");
 
   useEffect(() => {
@@ -24,14 +26,14 @@ export const TimeProvider = ({ children }: { children: ReactNode }) => {
   }, [format]);
 
   return (
-    <TimeContext.Provider value={{ format, setFormat }}>
+    <TimeFormatContext.Provider value={{ format, setFormat }}>
       {children}
-    </TimeContext.Provider>
+    </TimeFormatContext.Provider>
   );
 };
 
-export const useTime = (): TimeContextType => {
-  const context = useContext(TimeContext);
+export const useTime = (): TimeFormatContextType => {
+  const context = useContext(TimeFormatContext);
   if (!context) {
     throw new Error("useTime must be used within a TimeProvider");
   }
