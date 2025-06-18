@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ProjectsProvider } from "./contexts/projects/ProjectsProvider";
 import { useTheme } from "./contexts/theme/ThemeProvider";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -17,7 +18,9 @@ const App = () => {
             path="/dashboard"
             element={
               <PrivateRoute>
-                <Dashboard />
+                <ProjectsProvider>
+                  <Dashboard />
+                </ProjectsProvider>
               </PrivateRoute>
             }
           />
