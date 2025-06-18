@@ -1,4 +1,5 @@
 import { getTruncatedText } from "../../../../../util";
+import { useProjects } from "../../../../../contexts/projects/ProjectsProvider";
 import { type ProjectEntity } from "../../../../../services/projects/types";
 import Tooltip from "../../../../../components/tooltip/Tooltip";
 import styles from "./Project.module.scss";
@@ -6,16 +7,15 @@ import styles from "./Project.module.scss";
 const Project = ({
   project,
   text = project.name,
-  selected = false,
   expanded = true,
   onClick = () => {},
 }: {
   project: ProjectEntity;
   text: string;
-  selected?: boolean;
   expanded?: boolean;
   onClick?: () => void;
 }) => {
+  const { selectedProject } = useProjects();
   const truncatedText = getTruncatedText(text, 26);
 
   return (
@@ -26,7 +26,9 @@ const Project = ({
         offset={expanded ? 170 : 10}
       >
         <div
-          className={`${styles.profile} ${selected ? styles.selected : null}`}
+          className={`${styles.profile} ${
+            selectedProject?.id === project.id ? styles.selected : null
+          }`}
           onClick={onClick}
         >
           {project.name[0]}

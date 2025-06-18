@@ -1,19 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { type ProjectEntity } from "../../../../../services/projects/types";
 import Form from "./form/Form";
 import styles from "./Create.module.scss";
 
-const Create = ({
-  projects,
-  setProjects,
-  setProject,
-  closeModal,
-}: {
-  projects: ProjectEntity[];
-  setProjects: (projects: ProjectEntity[]) => void;
-  setProject: (project: ProjectEntity) => void;
-  closeModal: () => void;
-}) => {
+const Create = ({ closeModal }: { closeModal: () => void }) => {
   const [height, setHeight] = useState<number | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -32,12 +21,7 @@ const Create = ({
       ref={ref}
       style={{ height: height ? `${height}px` : undefined }}
     >
-      <Form
-        projects={projects}
-        setProjects={setProjects}
-        setProject={setProject}
-        closeModal={closeModal}
-      />
+      <Form closeModal={closeModal} />
     </div>
   );
 };

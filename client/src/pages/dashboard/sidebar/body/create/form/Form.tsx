@@ -1,27 +1,16 @@
 import { useEffect, useState } from "react";
 import { validateProjectName } from "./util";
 import { useAuth } from "../../../../../../contexts/auth/AuthProvider";
-import {
-  type ProjectEntity,
-  type CreateProjectPayload,
-} from "../../../../../../services/projects/types";
+import { useProjects } from "../../../../../../contexts/projects/ProjectsProvider";
+import { type CreateProjectPayload } from "../../../../../../services/projects/types";
 import { createProject } from "../../../../../../services/projects/projects.service";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
 import styles from "./Form.module.scss";
 
-const Form = ({
-  projects,
-  setProjects,
-  setProject,
-  closeModal,
-}: {
-  projects: ProjectEntity[];
-  setProjects: (projects: ProjectEntity[]) => void;
-  setProject: (project: ProjectEntity) => void;
-  closeModal: () => void;
-}) => {
+const Form = ({ closeModal }: { closeModal: () => void }) => {
   const { user } = useAuth();
+  const { projects, setProjects, setSelectedProject } = useProjects();
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -39,8 +28,8 @@ const Form = ({
         description: description ?? undefined,
       };
       const newProject = await createProject(projectInfo);
-      setProjects([newProject, ...projects]);
-      setProject(newProject);
+      setProjects([newProject, ...projects!]);
+      setSelectedProject(newProject);
       closeModal();
     } catch (err) {
       setRequestError("createProject endpoint failed");
@@ -56,7 +45,7 @@ const Form = ({
   }, [loading]);
 
   useEffect(() => {
-    const { valid, msg } = validateProjectName(name, projects);
+    const { valid, msg } = validateProjectName(name, projects!);
     if (valid) {
       setDisableCreate(false);
     } else {

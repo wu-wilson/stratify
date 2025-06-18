@@ -1,23 +1,14 @@
 import { useState } from "react";
+import { useProjects } from "../../../../contexts/projects/ProjectsProvider";
 import { type ProjectEntity } from "../../../../services/projects/types";
 import Create from "./create/Create";
 import Modal from "../../../../components/modal/Modal";
 import Project from "./project/Project";
 import styles from "./Body.module.scss";
 
-const Body = ({
-  expanded,
-  projects,
-  setProjects,
-  project,
-  setProject,
-}: {
-  expanded: boolean;
-  projects: ProjectEntity[];
-  setProjects: (projects: ProjectEntity[]) => void;
-  project: ProjectEntity | null;
-  setProject: (project: ProjectEntity | null) => void;
-}) => {
+const Body = ({ expanded }: { expanded: boolean }) => {
+  const { projects, selectedProject, setSelectedProject } = useProjects();
+
   const [openCreate, setOpenCreate] = useState<boolean>(false);
 
   return (
@@ -25,23 +16,19 @@ const Body = ({
       {openCreate && (
         <Modal setOpen={setOpenCreate}>
           <Create
-            projects={projects}
-            setProjects={setProjects}
-            setProject={setProject}
             closeModal={() => {
               setOpenCreate(false);
             }}
           />
         </Modal>
       )}
-      {projects.map((p) => (
+      {projects!.map((p) => (
         <div key={p.id} className={styles.project}>
           <Project
             text={p.name}
             expanded={expanded}
             project={p}
-            selected={p.id === project?.id}
-            onClick={() => setProject(p)}
+            onClick={() => setSelectedProject(p)}
           />
         </div>
       ))}
@@ -50,7 +37,6 @@ const Body = ({
           text="Add Project"
           expanded={expanded}
           project={{ id: -1, owner_id: "", name: "+" } as ProjectEntity}
-          selected={false}
           onClick={() => setOpenCreate(true)}
         />
       </div>
