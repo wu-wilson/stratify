@@ -34,7 +34,6 @@ const Body = ({
             expanded={expanded}
             project={p}
             selected={p.id === project?.id}
-            maxTextLength={26}
             onClick={() => setProject(p)}
           />
         </div>

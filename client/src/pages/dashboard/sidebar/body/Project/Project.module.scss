@@ -4,42 +4,40 @@
 
 .container {
   position: relative;
+  display: flex;
+  align-items: center;
 
-  .content {
+  .profile {
+    height: 2.5rem;
+    width: 2.5rem;
     display: flex;
+    justify-content: center;
     align-items: center;
+    flex-shrink: 0;
+    border-radius: 100%;
+    transition: ease border-radius 200ms;
+    cursor: pointer;
 
-    .profile {
-      height: 2.5rem;
-      width: 2.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-shrink: 0;
-      border-radius: 100%;
-      transition: ease border-radius 200ms;
-      cursor: pointer;
-
-      @include mixins.themed using ($props) {
-        background-color: map.get($props, "project-bg");
-      }
-
-      &:hover {
-        border-radius: 10px;
-      }
-
-      &.selected {
-        border-radius: 10px;
-        background-color: vars.$primary-color;
-        color: var(--dark-mode-font-color);
-      }
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "project-bg");
     }
 
-    .text {
-      margin-left: 0.5rem;
-      font-size: 0.8rem;
-      white-space: nowrap;
-      overflow-x: hidden;
+    &:hover {
+      border-radius: 10px;
     }
+
+    &.selected {
+      border-radius: 10px;
+      background-color: vars.$primary-color;
+      color: var(--dark-mode-font-color);
+    }
+  }
+
+  .text {
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow-x: hidden;
+    pointer-events: none;
   }
 }
