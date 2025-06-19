@@ -16,7 +16,7 @@ const Project = ({
   onClick?: () => void;
 }) => {
   const { selectedProject } = useProjects();
-  const truncatedText = getTruncatedText(text, 26);
+  const truncatedText = getTruncatedText(text, 20);
 
   return (
     <div className={styles.container}>
