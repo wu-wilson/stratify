@@ -1,7 +1,7 @@
+@use "variables" as vars;
 @use "sass:map";
 @use "sass:color";
 @use "sass:list";
-@use "variables" as vars;
 
 @mixin themed {
   @each $theme, $props in vars.$themes {
@@ -22,18 +22,6 @@
     background-color: $page-bg;
     background-image: linear-gradient($grid-lines 1px, transparent 1px),
       linear-gradient(90deg, $grid-lines 1px, transparent 1px);
-  }
-}
-
-@mixin respond($breakpoint) {
-  $size: map.get(vars.$breakpoints, $breakpoint);
-
-  @if $size == null {
-    @error "Breakpoint `#{$breakpoint}` not found in \$breakpoints map.";
-  }
-
-  @media (max-width: $size) {
-    @content;
   }
 }
 

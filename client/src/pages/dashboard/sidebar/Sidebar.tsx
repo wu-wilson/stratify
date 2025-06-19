@@ -5,7 +5,7 @@ import Header from "./header/Header";
 import styles from "./Sidebar.module.scss";
 
 const Sidebar = () => {
-  const [expanded, setExpanded] = useState<boolean>(true);
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
     <div
