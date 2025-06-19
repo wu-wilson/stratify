@@ -1,4 +1,5 @@
 import { type EmRemPx } from "../../types";
+import { type Tab } from "./types";
 import styles from "./Tabs.module.scss";
 
 const Tabs = ({
@@ -8,22 +9,25 @@ const Tabs = ({
   setSelectedTab,
 }: {
   tabWidth: EmRemPx;
-  tabs: string[];
-  selectedTab: string;
-  setSelectedTab: (tab: string) => void;
+  tabs: Tab[];
+  selectedTab: Tab;
+  setSelectedTab: (tab: Tab) => void;
 }) => {
-  const selectedIndex = tabs.indexOf(selectedTab);
+  const selectedIndex = tabs.findIndex(
+    (tab) => tab.label === selectedTab.label
+  );
 
   return (
     <div className={styles.container}>
       {tabs.map((tab) => (
         <div
-          key={tab}
+          key={tab.label}
           onClick={() => setSelectedTab(tab)}
           className={styles.tab}
           style={{ width: tabWidth }}
         >
-          {tab}
+          {tab.icon && <tab.icon className={styles.icon} />}
+          {tab.label}
         </div>
       ))}
       <div
