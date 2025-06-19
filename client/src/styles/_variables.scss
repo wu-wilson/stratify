@@ -28,6 +28,8 @@ $themes: (
     modal-content-bg: #ededed,
     copy-icon: rgb(178, 178, 178),
     project-bg: #ededed,
+    tab-bg: #ededed,
+    selected-tab-bg: white,
   ),
   dark: (
     page-bg: #1c1c1c,
@@ -48,10 +50,11 @@ $themes: (
     modal-content-bg: #1c1c1c,
     copy-icon: rgb(152, 152, 152),
     project-bg: #111111,
+    tab-bg: #111111,
+    selected-tab-bg: #242426,
   ),
 );
 
 $breakpoints: (
-  phone: 800px,
-  tablet: 1100px,
+  tablet: 1200px,
 );
