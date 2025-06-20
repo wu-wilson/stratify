@@ -1,20 +1,20 @@
 import { PiDeviceMobileSlashDuotone } from "react-icons/pi";
-import styles from "./NoMobile.module.scss";
+import styles from "./NoSupport.module.scss";
 
-const NoMobile = () => {
+const NoSupport = () => {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
         <span className={styles.title}>
-          No Mobile Support
+          No Support
           <PiDeviceMobileSlashDuotone className={styles.icon} />
         </span>
         <span className={styles.subtext}>
-          Sorry, we aren't available on mobile yet. Support coming soon!
+          Sorry, we aren't available on small screens yet. Support coming soon!
         </span>
       </div>
     </div>
   );
 };
 
-export default NoMobile;
+export default NoSupport;

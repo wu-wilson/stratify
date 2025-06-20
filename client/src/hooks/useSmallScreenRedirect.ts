@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const useMobileRedirect = (redirectPath = "/no-mobile") => {
+export const useSmallScreenRedirect = (redirectPath = "/no-support") => {
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const redirect = () => {
-      const mobile = window.innerWidth < 1200;
+      const small = window.innerWidth < 1200;
       const redirected = location.pathname === redirectPath;
 
-      if (mobile && !redirected) {
+      if (small && !redirected) {
         navigate(redirectPath, { replace: true });
-      } else if (!mobile && redirected) {
+      } else if (!small && redirected) {
         navigate("/", { replace: true });
       }
     };

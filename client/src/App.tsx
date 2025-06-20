@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useMobileRedirect } from "./hooks/useMobileRedirect";
+import { useSmallScreenRedirect } from "./hooks/useSmallScreenRedirect";
 import { ProjectsProvider } from "./contexts/projects/ProjectsProvider";
 import { TimeFormatProvider } from "./contexts/time-format/TimeFormatProvider";
 import { useTheme } from "./contexts/theme/ThemeProvider";
@@ -7,11 +7,11 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Login from "./pages/login/Login";
 import ErrorPage from "./pages/error-page/ErrorPage";
-import NoMobile from "./pages/no-mobile/NoMobile";
+import NoSupport from "./pages/no-support/NoSupport";
 import NotFound from "./pages/not-found/NotFound";
 
 const App = () => {
-  useMobileRedirect();
+  useSmallScreenRedirect();
   const { darkMode } = useTheme();
 
   return (
@@ -32,7 +32,7 @@ const App = () => {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/error" element={<ErrorPage />} />
-        <Route path="/no-mobile" element={<NoMobile />} />
+        <Route path="/no-support" element={<NoSupport />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
