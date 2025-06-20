@@ -3,7 +3,7 @@ import { type EmRemPx } from "../../types";
 import styles from "./Logo.module.scss";
 
 const Logo = ({
-  fontSize = "1rem",
+  fontSize = "0.95rem",
   iconSize = "1.4rem",
   spacing = "0.3rem",
   text = true,
