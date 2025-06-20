@@ -15,12 +15,14 @@ const Dashboard = () => {
     <div className={styles.container}>
       <Sidebar />
       <div className={styles.view}>
-        <Tabs
-          tabWidth="7rem"
-          tabs={tabs}
-          selectedTab={tab}
-          setSelectedTab={setTab}
-        />
+        <div className={styles.tabs}>
+          <Tabs
+            tabWidth="7rem"
+            tabs={tabs}
+            selectedTab={tab}
+            setSelectedTab={setTab}
+          />
+        </div>
         {tab.label === "Overview" && <Overview />}
         {tab.label === "Statuses" && <Statuses />}
         {tab.label === "People" && <People />}
