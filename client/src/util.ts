@@ -14,6 +14,5 @@ export const getTruncatedText = (text: string, maxLength: number): string => {
   if (text.length <= maxLength) {
     return text;
   }
-  console.log(text.slice(0, maxLength - 3) + "...");
   return text.slice(0, maxLength - 3) + "...";
 };
