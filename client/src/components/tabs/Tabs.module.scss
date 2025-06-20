@@ -33,9 +33,10 @@
     position: absolute;
     height: 100%;
     border-radius: 8px;
-    z-index: 1;
     transition: ease left 200ms;
-    cursor: pointer;
+    z-index: 1;
+    pointer-events: none;
+
     @include mixins.themed using ($props) {
       background-color: map.get($props, "selected-tab-bg");
     }

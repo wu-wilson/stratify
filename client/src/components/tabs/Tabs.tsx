@@ -19,6 +19,13 @@ const Tabs = ({
 
   return (
     <div className={styles.container}>
+      <div
+        className={styles.selected}
+        style={{
+          width: tabWidth,
+          left: `calc(${tabWidth} * ${selectedIndex})`,
+        }}
+      />
       {tabs.map((tab) => (
         <div
           key={tab.label}
@@ -30,13 +37,6 @@ const Tabs = ({
           {tab.label}
         </div>
       ))}
-      <div
-        className={styles.selected}
-        style={{
-          width: tabWidth,
-          left: `calc(${tabWidth} * ${selectedIndex})`,
-        }}
-      />
     </div>
   );
 };
