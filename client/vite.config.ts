@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
       },
       proxy: {
         "/__/auth": {
-          target: `https://${env.VITE_REACT_APP_FIREBASE_AUTH_DOMAIN}`,
+          target: `https://${env.VITE_FIREBASE_AUTH_DOMAIN}`,
           changeOrigin: true,
           secure: true,
         },
