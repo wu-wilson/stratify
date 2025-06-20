@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/auth/AuthProvider";
+import { useAuth } from "../../hooks/useAuth";
 import Spinner from "../spinner/Spinner";
 import styles from "./PrivateRoute.module.scss";
 

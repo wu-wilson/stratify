@@ -1,5 +1,5 @@
 import { HashLoader } from "react-spinners";
-import { useTheme } from "../../contexts/theme/ThemeProvider";
+import { useTheme } from "../../hooks/useTheme";
 import { getCSSVar } from "../../styles/util";
 import styles from "./Spinner.module.scss";
 

@@ -1,18 +1,12 @@
 import { type User, onAuthStateChanged } from "firebase/auth";
 import { type UserContextType } from "./types";
 import { auth } from "./config";
-import { useTheme } from "../theme/ThemeProvider";
-import {
-  type ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useTheme } from "../../hooks/useTheme";
+import { type ReactNode, createContext, useEffect, useState } from "react";
 import Spinner from "../../components/spinner/Spinner";
 import styles from "./AuthProvider.module.scss";
 
-const AuthContext = createContext<UserContextType | null>(null);
+export const AuthContext = createContext<UserContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { darkMode } = useTheme();
@@ -43,12 +37,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthContextProvider");
-  }
-  return context;
 };

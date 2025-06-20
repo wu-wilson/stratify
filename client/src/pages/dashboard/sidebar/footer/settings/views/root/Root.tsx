@@ -1,6 +1,6 @@
-import { useTime } from "../../../../../../../contexts/time-format/TimeFormatProvider";
-import { useAuth } from "../../../../../../../contexts/auth/AuthProvider";
-import { useTheme } from "../../../../../../../contexts/theme/ThemeProvider";
+import { useTimeFormat } from "../../../../../../../hooks/useTimeFormat";
+import { useAuth } from "../../../../../../../hooks/useAuth";
+import { useTheme } from "../../../../../../../hooks/useTheme";
 import { getTimezone } from "../../../../../../../util";
 import { getDisplayName } from "./util";
 import { type View } from "../../types";
@@ -12,7 +12,7 @@ import styles from "./Root.module.scss";
 const Root = ({ setView }: { setView: (view: View) => void }) => {
   const { auto, setAuto } = useTheme();
   const { user } = useAuth();
-  const { format, setFormat } = useTime();
+  const { format, setFormat } = useTimeFormat();
 
   const toggleTimeFormat = (checked: boolean) => {
     if (checked) {

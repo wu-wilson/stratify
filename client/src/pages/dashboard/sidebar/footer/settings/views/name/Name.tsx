@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../../../../../contexts/auth/AuthProvider";
+import { useAuth } from "../../../../../../../hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 import { validateDisplayName } from "./util";
 import { DISPLAY_NAME } from "./constants";

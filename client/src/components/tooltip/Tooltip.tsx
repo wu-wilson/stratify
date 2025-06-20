@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import { useTheme } from "../../contexts/theme/ThemeProvider";
+import { useTheme } from "../../hooks/useTheme";
 import { calculateTooltipPosition } from "./util";
 import styles from "./Tooltip.module.scss";
 

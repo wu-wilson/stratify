@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useProjects } from "../../../../contexts/projects/ProjectsProvider";
+import { useProjects } from "../../../../hooks/useProjects";
 import { type ProjectEntity } from "../../../../services/projects/types";
 import Create from "./create/Create";
 import Modal from "../../../../components/modal/Modal";

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/auth/AuthProvider";
+import { useAuth } from "../../hooks/useAuth";
 import { useEffect } from "react";
 import { providers } from "./config";
 import { signInWithRedirect, type AuthProvider } from "firebase/auth";

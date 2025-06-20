@@ -1,12 +1,6 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
-import { useTheme } from "../theme/ThemeProvider";
-import { useAuth } from "../auth/AuthProvider";
+import { createContext, useEffect, useState, type ReactNode } from "react";
+import { useTheme } from "../../hooks/useTheme";
+import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { getProjects } from "../../services/projects/projects.service";
 import { type ProjectEntity } from "../../services/projects/types";
@@ -14,7 +8,7 @@ import { type ProjectsContextType } from "./types";
 import Spinner from "../../components/spinner/Spinner";
 import styles from "./ProjectsProvider.module.scss";
 
-const ProjectsContext = createContext<ProjectsContextType | undefined>(
+export const ProjectsContext = createContext<ProjectsContextType | undefined>(
   undefined
 );
 
@@ -72,12 +66,4 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </ProjectsContext.Provider>
   );
-};
-
-export const useProjects = (): ProjectsContextType => {
-  const context = useContext(ProjectsContext);
-  if (!context) {
-    throw new Error("useProjects must be used within a ProjectProvider");
-  }
-  return context;
 };

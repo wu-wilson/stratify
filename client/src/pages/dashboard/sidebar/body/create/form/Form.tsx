@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { validateProjectName } from "./util";
-import { useAuth } from "../../../../../../contexts/auth/AuthProvider";
-import { useProjects } from "../../../../../../contexts/projects/ProjectsProvider";
+import { useAuth } from "../../../../../../hooks/useAuth";
+import { useProjects } from "../../../../../../hooks/useProjects";
 import { type CreateProjectPayload } from "../../../../../../services/projects/types";
 import { createProject } from "../../../../../../services/projects/projects.service";
 import Spinner from "../../../../../../components/spinner/Spinner";

@@ -1,5 +1,5 @@
 import { getTruncatedText } from "../../../../../util";
-import { useProjects } from "../../../../../contexts/projects/ProjectsProvider";
+import { useProjects } from "../../../../../hooks/useProjects";
 import { type ProjectEntity } from "../../../../../services/projects/types";
 import Tooltip from "../../../../../components/tooltip/Tooltip";
 import styles from "./Project.module.scss";

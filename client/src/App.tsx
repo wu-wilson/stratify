@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useSmallScreenRedirect } from "./hooks/useSmallScreenRedirect";
 import { ProjectsProvider } from "./contexts/projects/ProjectsProvider";
 import { TimeFormatProvider } from "./contexts/time-format/TimeFormatProvider";
-import { useTheme } from "./contexts/theme/ThemeProvider";
+import { useTheme } from "./hooks/useTheme";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Login from "./pages/login/Login";
