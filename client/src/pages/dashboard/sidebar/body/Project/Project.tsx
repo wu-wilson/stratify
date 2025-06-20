@@ -23,7 +23,7 @@ const Project = ({
       <Tooltip
         content={text}
         condition={!expanded || truncatedText !== text}
-        offset={expanded ? 170 : 10}
+        offset={expanded ? 140 : 10}
       >
         <div
           className={`${styles.profile} ${
