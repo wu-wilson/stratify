@@ -17,7 +17,7 @@ const ProjectViews = () => {
           tabWidth="7rem"
           tabs={tabs}
           selectedTab={tab}
-          onClick={(tab) => setParam("tab", tab.label)}
+          onClick={(tab) => setParam({ tab: tab.label })}
         />
       </div>
       {tab === "Overview" && <Overview />}

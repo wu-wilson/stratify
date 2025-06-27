@@ -3,8 +3,8 @@ import { validateProjectName } from "./util";
 import { useAuth } from "../../../../../../hooks/useAuth";
 import { useProjects } from "../../../../../../hooks/useProjects";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
-import { type CreateProjectPayload } from "../../../../../../services/projects/types";
 import { createProject } from "../../../../../../services/projects/projects.service";
+import { type CreateProjectPayload } from "../../../../../../services/projects/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
 import styles from "./Form.module.scss";
@@ -30,7 +30,7 @@ const Form = ({ closeModal }: { closeModal: () => void }) => {
         description: description ?? undefined,
       };
       const newProject = await createProject(projectInfo);
-      setParam("project", newProject.id);
+      setParam({ project: newProject.id });
       setProjects([newProject, ...projects!]);
       closeModal();
     } catch (err) {

@@ -53,7 +53,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     }
     const selectedProjectId = getParam("project");
     if (!selectedProjectId) {
-      setParam("project", projects[0].id);
+      setParam({ project: projects[0].id });
     }
   }, [projects]);
 

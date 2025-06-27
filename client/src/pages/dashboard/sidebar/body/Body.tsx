@@ -13,7 +13,7 @@ const Body = ({ expanded }: { expanded: boolean }) => {
   const [openCreate, setOpenCreate] = useState<boolean>(false);
 
   const selectProject = (project: ProjectEntity) => {
-    setParam("project", project.id);
+    setParam({ project: project.id });
   };
 
   return (

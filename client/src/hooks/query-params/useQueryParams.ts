@@ -10,9 +10,11 @@ export const useQueryParams = () => {
     return params.get(key);
   };
 
-  const setParam = (key: QueryParam, value: string) => {
+  const setParam = (updates: Partial<Record<QueryParam, string>>) => {
     const params = new URLSearchParams(search);
-    params.set(key, value);
+    Object.entries(updates).forEach(([key, value]) => {
+      params.set(key, value);
+    });
     navigate(`${pathname}?${params.toString()}`, { replace: true });
   };
 
