@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { tabs } from "./constants";
-import { type Tab } from "../../../components/tabs/types";
+import { useQueryParams } from "../../../hooks/query-params/useQueryParams";
 import Tabs from "../../../components/tabs/Tabs";
 import Overview from "./overview/Overview";
 import People from "./people/People";
@@ -8,7 +7,8 @@ import Statuses from "./statuses/Statuses";
 import styles from "./ProjectViews.module.scss";
 
 const ProjectViews = () => {
-  const [tab, setTab] = useState<Tab>(tabs[0]);
+  const { getParam, setParam } = useQueryParams();
+  const tab = getParam("tab") ?? tabs[0].label;
 
   return (
     <div className={styles.container}>
@@ -17,12 +17,12 @@ const ProjectViews = () => {
           tabWidth="7rem"
           tabs={tabs}
           selectedTab={tab}
-          setSelectedTab={setTab}
+          onClick={(tab) => setParam("tab", tab.label)}
         />
       </div>
-      {tab.label === "Overview" && <Overview />}
-      {tab.label === "Statuses" && <Statuses />}
-      {tab.label === "People" && <People />}
+      {tab === "Overview" && <Overview />}
+      {tab === "Statuses" && <Statuses />}
+      {tab === "People" && <People />}
     </div>
   );
 };

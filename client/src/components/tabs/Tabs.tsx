@@ -6,23 +6,21 @@ const Tabs = ({
   tabWidth,
   tabs,
   selectedTab,
-  setSelectedTab,
+  onClick,
 }: {
   tabWidth: EmRemPx;
   tabs: Tab[];
-  selectedTab: Tab;
-  setSelectedTab: (tab: Tab) => void;
+  selectedTab: string;
+  onClick: (tab: Tab) => void;
 }) => {
-  const selectedIndex = tabs.findIndex(
-    (tab) => tab.label === selectedTab.label
-  );
+  const selectedIndex = tabs.findIndex((tab) => tab.label === selectedTab);
 
   return (
     <div className={styles.container}>
       {tabs.map((tab) => (
         <div
           key={tab.label}
-          onClick={() => setSelectedTab(tab)}
+          onClick={() => onClick(tab)}
           className={styles.tab}
           style={{ width: tabWidth }}
         >
