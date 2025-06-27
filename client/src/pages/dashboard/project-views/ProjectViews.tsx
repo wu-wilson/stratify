@@ -5,9 +5,9 @@ import Tabs from "../../../components/tabs/Tabs";
 import Overview from "./overview/Overview";
 import People from "./people/People";
 import Statuses from "./statuses/Statuses";
-import styles from "./Views.module.scss";
+import styles from "./ProjectViews.module.scss";
 
-const Views = () => {
+const ProjectViews = () => {
   const [tab, setTab] = useState<Tab>(tabs[0]);
 
   return (
@@ -27,4 +27,4 @@ const Views = () => {
   );
 };
 
-export default Views;
+export default ProjectViews;

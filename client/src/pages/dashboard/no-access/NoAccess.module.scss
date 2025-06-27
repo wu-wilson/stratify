@@ -1,5 +1,5 @@
-@use "../../styles/variables" as vars;
-@use "../../styles/mixins" as mixins;
+@use "../../../styles/variables" as vars;
+@use "../../../styles/mixins" as mixins;
 @use "sass:map";
 
 .container {
@@ -7,13 +7,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
-
-  @include mixins.themed using ($props) {
-    color: map.get($props, "font-color");
-  }
+  align-items: center;
 
   .title {
     display: flex;
@@ -23,20 +18,16 @@
 
     .icon {
       color: vars.$error-color;
-      margin-left: 0.5rem;
       height: 2rem;
       width: 2rem;
+      margin-right: 0.5rem;
     }
   }
 
   .subtext {
+    max-width: 400px;
+    text-align: center;
     margin-top: 1rem;
     font-size: 0.8rem;
-  }
-
-  .error {
-    margin-top: 1rem;
-    font-size: 0.75rem;
-    color: vars.$error-color;
   }
 }

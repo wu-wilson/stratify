@@ -11,9 +11,9 @@ const Error = ({
 }) => {
   return (
     <div className={styles.container}>
-      <span className={styles.title}>
+      <div className={styles.title}>
         Oopsie! <TbFaceIdError className={styles.icon} />
-      </span>
+      </div>
       <span className={styles.subtext}>{subtext}</span>
       {errorMsg && <span className={styles.error}>({errorMsg})</span>}
     </div>

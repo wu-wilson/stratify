@@ -1,7 +1,8 @@
 import { useProjects } from "../../hooks/useProjects";
 import { useQueryParams } from "../../hooks/query-params/useQueryParams";
 import Sidebar from "./sidebar/Sidebar";
-import Views from "./views/Views";
+import ProjectViews from "./project-views/ProjectViews";
+import NoAccess from "./no-access/NoAccess";
 import styles from "./Dashboard.module.scss";
 
 const Dashboard = () => {
@@ -18,9 +19,9 @@ const Dashboard = () => {
       {!hasProjects && !selectedProjectId ? (
         <></>
       ) : hasAccess ? (
-        <Views />
+        <ProjectViews />
       ) : (
-        <div>You don't have access</div>
+        <NoAccess />
       )}
     </div>
   );
