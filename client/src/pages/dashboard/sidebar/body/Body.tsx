@@ -35,7 +35,7 @@ const Body = ({ expanded }: { expanded: boolean }) => {
         <Project
           text="Add Project"
           expanded={expanded}
-          project={{ id: -1, owner_id: "", name: "+" } as ProjectEntity}
+          project={{ id: "-1", owner_id: "", name: "+" } as ProjectEntity}
           onClick={() => setOpenCreate(true)}
         />
       </div>

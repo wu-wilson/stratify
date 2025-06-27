@@ -1,5 +1,5 @@
 export type ProjectEntity = {
-  id: number;
+  id: string;
   owner_id: string;
   name: string;
   description?: string;

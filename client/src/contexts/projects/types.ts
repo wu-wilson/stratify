@@ -1,4 +1,4 @@
-import type { ProjectEntity } from "../../services/projects/types";
+import { type ProjectEntity } from "../../services/projects/types";
 
 export type ProjectsContextType = {
   projects: ProjectEntity[] | null;
