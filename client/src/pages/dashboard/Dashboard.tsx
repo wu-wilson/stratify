@@ -1,32 +1,27 @@
-import { useState } from "react";
-import { tabs } from "./constants";
-import { type Tab } from "../../components/tabs/types";
+import { useProjects } from "../../hooks/useProjects";
+import { useQueryParams } from "../../hooks/query-params/useQueryParams";
 import Sidebar from "./sidebar/Sidebar";
-import Tabs from "../../components/tabs/Tabs";
-import Overview from "./views/overview/Overview";
-import Statuses from "./views/statuses/Statuses";
-import People from "./views/people/People";
+import Views from "./views/Views";
 import styles from "./Dashboard.module.scss";
 
 const Dashboard = () => {
-  const [tab, setTab] = useState<Tab>(tabs[0]);
+  const { projects } = useProjects();
+  const { getParam } = useQueryParams();
+
+  const selectedProjectId = getParam("project");
+  const hasAccess = projects?.some((p) => p.id === selectedProjectId);
+  const hasProjects = projects && projects.length > 0;
 
   return (
     <div className={styles.container}>
       <Sidebar />
-      <div className={styles.view}>
-        <div className={styles.tabs}>
-          <Tabs
-            tabWidth="7rem"
-            tabs={tabs}
-            selectedTab={tab}
-            setSelectedTab={setTab}
-          />
-        </div>
-        {tab.label === "Overview" && <Overview />}
-        {tab.label === "Statuses" && <Statuses />}
-        {tab.label === "People" && <People />}
-      </div>
+      {!hasProjects && !selectedProjectId ? (
+        <></>
+      ) : hasAccess ? (
+        <Views />
+      ) : (
+        <div>You don't have access</div>
+      )}
     </div>
   );
 };

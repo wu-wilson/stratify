@@ -1,5 +1,5 @@
 import { getTruncatedText } from "../../../../../util";
-import { useProjects } from "../../../../../hooks/useProjects";
+import { useQueryParams } from "../../../../../hooks/query-params/useQueryParams";
 import { type ProjectEntity } from "../../../../../services/projects/types";
 import Tooltip from "../../../../../components/tooltip/Tooltip";
 import styles from "./Project.module.scss";
@@ -15,7 +15,8 @@ const Project = ({
   expanded?: boolean;
   onClick?: () => void;
 }) => {
-  const { selectedProject } = useProjects();
+  const { getParam } = useQueryParams();
+  const selectedProjectId = getParam("project");
   const truncatedText = getTruncatedText(text, 20);
 
   return (
@@ -27,7 +28,7 @@ const Project = ({
       >
         <div
           className={`${styles.profile} ${
-            selectedProject?.id === project.id ? styles.selected : null
+            selectedProjectId === project.id ? styles.selected : null
           }`}
           onClick={onClick}
         >

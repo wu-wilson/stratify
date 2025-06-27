@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { validateProjectName } from "./util";
 import { useAuth } from "../../../../../../hooks/useAuth";
 import { useProjects } from "../../../../../../hooks/useProjects";
+import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { type CreateProjectPayload } from "../../../../../../services/projects/types";
 import { createProject } from "../../../../../../services/projects/projects.service";
 import Spinner from "../../../../../../components/spinner/Spinner";
@@ -10,7 +11,8 @@ import styles from "./Form.module.scss";
 
 const Form = ({ closeModal }: { closeModal: () => void }) => {
   const { user } = useAuth();
-  const { projects, setProjects, setSelectedProject } = useProjects();
+  const { projects, setProjects } = useProjects();
+  const { setParam } = useQueryParams();
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -28,8 +30,8 @@ const Form = ({ closeModal }: { closeModal: () => void }) => {
         description: description ?? undefined,
       };
       const newProject = await createProject(projectInfo);
+      setParam("project", newProject.id);
       setProjects([newProject, ...projects!]);
-      setSelectedProject(newProject);
       closeModal();
     } catch (err) {
       setRequestError("createProject endpoint failed");

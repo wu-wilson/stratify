@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useProjects } from "../../../../hooks/useProjects";
+import { useQueryParams } from "../../../../hooks/query-params/useQueryParams";
 import { type ProjectEntity } from "../../../../services/projects/types";
 import Create from "./create/Create";
 import Modal from "../../../../components/modal/Modal";
@@ -7,8 +8,13 @@ import Project from "./project/Project";
 import styles from "./Body.module.scss";
 
 const Body = ({ expanded }: { expanded: boolean }) => {
-  const { projects, setSelectedProject } = useProjects();
+  const { setParam } = useQueryParams();
+  const { projects } = useProjects();
   const [openCreate, setOpenCreate] = useState<boolean>(false);
+
+  const selectProject = (project: ProjectEntity) => {
+    setParam("project", project.id);
+  };
 
   return (
     <div className={styles.container}>
@@ -27,7 +33,7 @@ const Body = ({ expanded }: { expanded: boolean }) => {
             text={p.name}
             expanded={expanded}
             project={p}
-            onClick={() => setSelectedProject(p)}
+            onClick={() => selectProject(p)}
           />
         </div>
       ))}

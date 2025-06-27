@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
+import { useQueryParams } from "../../hooks/query-params/useQueryParams";
 import { useTheme } from "../../hooks/useTheme";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -15,11 +16,9 @@ export const ProjectsContext = createContext<ProjectsContextType | undefined>(
 export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   const { darkMode } = useTheme();
   const { user } = useAuth();
+  const { getParam, setParam } = useQueryParams();
   const navigate = useNavigate();
 
-  const [selectedProject, setSelectedProject] = useState<ProjectEntity | null>(
-    null
-  );
   const [projects, setProjects] = useState<ProjectEntity[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -35,7 +34,6 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     try {
       const projectList = await getProjects(user.uid);
       setProjects(projectList);
-      setSelectedProject(projectList[0] ?? null);
     } catch (error) {
       navigate("/error", {
         state: { message: "getProjects endpoint failed" },
@@ -49,6 +47,16 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     fetchProjects();
   }, []);
 
+  useEffect(() => {
+    if (!projects || projects.length === 0) {
+      return;
+    }
+    const selectedProjectId = getParam("project");
+    if (!selectedProjectId) {
+      setParam("project", projects[0].id);
+    }
+  }, [projects]);
+
   if (loading) {
     return (
       <div className={darkMode ? "dark-mode" : "light-mode"}>
@@ -60,9 +68,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <ProjectsContext.Provider
-      value={{ projects, setProjects, selectedProject, setSelectedProject }}
-    >
+    <ProjectsContext.Provider value={{ projects, setProjects }}>
       {children}
     </ProjectsContext.Provider>
   );
