@@ -80,7 +80,6 @@ const Form = ({ closeModal }: { closeModal: () => void }) => {
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Description"
-        autoFocus
       />
       <div className={styles.create}>
         <button onClick={() => setLoading(true)} disabled={disableCreate}>
