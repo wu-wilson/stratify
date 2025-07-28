@@ -2,11 +2,9 @@ import { BASE_URL } from "./constants";
 import { type CreateProjectPayload, type ProjectEntity } from "./types";
 import axios from "axios";
 
-export const getProjects = async (
-  ownerId: string
-): Promise<ProjectEntity[]> => {
+export const getProjects = async (userId: string): Promise<ProjectEntity[]> => {
   const response = await axios.get<ProjectEntity[]>(BASE_URL, {
-    params: { owner_id: ownerId },
+    params: { user_id: userId },
   });
   return response.data;
 };

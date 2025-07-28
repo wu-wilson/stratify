@@ -5,10 +5,15 @@ import Overview from "./overview/Overview";
 import People from "./people/People";
 import Statuses from "./statuses/Statuses";
 import styles from "./ProjectViews.module.scss";
+import { useEffect } from "react";
 
 const ProjectViews = () => {
   const { getParam, setParam } = useQueryParams();
   const tab = getParam("tab") ?? tabs[0].label;
+
+  useEffect(() => {
+    setParam({ tab: tab });
+  }, []);
 
   return (
     <div className={styles.container}>
