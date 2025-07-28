@@ -11,7 +11,7 @@ export const getProjects = async (req: Request, res: Response) => {
   try {
     await pool.query("BEGIN");
 
-    const { rows } = await pool.query(
+    const { rows: projects } = await pool.query(
       `SELECT p.*
        FROM projects p
        LEFT JOIN members m ON p.id = m.project_id
@@ -19,7 +19,7 @@ export const getProjects = async (req: Request, res: Response) => {
        ORDER BY m.joined_on DESC`,
       [userId]
     );
-    res.json(rows);
+    res.json(projects);
 
     await pool.query("COMMIT");
   } catch (error) {
@@ -39,21 +39,21 @@ export const createProject = async (req: Request, res: Response) => {
   try {
     await pool.query("BEGIN");
 
-    const { rows } = await pool.query(
+    const { rows: projects } = await pool.query(
       `INSERT INTO projects (owner_id, name, description)
        VALUES ($1, $2, $3)
        RETURNING *`,
       [owner_id, name, description || null]
     );
 
-    const projectId = rows[0].id;
+    const projectId = projects[0].id;
     await pool.query(
       `INSERT INTO members (id, project_id, role)
        VALUES ($1, $2, $3)`,
       [owner_id, projectId, "owner"]
     );
 
-    res.status(201).json(rows[0]);
+    res.status(201).json(projects[0]);
 
     await pool.query("COMMIT");
   } catch (error) {

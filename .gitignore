@@ -25,6 +25,9 @@ lerna-debug.log*
 *.local
 .env
 
+# Firebase credentials
+server/src/firebase/service-account.json
+
 # VSCode and JetBrains IDEs
 .vscode/*
 !.vscode/extensions.json
