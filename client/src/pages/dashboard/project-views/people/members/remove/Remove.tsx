@@ -83,7 +83,7 @@ const Remove = ({
       <span className={styles.title}>Remove Member</span>
       <span
         className={styles.subtext}
-      >{`Are you sure you want to remove the member "${member.name}" from this project?`}</span>
+      >{`Please confirm that you want to remove ${member.name} from this project`}</span>
       <input
         className={styles.input}
         value={input}
@@ -93,7 +93,7 @@ const Remove = ({
         placeholder={CONFIRM_STRING}
         autoFocus
       />
-      <div className={styles.inputMsg}>Type {CONFIRM_STRING} to confirm</div>
+      <div className={styles.inputMsg}>Type "{CONFIRM_STRING}" to confirm</div>
       <div className={styles.remove}>
         <button
           onClick={() => setLoading(true)}

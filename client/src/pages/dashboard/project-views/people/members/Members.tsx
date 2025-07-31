@@ -15,6 +15,38 @@ import styles from "./Members.module.scss";
 const Members = () => {
   const { members, loading, error } = useMembers();
 
+  const rows = useMemo(
+    () =>
+      loading
+        ? []
+        : members.map((member, index) => ({
+            row: index + 1,
+            ...member,
+            joined_on: moment(member.joined_on).format("MMMM D, YYYY"),
+          })),
+    [members]
+  );
+
+  const [memberToRemove, setMemberToRemove] = useState<MemberEntity | null>(
+    null
+  );
+  const openRemove = useMemo(() => Boolean(memberToRemove), [memberToRemove]);
+  const setOpenRemove = (open: boolean) => {
+    if (!open) {
+      setMemberToRemove(null);
+    }
+  };
+
+  const { user } = useAuth();
+  const isOwner = useMemo(() => {
+    const id = user?.uid;
+    if (!id) {
+      return false;
+    }
+    const currUser = members?.find((member) => member.id === id);
+    return currUser?.role === "owner";
+  }, [user, members]);
+
   if (loading) {
     return (
       <div className={styles.container}>
@@ -31,36 +63,6 @@ const Members = () => {
     );
   }
 
-  const rows = useMemo(
-    () =>
-      members.map((member, index) => ({
-        row: index + 1,
-        ...member,
-        joined_on: moment(member.joined_on).format("MMMM D, YYYY"),
-      })),
-    [members]
-  );
-
-  const [memberToRemove, setMemberToRemove] = useState<MemberEntity | null>(
-    null
-  );
-  const openRemove = useMemo(() => Boolean(memberToRemove), [memberToRemove]);
-  const setOpenRemove = (open: boolean) => {
-    if (!open) {
-      setMemberToRemove(null);
-    }
-  };
-
-  const { user } = useAuth();
-  const canRemove = useMemo(() => {
-    const id = user?.uid;
-    if (!id) {
-      return false;
-    }
-    const currUser = members.find((member) => member.id === id);
-    return currUser?.role === "owner";
-  }, [user, members]);
-
   return (
     <div className={styles.container}>
       {openRemove && memberToRemove && (
@@ -76,7 +78,7 @@ const Members = () => {
         rows={rows}
         columns={COLUMNS}
         actionIcons={
-          canRemove
+          isOwner
             ? [
                 {
                   icon: MdDelete,
