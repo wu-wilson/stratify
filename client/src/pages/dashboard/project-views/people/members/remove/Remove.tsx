@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { deleteMember } from "../../../../../../services/members/members.service";
 import { CONFIRM_STRING } from "./constants";
+import { useMembers } from "../../../../../../hooks/useMembers";
 import {
   type DeleteMemberPayload,
   type MemberEntity,
@@ -11,15 +12,9 @@ import styles from "./Remove.module.scss";
 
 const Remove = ({
   member,
-  members,
-  setMembers,
-  project,
   closeModal,
 }: {
   member: MemberEntity;
-  members: MemberEntity[];
-  setMembers: (member: MemberEntity[]) => void;
-  project: string;
   closeModal: () => void;
 }) => {
   const [height, setHeight] = useState<number | null>(null);
@@ -32,19 +27,21 @@ const Remove = ({
     }
   }, []);
 
+  const { members, setMembers, project } = useMembers();
+
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [requestError, setRequestError] = useState<string | null>(null);
 
   const removeMember = async () => {
     try {
-      const memberInfo: DeleteMemberPayload = {
+      const deleteMemberPayload: DeleteMemberPayload = {
         member_id: member.id,
         project_id: project,
       };
 
-      const { deleted } = await deleteMember(memberInfo);
-      setMembers(members.filter((member) => member.id !== deleted.id));
+      await deleteMember(deleteMemberPayload);
+      setMembers(members!.filter((m) => m.id !== member.id));
       closeModal();
     } catch (err) {
       setRequestError("deleteMember endpoint failed");

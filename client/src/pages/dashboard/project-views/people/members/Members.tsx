@@ -2,6 +2,7 @@ import { COLUMNS } from "./constants";
 import { MdDelete } from "react-icons/md";
 import { useMemo, useState } from "react";
 import { useAuth } from "../../../../../hooks/useAuth";
+import { useMembers } from "../../../../../hooks/useMembers";
 import { type MemberEntity } from "../../../../../services/members/types";
 import Spinner from "../../../../../components/spinner/Spinner";
 import Error from "../../../../../components/error/Error";
@@ -11,17 +12,25 @@ import SearchTable from "../../../../../components/table/search/SearchTable";
 import moment from "moment";
 import styles from "./Members.module.scss";
 
-const Members = ({
-  members,
-  setMembers,
-  loading,
-  project,
-}: {
-  members: MemberEntity[];
-  setMembers: (member: MemberEntity[]) => void;
-  loading: boolean;
-  project: string;
-}) => {
+const Members = () => {
+  const { members, loading, error } = useMembers();
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <Spinner size={50} text={"Fetching members..."} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <Error errorMsg={error} />
+      </div>
+    );
+  }
+
   const rows = useMemo(
     () =>
       members.map((member, index) => ({
@@ -52,31 +61,12 @@ const Members = ({
     return currUser?.role === "owner";
   }, [user, members]);
 
-  if (loading) {
-    return (
-      <div className={styles.container}>
-        <Spinner size={50} text={"Fetching members..."} />
-      </div>
-    );
-  }
-
-  if (members.length === 0) {
-    return (
-      <div className={styles.container}>
-        <Error errorMsg={"getMembers endpoint failed"} />
-      </div>
-    );
-  }
-
   return (
     <div className={styles.container}>
       {openRemove && memberToRemove && (
         <Modal setOpen={setOpenRemove}>
           <Remove
             member={memberToRemove}
-            members={members}
-            setMembers={setMembers}
-            project={project}
             closeModal={() => setOpenRemove(false)}
           />
         </Modal>

@@ -24,12 +24,12 @@ const Form = ({ closeModal }: { closeModal: () => void }) => {
   const addProject = async () => {
     if (!user) return;
     try {
-      const projectInfo: CreateProjectPayload = {
+      const createProjectPayload: CreateProjectPayload = {
         owner_id: user.uid,
         name: name.trim(),
         description: description ?? undefined,
       };
-      const newProject = await createProject(projectInfo);
+      const newProject = await createProject(createProjectPayload);
       setParam({ project: newProject.id });
       setProjects([newProject, ...projects!]);
       closeModal();
