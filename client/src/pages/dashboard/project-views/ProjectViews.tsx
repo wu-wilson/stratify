@@ -16,6 +16,8 @@ const ProjectViews = () => {
     setParam({ tab: tab });
   }, []);
 
+  const project = getParam("project")!;
+
   return (
     <div className={styles.container}>
       <div className={styles.tabs}>
@@ -28,7 +30,7 @@ const ProjectViews = () => {
       </div>
       {tab === "Overview" && <Overview />}
       {tab === "Statuses" && <Statuses />}
-      {tab === "People" && <People />}
+      {tab === "People" && <People project={project} />}
     </div>
   );
 };

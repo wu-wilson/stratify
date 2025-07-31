@@ -36,6 +36,7 @@
   border-radius: 10px;
   padding: 0.7rem;
   font-size: 0.75rem;
+  font-family: inherit;
 
   @include mixins.themed using ($props) {
     background-color: map.get($props, "modal-content-bg");

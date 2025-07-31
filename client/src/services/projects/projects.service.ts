@@ -10,11 +10,11 @@ export const getProjects = async (userId: string): Promise<ProjectEntity[]> => {
 };
 
 export const createProject = async (
-  projectPayload: CreateProjectPayload
+  createProjectPayload: CreateProjectPayload
 ): Promise<ProjectEntity> => {
   const response = await axios.post<ProjectEntity>(
     `${BASE_URL}/create`,
-    projectPayload
+    createProjectPayload
   );
   return response.data;
 };

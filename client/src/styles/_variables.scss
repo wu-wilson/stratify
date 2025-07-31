@@ -1,6 +1,6 @@
 $primary-color: rgb(31, 185, 134);
 $font-family: Poppins;
-$error-color: rgb(231, 112, 112);
+$error-color: rgb(227, 98, 98);
 $warning-color: rgb(255, 193, 7);
 
 :root {
@@ -22,7 +22,9 @@ $themes: (
     secondary-btn-color: var(--light-mode-font-color),
     disabled-btn-bg: #ededed,
     disabled-btn-color: rgb(181, 181, 181),
-    tooltip-bg: #ededed,
+    danger-btn-bg: $error-color,
+    danger-btn-color: var(--dark-mode-font-color),
+    tooltip-bg: #e4e4e4,
     sidebar-bg: white,
     sidebar-border: 1px solid rgb(213, 212, 212),
     toggle-bg: #ccc,
@@ -31,6 +33,7 @@ $themes: (
     project-bg: #ededed,
     tab-bg: #ededed,
     selected-tab-bg: white,
+    table-bg: #ededed,
   ),
   dark: (
     page-bg: #1c1c1c,
@@ -42,16 +45,19 @@ $themes: (
     primary-btn-color: var(--dark-mode-font-color),
     secondary-btn-bg: #1c1c1c,
     secondary-btn-color: var(--dark-mode-font-color),
-    disabled-btn-bg: rgb(174, 174, 174),
+    disabled-btn-bg: rgb(121, 121, 121),
     disabled-btn-color: white,
-    tooltip-bg: #111111,
+    danger-btn-bg: $error-color,
+    danger-btn-color: var(--dark-mode-font-color),
+    tooltip-bg: #000000,
     sidebar-bg: #242426,
-    sidebar-border: none,
+    sidebar-border: 1px solid transparent,
     toggle-bg: rgb(99, 99, 99),
-    modal-content-bg: #1c1c1c,
+    modal-content-bg: #151515,
     copy-icon: rgb(152, 152, 152),
-    project-bg: #111111,
-    tab-bg: #111111,
+    project-bg: #151515,
+    tab-bg: #151515,
     selected-tab-bg: #242426,
+    table-bg: #151515,
   ),
 );

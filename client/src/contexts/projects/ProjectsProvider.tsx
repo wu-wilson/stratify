@@ -44,7 +44,9 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    fetchProjects();
+    if (projects === null) {
+      fetchProjects();
+    }
   }, []);
 
   useEffect(() => {

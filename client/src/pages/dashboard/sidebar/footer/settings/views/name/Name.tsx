@@ -23,7 +23,7 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
       await updateProfile(user, { displayName: name });
       setView("root");
     } catch (err) {
-      setRequestError("Update profile endpoint failed");
+      setRequestError("Firebase update profile endpoint failed");
     } finally {
       setLoading(false);
     }

@@ -34,3 +34,31 @@ export const getMembers = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const deleteMember = async (req: Request, res: Response) => {
+  const { member_id, project_id } = req.body;
+
+  if (!member_id || !project_id) {
+    res.status(400).json({ error: "member_id and project_id are required" });
+    return;
+  }
+
+  try {
+    const { rows } = await pool.query(
+      `DELETE FROM members
+       WHERE id = $1 AND project_id = $2
+       RETURNING *`,
+      [member_id, project_id]
+    );
+
+    if (!rows[0]) {
+      res.status(404).json({ error: "Member not found in project" });
+      return;
+    }
+
+    res.json({ message: "Member removed successfully", deleted: rows[0] });
+  } catch (error) {
+    console.error("Error deleting members:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
