@@ -65,7 +65,7 @@ const Members = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>Members</div>
+      <div className={styles.header}>Team Members</div>
       {modal === "remove" && selectedMember && (
         <Modal close={closeModal}>
           <Remove member={selectedMember} closeModal={closeModal} />
