@@ -6,7 +6,7 @@ import { getDisplayName } from "./util";
 import { type View } from "../../types";
 import Copy from "../../../../../../../components/copy/Copy";
 import Toggle from "../../../../../../../components/toggle/Toggle";
-import ThemeToggle from "../../../../../../../components/toggle/theme/ThemeToggle";
+import ThemeToggle from "../../../../../../../components/toggle/theme-toggle/ThemeToggle";
 import styles from "./Root.module.scss";
 
 const Root = ({ setView }: { setView: (view: View) => void }) => {
