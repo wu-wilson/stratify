@@ -3,10 +3,10 @@ import { IoMdClose } from "react-icons/io";
 import styles from "./Modal.module.scss";
 
 const Modal = ({
-  setOpen,
+  close,
   children,
 }: {
-  setOpen: (open: boolean) => void;
+  close: () => void;
   children: ReactNode;
 }) => {
   const [opening, setOpening] = useState<boolean>(false);
@@ -32,7 +32,7 @@ const Modal = ({
 
   const handleTransitionEnd = () => {
     if (closing) {
-      setOpen(false);
+      close();
     }
   };
 

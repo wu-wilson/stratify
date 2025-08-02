@@ -62,3 +62,34 @@ export const deleteMember = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const updateRole = async (req: Request, res: Response) => {
+  const { member_id, project_id, role } = req.body;
+
+  if (!member_id || !project_id || !role) {
+    res
+      .status(400)
+      .json({ error: "member_id, project_id, and role are required" });
+    return;
+  }
+
+  try {
+    const { rows } = await pool.query(
+      `UPDATE members
+       SET role = $3
+       WHERE id = $1 AND project_id = $2
+       RETURNING *`,
+      [member_id, project_id, role]
+    );
+
+    if (!rows[0]) {
+      res.status(404).json({ error: "Member not found in project" });
+      return;
+    }
+
+    res.json({ message: "Role updated successfully", updated: rows[0] });
+  } catch (error) {
+    console.error("Error updating role:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

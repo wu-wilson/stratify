@@ -1,5 +1,6 @@
 import { COLUMNS } from "./constants";
 import { MdDelete } from "react-icons/md";
+import { FaUserGear } from "react-icons/fa6";
 import { useMemo, useState } from "react";
 import { useAuth } from "../../../../../hooks/useAuth";
 import { useMembers } from "../../../../../hooks/useMembers";
@@ -7,7 +8,8 @@ import { type MemberEntity } from "../../../../../services/members/types";
 import Spinner from "../../../../../components/spinner/Spinner";
 import Error from "../../../../../components/error/Error";
 import Modal from "../../../../../components/modal/Modal";
-import Remove from "./remove/Remove";
+import Remove from "./modals/remove/Remove";
+import Owner from "./modals/owner/Owner";
 import SearchTable from "../../../../../components/table/search/SearchTable";
 import moment from "moment";
 import styles from "./Members.module.scss";
@@ -27,14 +29,13 @@ const Members = () => {
     [members]
   );
 
-  const [memberToRemove, setMemberToRemove] = useState<MemberEntity | null>(
+  const [selectedMember, setSelectedMember] = useState<MemberEntity | null>(
     null
   );
-  const openRemove = useMemo(() => Boolean(memberToRemove), [memberToRemove]);
-  const setOpenRemove = (open: boolean) => {
-    if (!open) {
-      setMemberToRemove(null);
-    }
+  const [modal, setModal] = useState<"remove" | "owner" | null>(null);
+  const closeModal = () => {
+    setSelectedMember(null);
+    setModal(null);
   };
 
   const { user } = useAuth();
@@ -65,12 +66,14 @@ const Members = () => {
 
   return (
     <div className={styles.container}>
-      {openRemove && memberToRemove && (
-        <Modal setOpen={setOpenRemove}>
-          <Remove
-            member={memberToRemove}
-            closeModal={() => setOpenRemove(false)}
-          />
+      {modal === "remove" && selectedMember && (
+        <Modal close={closeModal}>
+          <Remove member={selectedMember} closeModal={closeModal} />
+        </Modal>
+      )}
+      {modal === "owner" && selectedMember && (
+        <Modal close={closeModal}>
+          <Owner member={selectedMember} closeModal={closeModal} />
         </Modal>
       )}
       <div className={styles.header}>Members</div>
@@ -81,9 +84,19 @@ const Members = () => {
           isOwner
             ? [
                 {
+                  icon: FaUserGear,
+                  onClick: (row) => {
+                    setSelectedMember(row as MemberEntity);
+                    setModal("owner");
+                  },
+                  variant: "info",
+                  render: (row) => (row as MemberEntity).role !== "owner",
+                },
+                {
                   icon: MdDelete,
                   onClick: (row) => {
-                    setMemberToRemove(row as MemberEntity);
+                    setSelectedMember(row as MemberEntity);
+                    setModal("remove");
                   },
                   variant: "danger",
                   render: (row) => (row as MemberEntity).role !== "owner",

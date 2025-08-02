@@ -58,7 +58,7 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
   return (
     <div className={styles.container}>
       {openSettings && (
-        <Modal setOpen={setOpenSettings}>
+        <Modal close={() => setOpenSettings(false)}>
           <Settings />
         </Modal>
       )}

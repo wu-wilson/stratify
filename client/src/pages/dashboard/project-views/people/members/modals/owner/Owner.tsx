@@ -1,47 +1,42 @@
-import { useEffect, useRef, useState } from "react";
-import { deleteMember } from "../../../../../../services/members/members.service";
+import { useEffect, useState } from "react";
+import { updateRole } from "../../../../../../../services/members/members.service";
+import { useElementHeight } from "../../../../../../../hooks/useElementHeight";
 import { CONFIRM_STRING } from "./constants";
-import { useMembers } from "../../../../../../hooks/useMembers";
+import { useMembers } from "../../../../../../../hooks/useMembers";
 import {
-  type DeleteMemberPayload,
   type MemberEntity,
-} from "../../../../../../services/members/types";
-import Spinner from "../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../components/error/Error";
-import styles from "./Remove.module.scss";
+  type UpdateRolePayload,
+} from "../../../../../../../services/members/types";
+import Spinner from "../../../../../../../components/spinner/Spinner";
+import Error from "../../../../../../../components/error/Error";
+import styles from "./Owner.module.scss";
 
-const Remove = ({
+const Owner = ({
   member,
   closeModal,
 }: {
   member: MemberEntity;
   closeModal: () => void;
 }) => {
-  const [height, setHeight] = useState<number | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current) {
-      const height = ref.current.offsetHeight;
-      setHeight(height);
-    }
-  }, []);
-
+  const { ref, height } = useElementHeight<HTMLDivElement>();
   const { members, setMembers, project } = useMembers();
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [requestError, setRequestError] = useState<string | null>(null);
 
-  const removeMember = async () => {
+  const makeOwner = async () => {
     try {
-      const deleteMemberPayload: DeleteMemberPayload = {
+      const makeOwnerPayload: UpdateRolePayload = {
         member_id: member.id,
         project_id: project,
+        role: "owner",
       };
 
-      await deleteMember(deleteMemberPayload);
-      setMembers(members!.filter((m) => m.id !== member.id));
+      await updateRole(makeOwnerPayload);
+      setMembers(
+        members!.map((m) => (m.id === member.id ? { ...m, role: "owner" } : m))
+      );
       closeModal();
     } catch (err) {
       setRequestError("deleteMember endpoint failed");
@@ -52,7 +47,7 @@ const Remove = ({
 
   useEffect(() => {
     if (loading) {
-      removeMember();
+      makeOwner();
     }
   }, [loading]);
 
@@ -62,7 +57,7 @@ const Remove = ({
         className={styles.container}
         style={{ height: height ? `${height}px` : undefined }}
       >
-        <Spinner size={50} text={"Removing member..."} />
+        <Spinner size={50} text={"Making owner..."} />
       </div>
     );
   }
@@ -80,10 +75,10 @@ const Remove = ({
 
   return (
     <div className={styles.container} ref={ref}>
-      <span className={styles.title}>Remove Member</span>
+      <span className={styles.title}>Make Owner</span>
       <span
         className={styles.subtext}
-      >{`Please confirm that you want to remove ${member.name} from this project`}</span>
+      >{`Please confirm that you want to add ${member.name} as a project owner`}</span>
       <input
         className={styles.input}
         value={input}
@@ -94,16 +89,16 @@ const Remove = ({
         autoFocus
       />
       <div className={styles.inputMsg}>Type "{CONFIRM_STRING}" to confirm</div>
-      <div className={styles.remove}>
+      <div className={styles.update}>
         <button
           onClick={() => setLoading(true)}
           disabled={input !== CONFIRM_STRING}
         >
-          Remove
+          Update
         </button>
       </div>
     </div>
   );
 };
 
-export default Remove;
+export default Owner;

@@ -1,0 +1,1 @@
+export const CONFIRM_STRING = "REMOVE MEMBER";

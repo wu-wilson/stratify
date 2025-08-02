@@ -1,19 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import Form from "./form/Form";
 import styles from "./Create.module.scss";
 
 const Create = ({ closeModal }: { closeModal: () => void }) => {
-  const [height, setHeight] = useState<number | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current) {
-      const currentHeight = ref.current.offsetHeight;
-      if (!height || height < currentHeight) {
-        setHeight(currentHeight);
-      }
-    }
-  }, []);
+  const { ref, height } = useElementHeight<HTMLDivElement>();
 
   return (
     <div

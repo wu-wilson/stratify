@@ -3,6 +3,8 @@ import {
   type DeleteMemberPayload,
   type DeleteMemberResponse,
   type MemberEntity,
+  type UpdateRolePayload,
+  type UpdateRoleResponse,
 } from "./types";
 import axios from "axios";
 
@@ -20,6 +22,15 @@ export const deleteMember = async (
   const response = await axios.delete<DeleteMemberResponse>(
     `${BASE_URL}/delete`,
     { data: deleteMemberPayload }
+  );
+
+  return response.data;
+};
+
+export const updateRole = async (updateRolePayload: UpdateRolePayload) => {
+  const response = await axios.patch<UpdateRoleResponse>(
+    `${BASE_URL}/update/role`,
+    updateRolePayload
   );
 
   return response.data;

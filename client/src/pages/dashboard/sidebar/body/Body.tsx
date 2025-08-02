@@ -16,15 +16,15 @@ const Body = ({ expanded }: { expanded: boolean }) => {
     setParam({ project: project.id });
   };
 
+  const closeModal = () => {
+    setOpenCreate(false);
+  };
+
   return (
     <div className={styles.container}>
       {openCreate && (
-        <Modal setOpen={setOpenCreate}>
-          <Create
-            closeModal={() => {
-              setOpenCreate(false);
-            }}
-          />
+        <Modal close={closeModal}>
+          <Create closeModal={closeModal} />
         </Modal>
       )}
       {projects?.map((p) => (

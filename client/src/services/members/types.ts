@@ -19,3 +19,19 @@ export type DeleteMemberResponse = {
     joined_on: string;
   };
 };
+
+export type UpdateRolePayload = {
+  member_id: string;
+  project_id: string;
+  role: "owner" | "member";
+};
+
+export type UpdateRoleResponse = {
+  message: string;
+  updated: {
+    id: string;
+    project_id: string;
+    role: "owner" | "member";
+    joined_on: string;
+  };
+};
