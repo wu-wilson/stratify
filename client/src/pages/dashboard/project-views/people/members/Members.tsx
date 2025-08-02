@@ -65,6 +65,7 @@ const Members = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.header}>Members</div>
       {modal === "remove" && selectedMember && (
         <Modal close={closeModal}>
           <Remove member={selectedMember} closeModal={closeModal} />
@@ -75,7 +76,6 @@ const Members = () => {
           <Owner member={selectedMember} closeModal={closeModal} />
         </Modal>
       )}
-      <div className={styles.header}>Members</div>
       <SearchTable
         rows={rows}
         columns={COLUMNS}

@@ -66,9 +66,7 @@ const Table = <T extends Row>({
                     {actionIcon.render(row) && (
                       <actionIcon.icon
                         onClick={() => actionIcon.onClick(row)}
-                        className={`${styles.icon} ${
-                          actionIcon.variant ? styles[actionIcon.variant] : null
-                        }`}
+                        className={styles.icon}
                       />
                     )}
                   </td>

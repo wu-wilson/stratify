@@ -12,6 +12,5 @@ export type Column<T extends Row> = {
 export type ActionIcons = {
   icon: IconType;
   onClick: (row: Row) => void;
-  variant: "danger" | "info";
   render: (row: Row) => boolean;
 };

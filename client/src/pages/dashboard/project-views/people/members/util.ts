@@ -19,7 +19,6 @@ export const getActionIcons = (
         setSelectedMember(row as MemberEntity);
         setModal("owner");
       },
-      variant: "info",
       render: (row: Row) => (row as MemberEntity).role !== "owner",
     },
     {
@@ -28,7 +27,6 @@ export const getActionIcons = (
         setSelectedMember(row as MemberEntity);
         setModal("remove");
       },
-      variant: "danger",
       render: (row: Row) => (row as MemberEntity).role !== "owner",
     },
   ];

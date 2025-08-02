@@ -46,15 +46,7 @@
           width: 1rem;
           cursor: pointer;
 
-          &.danger {
-            color: vars.$error-color;
-
-            &:hover {
-              color: color.adjust(vars.$error-color, $lightness: -15%);
-            }
-          }
-
-          &.info:hover {
+          &:hover {
             color: vars.$primary-color;
           }
         }

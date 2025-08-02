@@ -88,7 +88,7 @@ const Owner = ({
         placeholder={CONFIRM_STRING}
         autoFocus
       />
-      <div className={styles.inputMsg}>Type "{CONFIRM_STRING}" to confirm</div>
+      <div className={styles.inputMsg}>Type {CONFIRM_STRING} to confirm</div>
       <div className={styles.update}>
         <button
           onClick={() => setLoading(true)}
