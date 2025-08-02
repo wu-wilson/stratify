@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useProjects } from "../../../../hooks/useProjects";
 import { useQueryParams } from "../../../../hooks/query-params/useQueryParams";
 import { type ProjectEntity } from "../../../../services/projects/types";
-import Create from "./create/Create";
+import CreateProject from "./create-project/CreateProject";
 import Modal from "../../../../components/modal/Modal";
 import Project from "./project/Project";
 import styles from "./Body.module.scss";
@@ -24,7 +24,7 @@ const Body = ({ expanded }: { expanded: boolean }) => {
     <div className={styles.container}>
       {openCreate && (
         <Modal close={closeModal}>
-          <Create closeModal={closeModal} />
+          <CreateProject closeModal={closeModal} />
         </Modal>
       )}
       {projects?.map((p) => (

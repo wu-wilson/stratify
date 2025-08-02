@@ -8,9 +8,9 @@ import { validateProjectName } from "./util";
 import { type CreateProjectPayload } from "../../../../../services/projects/types";
 import Spinner from "../../../../../components/spinner/Spinner";
 import Error from "../../../../../components/error/Error";
-import styles from "./Create.module.scss";
+import styles from "./CreateProject.module.scss";
 
-const Create = ({ closeModal }: { closeModal: () => void }) => {
+const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
   const { ref, height } = useElementHeight<HTMLDivElement>();
   const { user } = useAuth();
   const { projects, setProjects } = useProjects();
@@ -110,4 +110,4 @@ const Create = ({ closeModal }: { closeModal: () => void }) => {
   );
 };
 
-export default Create;
+export default CreateProject;

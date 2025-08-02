@@ -9,7 +9,7 @@ import Error from "../../../../../components/error/Error";
 import Modal from "../../../../../components/modal/Modal";
 import Remove from "./modals/remove/Remove";
 import Owner from "./modals/owner/Owner";
-import SearchTable from "../../../../../components/table/search/SearchTable";
+import SearchTable from "../../../../../components/table/search-table/SearchTable";
 import moment from "moment";
 import styles from "./Members.module.scss";
 

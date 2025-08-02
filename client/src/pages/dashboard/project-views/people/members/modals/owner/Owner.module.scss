@@ -39,7 +39,7 @@
     font-size: 0.7rem;
     margin-bottom: 2rem;
     padding-left: 0.3rem;
-    color: vars.$error-color;
+    color: vars.$primary-color;
   }
 
   .update {
@@ -51,11 +51,7 @@
       font-family: inherit;
       cursor: pointer;
 
-      @include mixins.button(
-        $border-radius: 10px,
-        $bg-key: "danger-btn-bg",
-        $color-key: "danger-btn-color"
-      );
+      @include mixins.button($border-radius: 10px);
     }
   }
 }
