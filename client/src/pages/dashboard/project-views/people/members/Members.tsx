@@ -1,9 +1,8 @@
 import { COLUMNS } from "./constants";
-import { MdDelete } from "react-icons/md";
-import { FaUserGear } from "react-icons/fa6";
 import { useMemo, useState } from "react";
 import { useAuth } from "../../../../../hooks/useAuth";
 import { useMembers } from "../../../../../hooks/useMembers";
+import { getActionIcons } from "./util";
 import { type MemberEntity } from "../../../../../services/members/types";
 import Spinner from "../../../../../components/spinner/Spinner";
 import Error from "../../../../../components/error/Error";
@@ -80,30 +79,7 @@ const Members = () => {
       <SearchTable
         rows={rows}
         columns={COLUMNS}
-        actionIcons={
-          isOwner
-            ? [
-                {
-                  icon: FaUserGear,
-                  onClick: (row) => {
-                    setSelectedMember(row as MemberEntity);
-                    setModal("owner");
-                  },
-                  variant: "info",
-                  render: (row) => (row as MemberEntity).role !== "owner",
-                },
-                {
-                  icon: MdDelete,
-                  onClick: (row) => {
-                    setSelectedMember(row as MemberEntity);
-                    setModal("remove");
-                  },
-                  variant: "danger",
-                  render: (row) => (row as MemberEntity).role !== "owner",
-                },
-              ]
-            : []
-        }
+        actionIcons={getActionIcons(setModal, setSelectedMember, isOwner)}
         rowsPerPage={4}
       />
     </div>

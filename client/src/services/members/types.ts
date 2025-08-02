@@ -1,7 +1,9 @@
+export type Role = "owner" | "member";
+
 export type MemberEntity = {
   id: string;
   name: string;
-  role: "owner" | "member";
+  role: Role;
   joined_on: string;
 };
 
@@ -15,7 +17,7 @@ export type DeleteMemberResponse = {
   deleted: {
     id: string;
     project_id: string;
-    role: "owner" | "member";
+    role: Role;
     joined_on: string;
   };
 };
@@ -23,7 +25,7 @@ export type DeleteMemberResponse = {
 export type UpdateRolePayload = {
   member_id: string;
   project_id: string;
-  role: "owner" | "member";
+  role: Role;
 };
 
 export type UpdateRoleResponse = {
@@ -31,7 +33,7 @@ export type UpdateRoleResponse = {
   updated: {
     id: string;
     project_id: string;
-    role: "owner" | "member";
+    role: Role;
     joined_on: string;
   };
 };
