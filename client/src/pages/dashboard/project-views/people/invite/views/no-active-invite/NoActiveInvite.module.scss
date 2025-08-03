@@ -7,36 +7,48 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 
-  .title {
+  .header {
+    font-size: 0.9rem;
+    text-decoration: underline;
+    margin-bottom: 1rem;
+  }
+
+  .content {
+    height: 100%;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    font-size: 1.1rem;
-    font-weight: bold;
 
-    .icon {
-      color: vars.$warning-color;
-      height: 2rem;
-      width: 2rem;
-      margin-right: 0.5rem;
+    .title {
+      display: flex;
+      align-items: center;
+      font-size: 1.1rem;
+      font-weight: bold;
+
+      .icon {
+        color: vars.$warning-color;
+        height: 2rem;
+        width: 2rem;
+        margin-right: 0.5rem;
+      }
     }
-  }
 
-  .subtext {
-    max-width: 500px;
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 0.8rem;
-  }
+    .subtext {
+      max-width: 500px;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+    }
 
-  .generateInvite {
-    margin-top: 2rem;
-    font-size: 0.75rem;
-    font-family: inherit;
-    cursor: pointer;
+    .generateInvite {
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      font-family: inherit;
+      cursor: pointer;
 
-    @include mixins.button($border-radius: 10px);
+      @include mixins.button($border-radius: 10px);
+    }
   }
 }

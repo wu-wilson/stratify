@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS members (
 CREATE TABLE IF NOT EXISTS invites (
     token TEXT PRIMARY KEY,
     project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
-    created_by TEXT NOT NULL,
     created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     max_uses INT NOT NULL CHECK (max_uses > 0),
     uses INT NOT NULL DEFAULT 0 CHECK (uses >= 0),

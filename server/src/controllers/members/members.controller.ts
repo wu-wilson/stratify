@@ -95,6 +95,7 @@ export const updateRole = async (req: Request, res: Response) => {
       return;
     }
 
+    updatedMember.role = role;
     res.json({ message: "Role updated successfully", updated: updatedMember });
   } catch (error) {
     console.error("Error updating role:", error);

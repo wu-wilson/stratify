@@ -28,7 +28,7 @@
     font-family: inherit;
 
     @include mixins.themed using ($props) {
-      background-color: map.get($props, "modal-content-bg");
+      background-color: map.get($props, "table-bg");
       color: map.get($props, "font-color");
     }
   }

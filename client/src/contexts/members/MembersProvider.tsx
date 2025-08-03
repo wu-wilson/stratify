@@ -24,7 +24,7 @@ export const MembersProvider = ({ children }: { children: ReactNode }) => {
     try {
       const membersList = await getMembers(project);
       setError(null);
-      setMembers(membersList);
+      setMembers([...membersList, ...membersList, ...membersList]);
     } catch (error) {
       setError("getMembers endpoint failed");
       setMembers([]);

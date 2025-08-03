@@ -15,22 +15,28 @@ const NoActiveInvite = ({
 
   return (
     <div className={styles.container}>
+      <div className={styles.header}>Invite People to the Team</div>
       {openModal && (
         <Modal close={() => setOpenModal(false)}>
-          <GenerateInvite setInvite={setInvite} />
+          <GenerateInvite
+            setInvite={setInvite}
+            closeModal={() => setOpenModal(false)}
+          />
         </Modal>
       )}
-      <span className={styles.title}>
-        <TbFolderOpen className={styles.icon} />
-        No Invite Link Found
-      </span>
-      <span className={styles.subtext}>{SUBTEXT}</span>
-      <button
-        className={styles.generateInvite}
-        onClick={() => setOpenModal(true)}
-      >
-        Generate Invite Link
-      </button>
+      <div className={styles.content}>
+        <span className={styles.title}>
+          <TbFolderOpen className={styles.icon} />
+          No Invite Link Found
+        </span>
+        <span className={styles.subtext}>{SUBTEXT}</span>
+        <button
+          className={styles.generateInvite}
+          onClick={() => setOpenModal(true)}
+        >
+          Generate Invite Link
+        </button>
+      </div>
     </div>
   );
 };

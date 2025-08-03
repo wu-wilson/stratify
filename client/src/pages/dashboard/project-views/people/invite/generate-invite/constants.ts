@@ -1,1 +1,1 @@
-export const BIGINT_MAX = 9223372036854775807;
+export const INT_MAX = 2147483647;

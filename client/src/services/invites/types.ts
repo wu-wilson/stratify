@@ -1,7 +1,6 @@
 export type InviteEntity = {
   token: string;
   project_id: string;
-  created_by: string;
   created_on: string;
   max_uses: number;
   uses: number;
@@ -9,7 +8,6 @@ export type InviteEntity = {
 };
 
 export type CreateInvitePayload = {
-  created_by: string;
   project_id: string;
   max_uses: number;
 };

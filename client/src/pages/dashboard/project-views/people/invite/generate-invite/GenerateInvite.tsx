@@ -1,6 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
-import { useAuth } from "../../../../../../hooks/useAuth";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { createInvite } from "../../../../../../services/invites/invites.service";
 import { validateMaxUses } from "./util";
@@ -14,11 +13,12 @@ import styles from "./GenerateInvite.module.scss";
 
 const GenerateInvite = ({
   setInvite,
+  closeModal,
 }: {
   setInvite: (invite: InviteEntity | null) => void;
+  closeModal: () => void;
 }) => {
   const { getParam } = useQueryParams();
-  const { user } = useAuth();
   const { ref, height } = useElementHeight<HTMLDivElement>();
 
   const [maxUses, setMaxUses] = useState<string>("20");
@@ -47,13 +47,13 @@ const GenerateInvite = ({
 
     try {
       const createInvitePayload: CreateInvitePayload = {
-        created_by: user!.uid,
         project_id: project,
         max_uses: parseInt(maxUses, 10),
       };
 
       const { invite } = await createInvite(createInvitePayload);
       setInvite(invite);
+      closeModal();
     } catch (err) {
       setRequestError("createInvite endpoint failed");
     } finally {

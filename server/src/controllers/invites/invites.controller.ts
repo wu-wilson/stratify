@@ -27,10 +27,10 @@ export const getInvite = async (req: Request, res: Response) => {
 };
 
 export const createInvite = async (req: Request, res: Response) => {
-  const { created_by, project_id, max_uses } = req.body;
+  const { project_id, max_uses } = req.body;
 
-  if (!project_id || !created_by) {
-    res.status(400).json({ error: "project_id and created_by are required" });
+  if (!project_id) {
+    res.status(400).json({ error: "project_id is required" });
     return;
   }
 
@@ -43,10 +43,10 @@ export const createInvite = async (req: Request, res: Response) => {
     const {
       rows: [invite],
     } = await pool.query(
-      `INSERT INTO invites (token, project_id, max_uses, uses, paused, created_on, created_by)
-       VALUES ($1, $2, $3, 0, FALSE, NOW(), $4)
+      `INSERT INTO invites (token, project_id, max_uses, uses, paused, created_on)
+       VALUES ($1, $2, $3, 0, FALSE, NOW())
        RETURNING *`,
-      [token, project_id, max_uses, created_by]
+      [token, project_id, max_uses]
     );
 
     await pool.query("COMMIT");
@@ -64,7 +64,7 @@ export const createInvite = async (req: Request, res: Response) => {
 export const updateInviteStatus = async (req: Request, res: Response) => {
   const { project_id, paused } = req.body;
 
-  if (!project_id || !paused) {
+  if (!project_id || typeof paused !== "boolean") {
     res.status(400).json({ error: "project_id and paused are required" });
     return;
   }
@@ -85,6 +85,7 @@ export const updateInviteStatus = async (req: Request, res: Response) => {
       return;
     }
 
+    updatedInvite.paused = paused;
     res.json({
       message: "Invite status updated successfully",
       updated: updatedInvite,
