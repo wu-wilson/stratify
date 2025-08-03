@@ -3,7 +3,7 @@ export type InviteEntity = {
   project_id: string;
   created_by: string;
   created_on: string;
-  max_uses: number | null;
+  max_uses: number;
   uses: number;
   paused: boolean;
 };
@@ -11,7 +11,7 @@ export type InviteEntity = {
 export type CreateInvitePayload = {
   created_by: string;
   project_id: string;
-  max_uses: number | null;
+  max_uses: number;
 };
 
 export type CreateInviteResponse = {

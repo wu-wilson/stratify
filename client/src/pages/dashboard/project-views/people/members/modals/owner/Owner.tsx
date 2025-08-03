@@ -23,7 +23,7 @@ const Owner = ({
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [requestError, setRequestError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const makeOwner = async () => {
     try {
@@ -39,7 +39,7 @@ const Owner = ({
       );
       closeModal();
     } catch (err) {
-      setRequestError("deleteMember endpoint failed");
+      setError("deleteMember endpoint failed");
     } finally {
       setLoading(false);
     }
@@ -62,13 +62,13 @@ const Owner = ({
     );
   }
 
-  if (requestError) {
+  if (error) {
     return (
       <div
         className={styles.container}
         style={{ height: height ? `${height}px` : undefined }}
       >
-        <Error errorMsg={requestError} />
+        <Error errorMsg={error} />
       </div>
     );
   }
@@ -78,7 +78,7 @@ const Owner = ({
       <span className={styles.title}>Make Owner</span>
       <span
         className={styles.subtext}
-      >{`Please confirm that you want to add ${member.name} as a project owner`}</span>
+      >{`Confirm that you want to add ${member.name} as a project owner`}</span>
       <input
         className={styles.input}
         value={input}

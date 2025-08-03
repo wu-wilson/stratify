@@ -1,0 +1,56 @@
+@use "../../../../../../styles/variables" as vars;
+@use "../../../../../../styles/mixins" as mixins;
+@use "sass:map";
+
+.container {
+  width: 21rem;
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    display: flex;
+    justify-content: center;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .label {
+    font-size: 0.75rem;
+    padding-left: 0.3rem;
+  }
+
+  .input {
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem;
+    font-size: 0.75rem;
+    font-family: inherit;
+
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "modal-content-bg");
+      color: map.get($props, "font-color");
+    }
+  }
+
+  .inputError {
+    height: 1rem;
+    font-size: 0.7rem;
+    margin-bottom: 1.5rem;
+    padding-left: 0.3rem;
+    color: vars.$error-color;
+  }
+
+  .generate {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      font-size: 0.75rem;
+      font-family: inherit;
+      cursor: pointer;
+
+      @include mixins.button($border-radius: 10px);
+    }
+  }
+}

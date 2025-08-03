@@ -3,6 +3,7 @@ import { useSmallScreenRedirect } from "./hooks/useSmallScreenRedirect";
 import { ProjectsProvider } from "./contexts/projects/ProjectsProvider";
 import { TimeFormatProvider } from "./contexts/time-format/TimeFormatProvider";
 import { useTheme } from "./hooks/useTheme";
+import { AuthProvider } from "./contexts/auth/AuthProvider";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Login from "./pages/login/Login";
@@ -21,16 +22,25 @@ const App = () => {
         <Route
           path="/dashboard"
           element={
-            <PrivateRoute>
-              <TimeFormatProvider>
-                <ProjectsProvider>
-                  <Dashboard />
-                </ProjectsProvider>
-              </TimeFormatProvider>
-            </PrivateRoute>
+            <AuthProvider>
+              <PrivateRoute>
+                <TimeFormatProvider>
+                  <ProjectsProvider>
+                    <Dashboard />
+                  </ProjectsProvider>
+                </TimeFormatProvider>
+              </PrivateRoute>
+            </AuthProvider>
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <AuthProvider>
+              <Login />
+            </AuthProvider>
+          }
+        />
         <Route path="/error" element={<ErrorPage />} />
         <Route path="/no-support" element={<NoSupport />} />
         <Route path="*" element={<NotFound />} />

@@ -58,7 +58,11 @@ const Invite = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>Invite People to the Team</div>
-      {invite ? <ActiveInvite invite={invite} /> : <NoActiveInvite />}
+      {invite ? (
+        <ActiveInvite invite={invite} setInvite={setInvite} />
+      ) : (
+        <NoActiveInvite setInvite={setInvite} />
+      )}
     </div>
   );
 };

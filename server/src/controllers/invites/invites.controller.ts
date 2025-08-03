@@ -46,7 +46,7 @@ export const createInvite = async (req: Request, res: Response) => {
       `INSERT INTO invites (token, project_id, max_uses, uses, paused, created_on, created_by)
        VALUES ($1, $2, $3, 0, FALSE, NOW(), $4)
        RETURNING *`,
-      [token, project_id, max_uses || null, created_by]
+      [token, project_id, max_uses, created_by]
     );
 
     await pool.query("COMMIT");

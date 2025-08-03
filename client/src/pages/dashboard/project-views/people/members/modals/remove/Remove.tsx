@@ -23,7 +23,7 @@ const Remove = ({
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [requestError, setRequestError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const removeMember = async () => {
     try {
@@ -36,7 +36,7 @@ const Remove = ({
       setMembers(members!.filter((m) => m.id !== member.id));
       closeModal();
     } catch (err) {
-      setRequestError("deleteMember endpoint failed");
+      setError("deleteMember endpoint failed");
     } finally {
       setLoading(false);
     }
@@ -59,13 +59,13 @@ const Remove = ({
     );
   }
 
-  if (requestError) {
+  if (error) {
     return (
       <div
         className={styles.container}
         style={{ height: height ? `${height}px` : undefined }}
       >
-        <Error errorMsg={requestError} />
+        <Error errorMsg={error} />
       </div>
     );
   }
@@ -75,7 +75,7 @@ const Remove = ({
       <span className={styles.title}>Remove Member</span>
       <span
         className={styles.subtext}
-      >{`Please confirm that you want to remove ${member.name} from this project`}</span>
+      >{`Confirm that you want to remove ${member.name} from this project`}</span>
       <input
         className={styles.input}
         value={input}

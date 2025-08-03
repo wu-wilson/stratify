@@ -3,5 +3,5 @@ import * as util from "./invites.controller";
 
 export const invitesRouter = express.Router();
 invitesRouter.get("/", util.getInvite);
-invitesRouter.get("/create", util.createInvite);
-invitesRouter.get("/update/status", util.updateInviteStatus);
+invitesRouter.post("/create", util.createInvite);
+invitesRouter.patch("/update/status", util.updateInviteStatus);
