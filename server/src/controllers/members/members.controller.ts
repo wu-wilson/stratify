@@ -4,8 +4,9 @@ import admin from "../../firebase/config";
 
 export const getMembers = async (req: Request, res: Response) => {
   const projectId = req.query.project_id as string;
+
   if (!projectId) {
-    res.status(400).json({ error: "project_id query parameter is required" });
+    res.status(400).json({ error: "project_id is required" });
     return;
   }
 
@@ -44,19 +45,24 @@ export const deleteMember = async (req: Request, res: Response) => {
   }
 
   try {
-    const { rows } = await pool.query(
+    const {
+      rows: [deletedMember],
+    } = await pool.query(
       `DELETE FROM members
        WHERE id = $1 AND project_id = $2
        RETURNING *`,
       [member_id, project_id]
     );
 
-    if (!rows[0]) {
+    if (!deletedMember) {
       res.status(404).json({ error: "Member not found in project" });
       return;
     }
 
-    res.json({ message: "Member removed successfully", deleted: rows[0] });
+    res.json({
+      message: "Member removed successfully",
+      deleted: deletedMember,
+    });
   } catch (error) {
     console.error("Error deleting members:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -74,7 +80,9 @@ export const updateRole = async (req: Request, res: Response) => {
   }
 
   try {
-    const { rows } = await pool.query(
+    const {
+      rows: [updatedMember],
+    } = await pool.query(
       `UPDATE members
        SET role = $3
        WHERE id = $1 AND project_id = $2
@@ -82,12 +90,12 @@ export const updateRole = async (req: Request, res: Response) => {
       [member_id, project_id, role]
     );
 
-    if (!rows[0]) {
+    if (!updatedMember) {
       res.status(404).json({ error: "Member not found in project" });
       return;
     }
 
-    res.json({ message: "Role updated successfully", updated: rows[0] });
+    res.json({ message: "Role updated successfully", updated: updatedMember });
   } catch (error) {
     console.error("Error updating role:", error);
     res.status(500).json({ error: "Internal server error" });

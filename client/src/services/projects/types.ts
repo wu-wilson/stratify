@@ -11,3 +11,8 @@ export type CreateProjectPayload = {
   name: string;
   description?: string;
 };
+
+export type CreateProjectResponse = {
+  message: string;
+  project: ProjectEntity;
+};

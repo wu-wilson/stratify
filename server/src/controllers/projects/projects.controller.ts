@@ -3,8 +3,9 @@ import { pool } from "../../index";
 
 export const getProjects = async (req: Request, res: Response) => {
   const userId = req.query.user_id as string;
+
   if (!userId) {
-    res.status(400).json({ error: "user_id query parameter is required" });
+    res.status(400).json({ error: "user_id is required" });
     return;
   }
 
@@ -39,21 +40,25 @@ export const createProject = async (req: Request, res: Response) => {
   try {
     await pool.query("BEGIN");
 
-    const { rows: projects } = await pool.query(
+    const {
+      rows: [newProject],
+    } = await pool.query(
       `INSERT INTO projects (owner_id, name, description)
        VALUES ($1, $2, $3)
        RETURNING *`,
       [owner_id, name, description || null]
     );
 
-    const projectId = projects[0].id;
     await pool.query(
       `INSERT INTO members (id, project_id, role)
        VALUES ($1, $2, $3)`,
-      [owner_id, projectId, "owner"]
+      [owner_id, newProject.id, "owner"]
     );
 
-    res.status(201).json(projects[0]);
+    res.status(201).json({
+      message: "Project created successfully",
+      project: newProject,
+    });
 
     await pool.query("COMMIT");
   } catch (error) {

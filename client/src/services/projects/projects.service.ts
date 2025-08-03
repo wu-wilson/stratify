@@ -1,8 +1,12 @@
 import { BASE_URL } from "./constants";
-import { type CreateProjectPayload, type ProjectEntity } from "./types";
+import {
+  type ProjectEntity,
+  type CreateProjectPayload,
+  type CreateProjectResponse,
+} from "./types";
 import axios from "axios";
 
-export const getProjects = async (userId: string): Promise<ProjectEntity[]> => {
+export const getProjects = async (userId: string) => {
   const response = await axios.get<ProjectEntity[]>(BASE_URL, {
     params: { user_id: userId },
   });
@@ -11,8 +15,8 @@ export const getProjects = async (userId: string): Promise<ProjectEntity[]> => {
 
 export const createProject = async (
   createProjectPayload: CreateProjectPayload
-): Promise<ProjectEntity> => {
-  const response = await axios.post<ProjectEntity>(
+) => {
+  const response = await axios.post<CreateProjectResponse>(
     `${BASE_URL}/create`,
     createProjectPayload
   );

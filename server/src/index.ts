@@ -38,6 +38,7 @@ testDbConnection();
 
 app.use("/projects", projectsRouter);
 app.use("/members", membersRouter);
+app.use("/invites", membersRouter);
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, "../../certs/localhost-key.pem")),
