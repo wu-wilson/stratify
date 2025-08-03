@@ -2,6 +2,7 @@ import { json as bodyParser } from "body-parser";
 import { Pool } from "pg";
 import { projectsRouter } from "./controllers/projects/projects";
 import { membersRouter } from "./controllers/members/members";
+import { invitesRouter } from "./controllers/invites/invites";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -38,7 +39,7 @@ testDbConnection();
 
 app.use("/projects", projectsRouter);
 app.use("/members", membersRouter);
-app.use("/invites", membersRouter);
+app.use("/invites", invitesRouter);
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, "../../certs/localhost-key.pem")),

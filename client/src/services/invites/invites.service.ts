@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 
 export const getInvite = async (projectId: string) => {
-  const response = await axios.get<InviteEntity>(BASE_URL, {
+  const response = await axios.get<InviteEntity | null>(BASE_URL, {
     params: { project_id: projectId },
   });
 

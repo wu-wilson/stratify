@@ -10,19 +10,16 @@ export const getInvite = async (req: Request, res: Response) => {
   }
 
   try {
-    const { rows: invites } = await pool.query(
+    const {
+      rows: [invite],
+    } = await pool.query(
       `SELECT *
        FROM invites i
        WHERE i.project_id = $1`,
       [projectId]
     );
 
-    if (invites.length === 0) {
-      res.json({ invite: null });
-      return;
-    }
-
-    res.json({ invite: invites[0] });
+    res.json(invite ?? null);
   } catch (error) {
     console.error("Error fetching invite:", error);
     res.status(500).json({ error: "Internal server error" });
