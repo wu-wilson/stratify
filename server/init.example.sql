@@ -23,3 +23,13 @@ CREATE TABLE IF NOT EXISTS members (
     joined_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id, project_id)
 );
+
+-- Create invites table
+CREATE TABLE IF NOT EXISTS invites (
+    token TEXT PRIMARY KEY,
+    project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    expires_on TIMESTAMPTZ,
+    max_uses INT CHECK (max_uses > 0),
+    uses INT NOT NULL DEFAULT 0 CHECK (uses >= 0),
+    paused BOOLEAN NOT NULL DEFAULT FALSE
+);
