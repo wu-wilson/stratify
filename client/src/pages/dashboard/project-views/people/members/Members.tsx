@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { useAuth } from "../../../../../hooks/useAuth";
 import { useMembers } from "../../../../../hooks/useMembers";
 import { getActionIcons } from "./util";
+import { useTimeFormat } from "../../../../../hooks/useTimeFormat";
 import { type MemberEntity } from "../../../../../services/members/types";
 import Spinner from "../../../../../components/spinner/Spinner";
 import Error from "../../../../../components/error/Error";
@@ -15,6 +16,7 @@ import styles from "./Members.module.scss";
 
 const Members = () => {
   const { members, loading, error } = useMembers();
+  const { formatString } = useTimeFormat();
 
   const rows = useMemo(
     () =>
@@ -23,9 +25,9 @@ const Members = () => {
         : members.map((member, index) => ({
             row: index + 1,
             ...member,
-            joined_on: moment(member.joined_on).format("MMMM D, YYYY"),
+            joined_on: moment(member.joined_on).format(formatString),
           })),
-    [members]
+    [members, formatString]
   );
 
   const [selectedMember, setSelectedMember] = useState<MemberEntity | null>(

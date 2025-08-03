@@ -2,6 +2,7 @@ import { BASE_INVITE_URL } from "./constants";
 import { useEffect, useMemo, useState } from "react";
 import { useMembers } from "../../../../../../../hooks/useMembers";
 import { updateInviteStatus } from "../../../../../../../services/invites/invites.service";
+import { useTimeFormat } from "../../../../../../../hooks/useTimeFormat";
 import {
   type InviteEntity,
   type UpdateInviteStatusPayload,
@@ -22,9 +23,10 @@ const ActiveInvite = ({
   invite: InviteEntity;
   setInvite: (invite: InviteEntity | null) => void;
 }) => {
+  const { formatString } = useTimeFormat();
   const createdOn = useMemo(
-    () => moment(invite.created_on).format("MMMM D, YYYY"),
-    [invite.created_on]
+    () => moment(invite.created_on).format(formatString),
+    [invite.created_on, formatString]
   );
   const { project } = useMembers();
 

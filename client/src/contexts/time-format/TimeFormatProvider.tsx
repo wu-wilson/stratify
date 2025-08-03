@@ -1,4 +1,10 @@
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { type TimeFormatContextType, type TimeFormat } from "./type";
 
 export const TimeFormatContext = createContext<
@@ -6,21 +12,20 @@ export const TimeFormatContext = createContext<
 >(undefined);
 
 export const TimeFormatProvider = ({ children }: { children: ReactNode }) => {
-  const [format, setFormat] = useState<TimeFormat>("12hr");
+  const [format, setFormat] = useState<TimeFormat>(
+    (localStorage.getItem("time-format") as TimeFormat) ?? "12hr"
+  );
 
-  useEffect(() => {
-    const stored = localStorage.getItem("time-format");
-    if (stored === "24hr" || stored === "12hr") {
-      setFormat(stored);
-    }
-  }, []);
+  const formatString = useMemo(() => {
+    return `MMM D, YYYY ${format === "24hr" ? "H:mm" : "h:mm A"}`;
+  }, [format]);
 
   useEffect(() => {
     localStorage.setItem("time-format", format);
   }, [format]);
 
   return (
-    <TimeFormatContext.Provider value={{ format, setFormat }}>
+    <TimeFormatContext.Provider value={{ format, formatString, setFormat }}>
       {children}
     </TimeFormatContext.Provider>
   );
