@@ -21,7 +21,6 @@ const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
   const [requestError, setRequestError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [disableCreate, setDisableCreate] = useState<boolean>(true);
 
   const addProject = async () => {
     if (!user) return;
@@ -51,11 +50,10 @@ const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
   useEffect(() => {
     const { valid, msg } = validateProjectName(name, projects!);
     if (valid) {
-      setDisableCreate(false);
+      setValidationError(null);
     } else {
-      setDisableCreate(true);
+      setValidationError(msg);
     }
-    setValidationError(msg);
   }, [name]);
 
   if (loading) {
@@ -102,7 +100,7 @@ const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
         placeholder="Description"
       />
       <div className={styles.create}>
-        <button onClick={() => setLoading(true)} disabled={disableCreate}>
+        <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Create
         </button>
       </div>

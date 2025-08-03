@@ -3,6 +3,7 @@ import { useQueryParams } from "../../../../../../hooks/query-params/useQueryPar
 import { useAuth } from "../../../../../../hooks/useAuth";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { createInvite } from "../../../../../../services/invites/invites.service";
+import { validateMaxUses } from "./util";
 import {
   type CreateInvitePayload,
   type InviteEntity,
@@ -22,17 +23,21 @@ const GenerateInvite = ({
 
   const [maxUses, setMaxUses] = useState<string>("20");
   const [validationError, setValidationError] = useState<string | null>(null);
-  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onMaxUsesChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     if (/^\d*$/.test(val)) {
       setMaxUses(val);
     }
-    if (val.trim() === "") {
-      setValidationError("Field cannot be empty");
-    } else {
-      setValidationError(null);
-    }
   };
+
+  useEffect(() => {
+    const { valid, msg } = validateMaxUses(maxUses);
+    if (valid) {
+      setValidationError(null);
+    } else {
+      setValidationError(msg);
+    }
+  }, [maxUses]);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [requestError, setRequestError] = useState<string | null>(null);
@@ -91,12 +96,12 @@ const GenerateInvite = ({
       <input
         className={styles.input}
         value={maxUses}
-        onChange={onInputChange}
+        onChange={onMaxUsesChange}
         autoFocus
       />
       <div className={styles.inputError}>{validationError}</div>
       <div className={styles.generate}>
-        <button onClick={() => setLoading(true)} disabled={maxUses === ""}>
+        <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Generate
         </button>
       </div>

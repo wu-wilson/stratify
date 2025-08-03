@@ -15,7 +15,6 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
   const [requestError, setRequestError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [disableSave, setDisableSave] = useState<boolean>(true);
 
   const updateName = async () => {
     if (!user) return;
@@ -38,11 +37,10 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
   useEffect(() => {
     const { valid, msg } = validateDisplayName(name, user?.displayName ?? "");
     if (valid) {
-      setDisableSave(false);
+      setValidationError(null);
     } else {
-      setDisableSave(true);
+      setValidationError(msg);
     }
-    setValidationError(msg);
   }, [name]);
 
   if (loading) {
@@ -68,7 +66,7 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
       />
       <div className={styles.inputError}>{validationError}</div>
       <div className={styles.save}>
-        <button onClick={() => setLoading(true)} disabled={disableSave}>
+        <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Save
         </button>
       </div>
