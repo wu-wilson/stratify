@@ -1,4 +1,4 @@
-import { BASE_INVITE_URL } from "./constants";
+import { BASE_JOIN_URL } from "./constants";
 import { useEffect, useMemo, useState } from "react";
 import { useMembers } from "../../../../../../../hooks/useMembers";
 import { updateInviteStatus } from "../../../../../../../services/invites/invites.service";
@@ -96,11 +96,8 @@ const ActiveInvite = ({
       <div className={styles.header}>Invite People to the Team</div>
       <div className={styles.section}>
         <div className={styles.row}>
-          Active Invite Link
-          <Copy
-            text={`${BASE_INVITE_URL}/${invite.token}`}
-            maxTextLength={60}
-          />
+          Invite Link
+          <Copy text={`${BASE_JOIN_URL}/${invite.token}`} />
         </div>
         <div className={styles.row}>
           Joins Enabled

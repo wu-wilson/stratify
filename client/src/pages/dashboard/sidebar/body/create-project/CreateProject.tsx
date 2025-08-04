@@ -62,7 +62,7 @@ const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
         className={styles.container}
         style={{ height: height ? `${height}px` : undefined }}
       >
-        <Spinner size={50} text={"Creating..."} />
+        <Spinner size={50} text="Creating project..." />
       </div>
     );
   }

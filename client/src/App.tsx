@@ -3,9 +3,9 @@ import { useSmallScreenRedirect } from "./hooks/useSmallScreenRedirect";
 import { ProjectsProvider } from "./contexts/projects/ProjectsProvider";
 import { TimeFormatProvider } from "./contexts/time-format/TimeFormatProvider";
 import { useTheme } from "./hooks/useTheme";
-import { AuthProvider } from "./contexts/auth/AuthProvider";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Join from "./pages/join/Join";
 import Login from "./pages/login/Login";
 import ErrorPage from "./pages/error-page/ErrorPage";
 import NoSupport from "./pages/no-support/NoSupport";
@@ -22,25 +22,24 @@ const App = () => {
         <Route
           path="/dashboard"
           element={
-            <AuthProvider>
-              <PrivateRoute>
-                <TimeFormatProvider>
-                  <ProjectsProvider>
-                    <Dashboard />
-                  </ProjectsProvider>
-                </TimeFormatProvider>
-              </PrivateRoute>
-            </AuthProvider>
+            <PrivateRoute>
+              <TimeFormatProvider>
+                <ProjectsProvider>
+                  <Dashboard />
+                </ProjectsProvider>
+              </TimeFormatProvider>
+            </PrivateRoute>
           }
         />
         <Route
-          path="/login"
+          path="/join/:token"
           element={
-            <AuthProvider>
-              <Login />
-            </AuthProvider>
+            <PrivateRoute>
+              <Join />
+            </PrivateRoute>
           }
         />
+        <Route path="/login" element={<Login />} />
         <Route path="/error" element={<ErrorPage />} />
         <Route path="/no-support" element={<NoSupport />} />
         <Route path="*" element={<NotFound />} />

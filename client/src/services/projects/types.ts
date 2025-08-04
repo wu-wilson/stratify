@@ -6,6 +6,10 @@ export type ProjectEntity = {
   created_on: string;
 };
 
+export type GetProjectMetadataResponse = ProjectEntity & {
+  members: string[];
+};
+
 export type CreateProjectPayload = {
   owner_id: string;
   name: string;

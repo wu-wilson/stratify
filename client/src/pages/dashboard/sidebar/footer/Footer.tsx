@@ -50,7 +50,7 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
   if (signingOut) {
     return (
       <div className={styles.signOutContainer}>
-        <Spinner size={50} text={"Signing out..."} />
+        <Spinner size={50} text="Signing out..." />
       </div>
     );
   }

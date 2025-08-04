@@ -73,7 +73,7 @@ const GenerateInvite = ({
         className={styles.container}
         style={{ height: height ? `${height}px` : undefined }}
       >
-        <Spinner size={50} text={"Generating link..."} />
+        <Spinner size={50} text="Generating link..." />
       </div>
     );
   }

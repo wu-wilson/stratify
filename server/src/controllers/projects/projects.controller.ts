@@ -10,8 +10,6 @@ export const getProjects = async (req: Request, res: Response) => {
   }
 
   try {
-    await pool.query("BEGIN");
-
     const { rows: projects } = await pool.query(
       `SELECT p.*
        FROM projects p
@@ -21,10 +19,46 @@ export const getProjects = async (req: Request, res: Response) => {
       [userId]
     );
     res.json(projects);
-
-    await pool.query("COMMIT");
   } catch (error) {
     console.error("Error fetching projects:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getProjectMetadata = async (req: Request, res: Response) => {
+  const token = req.query.token as string;
+
+  if (!token) {
+    res.status(400).json({ error: "token is required" });
+    return;
+  }
+
+  try {
+    const {
+      rows: [project],
+    } = await pool.query(
+      `SELECT p.*
+       FROM invites i
+       JOIN projects p ON i.project_id = p.id
+       WHERE i.token = $1;`,
+      [token]
+    );
+
+    if (!project) {
+      res.status(404).json({ error: "Invalid or expired invite token" });
+      return;
+    }
+
+    project.members = [];
+    const { rows: members } = await pool.query(
+      `SELECT id FROM members WHERE project_id = $1;`,
+      [project.id]
+    );
+    project.members = members.map((m) => m.id);
+
+    res.json(project);
+  } catch (error) {
+    console.error("Error fetching project metadata:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -62,6 +96,7 @@ export const createProject = async (req: Request, res: Response) => {
 
     await pool.query("COMMIT");
   } catch (error) {
+    await pool.query("ROLLBACK");
     console.error("Error creating project:", error);
     res.status(500).json({ error: "Internal server error" });
   }

@@ -52,7 +52,7 @@ const Members = () => {
   if (loading) {
     return (
       <div className={styles.container}>
-        <Spinner size={50} text={"Fetching members..."} />
+        <Spinner size={50} text="Fetching members..." />
       </div>
     );
   }

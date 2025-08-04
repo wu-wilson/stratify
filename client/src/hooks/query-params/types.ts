@@ -1,1 +1,1 @@
-export type QueryParam = "project" | "tab";
+export type QueryParam = "project" | "tab" | "redirect";

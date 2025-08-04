@@ -5,6 +5,8 @@ import {
   type CreateInviteResponse,
   type UpdateInviteStatusPayload,
   type UpdateInviteStatusResponse,
+  type AcceptInvitePayload,
+  type AcceptInviteResponse,
 } from "./types";
 import axios from "axios";
 
@@ -32,6 +34,16 @@ export const updateInviteStatus = async (
   const response = await axios.patch<UpdateInviteStatusResponse>(
     `${BASE_URL}/update/status`,
     updateInviteStatusPayload
+  );
+  return response.data;
+};
+
+export const acceptInvite = async (
+  acceptInvitePayload: AcceptInvitePayload
+) => {
+  const response = await axios.post<AcceptInviteResponse>(
+    `${BASE_URL}/accept`,
+    acceptInvitePayload
   );
   return response.data;
 };

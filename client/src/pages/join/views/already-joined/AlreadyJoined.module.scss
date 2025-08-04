@@ -1,15 +1,13 @@
-@use "../../styles/variables" as vars;
-@use "../../styles/mixins" as mixins;
+@use "../../../../styles/variables" as vars;
+@use "../../../../styles/mixins" as mixins;
 @use "sass:map";
 
 .container {
-  width: 100vw;
-  height: 100vh;
+  width: 30rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  @include mixins.grid-bg;
   @include mixins.themed using ($props) {
     color: map.get($props, "font-color");
   }
@@ -19,21 +17,29 @@
     align-items: center;
     font-size: 1.1rem;
     font-weight: bold;
-    white-space: pre-wrap;
 
-    .highlight {
-      color: vars.$primary-color;
+    .icon {
+      color: vars.$warning-color;
+      height: 2rem;
+      width: 2rem;
+      margin-right: 0.5rem;
     }
   }
 
   .subtext {
-    width: 20rem;
     text-align: center;
     margin-top: 1rem;
     font-size: 0.8rem;
   }
 
-  .home {
+  .projectName {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: vars.$primary-color;
+  }
+
+  .redirect {
     margin-top: 1rem;
     @include mixins.button($width: 8rem, $height: 2.5rem);
   }

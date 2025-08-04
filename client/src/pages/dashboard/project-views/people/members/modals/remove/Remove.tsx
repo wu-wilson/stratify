@@ -54,7 +54,7 @@ const Remove = ({
         className={styles.container}
         style={{ height: height ? `${height}px` : undefined }}
       >
-        <Spinner size={50} text={"Removing member..."} />
+        <Spinner size={50} text="Removing member..." />
       </div>
     );
   }

@@ -44,7 +44,7 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
   }, [name]);
 
   if (loading) {
-    return <Spinner size={50} text={"Updating..."} />;
+    return <Spinner size={50} text="Updating..." />;
   }
 
   if (requestError) {

@@ -42,7 +42,7 @@ const Invite = () => {
   if (loading) {
     return (
       <div className={styles.container}>
-        <Spinner size={50} text={"Fetching invite..."} />
+        <Spinner size={50} text="Fetching invite..." />
       </div>
     );
   }

@@ -57,7 +57,7 @@ const Owner = ({
         className={styles.container}
         style={{ height: height ? `${height}px` : undefined }}
       >
-        <Spinner size={50} text={"Making owner..."} />
+        <Spinner size={50} text="Making owner..." />
       </div>
     );
   }

@@ -1,4 +1,3 @@
-import { RiHome2Line, RiArrowLeftDoubleFill } from "react-icons/ri";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SUBTEXT } from "./constants";
 import Error from "../../components/error/Error";
@@ -16,11 +15,10 @@ const ErrorPage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
+      <div className={styles.content}>
         <Error errorMsg={errorMsg} subtext={SUBTEXT} />
         <button className={styles.home} onClick={redirect}>
-          <RiArrowLeftDoubleFill /> Home
-          <RiHome2Line className={styles.icon} />
+          Go Home
         </button>
       </div>
     </div>

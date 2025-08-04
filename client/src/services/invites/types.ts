@@ -1,3 +1,5 @@
+import { type MemberEntity } from "../members/types";
+
 export type InviteEntity = {
   token: string;
   project_id: string;
@@ -25,4 +27,15 @@ export type UpdateInviteStatusPayload = {
 export type UpdateInviteStatusResponse = {
   message: string;
   updated: InviteEntity;
+};
+
+export type AcceptInvitePayload = {
+  member_id: string;
+  project_id: string;
+  token: string;
+};
+
+export type AcceptInviteResponse = {
+  message: string;
+  added: MemberEntity;
 };

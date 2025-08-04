@@ -5,3 +5,4 @@ export const invitesRouter = express.Router();
 invitesRouter.get("/", util.getInvite);
 invitesRouter.post("/create", util.createInvite);
 invitesRouter.patch("/update/status", util.updateInviteStatus);
+invitesRouter.post("/accept", util.acceptInvite);
