@@ -38,7 +38,7 @@ const ActiveInvite = ({
     if (joinsEnabled !== !invite.paused) {
       setLoading(true);
     }
-  }, [joinsEnabled]);
+  }, [joinsEnabled, invite.paused]);
 
   const syncInviteStatus = async () => {
     try {

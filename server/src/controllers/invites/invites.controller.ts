@@ -27,6 +27,61 @@ export const getInvite = async (req: Request, res: Response) => {
   }
 };
 
+export const getInviteMetadata = async (req: Request, res: Response) => {
+  const token = req.query.token as string;
+
+  if (!token) {
+    res.status(400).json({ error: "token is required" });
+    return;
+  }
+
+  try {
+    const {
+      rows: [invite],
+    } = await pool.query(
+      `SELECT i.*
+       FROM invites i
+       WHERE i.token = $1;`,
+      [token]
+    );
+    if (!invite) {
+      res.status(404).json({ error: "No invite associated with the token" });
+      return;
+    }
+
+    const {
+      rows: [project],
+    } = await pool.query(
+      `SELECT p.*
+       FROM invites i
+       JOIN projects p ON i.project_id = p.id
+       WHERE i.token = $1;`,
+      [token]
+    );
+    if (!project) {
+      res.status(404).json({ error: "No project associated with the token" });
+      return;
+    }
+
+    const { rows: members } = await pool.query(
+      `SELECT id FROM members WHERE project_id = $1;`,
+      [project.id]
+    );
+    const metadata = {
+      invite,
+      project: {
+        ...project,
+        members: members.map((m) => m.id),
+      },
+    };
+
+    res.json(metadata);
+  } catch (error) {
+    console.error("Error fetching invite metadata:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export const createInvite = async (req: Request, res: Response) => {
   const { project_id, max_uses } = req.body;
 

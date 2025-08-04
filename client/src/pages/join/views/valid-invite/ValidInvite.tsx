@@ -2,18 +2,20 @@ import { useEffect, useState } from "react";
 import { FaPeopleRoof } from "react-icons/fa6";
 import { acceptInvite } from "../../../../services/invites/invites.service";
 import { useAuth } from "../../../../hooks/useAuth";
-import { type AcceptInvitePayload } from "../../../../services/invites/types";
-import { type GetProjectMetadataResponse } from "../../../../services/projects/types";
+import { useNavigate } from "react-router-dom";
+import {
+  type AcceptInvitePayload,
+  type GetInviteMetadataResponse,
+} from "../../../../services/invites/types";
 import Spinner from "../../../../components/spinner/Spinner";
 import Error from "../../../../components/error/Error";
-import styles from "./JoinProject.module.scss";
-import { useNavigate } from "react-router-dom";
+import styles from "./ValidInvite.module.scss";
 
-const JoinProject = ({
-  project,
+const ValidInvite = ({
+  inviteMetadata,
   token,
 }: {
-  project: GetProjectMetadataResponse;
+  inviteMetadata: GetInviteMetadataResponse;
   token: string;
 }) => {
   const navigate = useNavigate();
@@ -25,12 +27,12 @@ const JoinProject = ({
     try {
       const acceptInvitePayload: AcceptInvitePayload = {
         member_id: user!.uid,
-        project_id: project.id,
+        project_id: inviteMetadata.project.id,
         token: token,
       };
 
       await acceptInvite(acceptInvitePayload);
-      navigate(`/dashboard?project=${project.id}`);
+      navigate(`/dashboard?project=${inviteMetadata.project.id}`);
     } catch (error) {
       setError("acceptInvite endpoint failed");
     } finally {
@@ -69,7 +71,7 @@ const JoinProject = ({
       <span className={styles.subtext}>
         You have been invited to join the team for a new project!
       </span>
-      <span className={styles.projectName}>{project.name}</span>
+      <span className={styles.projectName}>{inviteMetadata.project.name}</span>
       <button className={styles.join} onClick={() => setLoading(true)}>
         Join Team
       </button>
@@ -77,4 +79,4 @@ const JoinProject = ({
   );
 };
 
-export default JoinProject;
+export default ValidInvite;

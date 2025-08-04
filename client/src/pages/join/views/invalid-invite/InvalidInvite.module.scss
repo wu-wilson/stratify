@@ -19,7 +19,7 @@
     font-weight: bold;
 
     .icon {
-      color: vars.$warning-color;
+      color: vars.$error-color;
       height: 2rem;
       width: 2rem;
       margin-right: 0.5rem;
@@ -30,17 +30,5 @@
     text-align: center;
     margin-top: 1rem;
     font-size: 0.8rem;
-  }
-
-  .projectName {
-    margin-top: 1rem;
-    font-size: 1rem;
-    font-weight: bold;
-    color: vars.$primary-color;
-  }
-
-  .redirect {
-    margin-top: 1rem;
-    @include mixins.button($width: 8rem, $height: 2.5rem);
   }
 }

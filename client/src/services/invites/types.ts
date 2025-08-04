@@ -1,4 +1,5 @@
 import { type MemberEntity } from "../members/types";
+import { type ProjectEntity } from "../projects/types";
 
 export type InviteEntity = {
   token: string;
@@ -7,6 +8,13 @@ export type InviteEntity = {
   max_uses: number;
   uses: number;
   paused: boolean;
+};
+
+export type GetInviteMetadataResponse = {
+  invite: InviteEntity;
+  project: ProjectEntity & {
+    members: string[];
+  };
 };
 
 export type CreateInvitePayload = {

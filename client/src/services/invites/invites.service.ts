@@ -1,6 +1,7 @@
 import { BASE_URL } from "./constants";
 import {
   type InviteEntity,
+  type GetInviteMetadataResponse,
   type CreateInvitePayload,
   type CreateInviteResponse,
   type UpdateInviteStatusPayload,
@@ -15,6 +16,16 @@ export const getInvite = async (projectId: string) => {
     params: { project_id: projectId },
   });
 
+  return response.data;
+};
+
+export const getInviteMetadata = async (token: string) => {
+  const response = await axios.get<GetInviteMetadataResponse>(
+    `${BASE_URL}/metadata`,
+    {
+      params: { token: token },
+    }
+  );
   return response.data;
 };
 

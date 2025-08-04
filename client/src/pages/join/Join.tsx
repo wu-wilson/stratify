@@ -1,31 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useParams } from "react-router-dom";
-import { getProjectMetadata } from "../../services/projects/projects.service";
-import { type GetProjectMetadataResponse } from "../../services/projects/types";
+import { getInviteMetadata } from "../../services/invites/invites.service";
+import { isInviteInvalid } from "./util";
+import { type GetInviteMetadataResponse } from "../../services/invites/types";
 import Spinner from "../../components/spinner/Spinner";
 import Error from "../../components/error/Error";
-import AlreadyJoined from "./views/already-joined/AlreadyJoined";
-import JoinProject from "./views/join-project/JoinProject";
+import InvalidInvite from "./views/invalid-invite/InvalidInvite";
+import ValidInvite from "./views/valid-invite/ValidInvite";
 import styles from "./Join.module.scss";
 
 const Join = () => {
   const { user } = useAuth();
   const { token } = useParams();
-  const [project, setProject] = useState<GetProjectMetadataResponse | null>(
+  const [metadata, setMetadata] = useState<GetInviteMetadataResponse | null>(
     null
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProject = async () => {
+  const fetchMetadata = async () => {
     try {
-      const project = await getProjectMetadata(token!);
+      const metadata = await getInviteMetadata(token!);
       setError(null);
-      setProject(project);
+      setMetadata(metadata);
     } catch (err) {
-      setError("getProjectMetadata endpoint failed");
-      setProject(null);
+      setError("getInviteMetadata endpoint failed");
+      setMetadata(null);
     } finally {
       setLoading(false);
     }
@@ -33,14 +34,19 @@ const Join = () => {
 
   useEffect(() => {
     if (loading) {
-      fetchProject();
+      fetchMetadata();
     }
   }, [loading]);
+
+  const invalidationReason = useMemo(() => {
+    if (!metadata || !user) return null;
+    return isInviteInvalid(metadata, user);
+  }, [metadata, user]);
 
   if (loading) {
     return (
       <div className={styles.container}>
-        <Spinner size={50} text="Fetching project..." />
+        <Spinner size={50} text="Fetching metadata..." />
       </div>
     );
   }
@@ -55,10 +61,10 @@ const Join = () => {
 
   return (
     <div className={styles.container}>
-      {project!.members.includes(user!.uid) ? (
-        <AlreadyJoined project={project!} />
+      {invalidationReason ? (
+        <InvalidInvite invalidationReason={invalidationReason} />
       ) : (
-        <JoinProject project={project!} token={token!} />
+        <ValidInvite inviteMetadata={metadata!} token={token!} />
       )}
     </div>
   );
