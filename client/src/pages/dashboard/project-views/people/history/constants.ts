@@ -6,18 +6,18 @@ import {
 
 export const COLUMNS: Column<HistoryEntity & { row: number }>[] = [
   { key: "row", label: "#" },
-  { key: "performed_by", label: "Actor" },
+  { key: "performed_by", label: "Performed By" },
   { key: "action_type", label: "Action" },
-  { key: "performed_on", label: "Target" },
+  { key: "performed_on", label: "Performed On" },
   { key: "occurred_at", label: "Timestamp" },
 ];
 
 export const ACTION_TYPE_LABELS: Record<History, string> = {
-  joined_project: "Joined Team",
-  left_project: "Left Team",
+  joined_project: "Joined the Team",
+  left_project: "Left the Team",
   removed_from_project: "Removed Member",
   promoted_to_owner: "Promoted to Owner",
-  created_invite: "Created Invite",
+  created_invite: "Created an Invite Link",
   paused_invite: "Disabled Joins",
   unpaused_invite: "Enabled Joins",
 };
