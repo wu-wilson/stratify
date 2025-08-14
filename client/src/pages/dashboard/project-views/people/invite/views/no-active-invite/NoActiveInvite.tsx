@@ -19,6 +19,7 @@ const NoActiveInvite = ({
       {openModal && (
         <Modal close={() => setOpenModal(false)}>
           <GenerateInvite
+            invite={null}
             setInvite={setInvite}
             closeModal={() => setOpenModal(false)}
           />

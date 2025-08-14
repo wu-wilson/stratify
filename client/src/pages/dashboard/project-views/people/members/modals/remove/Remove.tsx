@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { deleteMember } from "../../../../../../../services/members/members.service";
 import { useElementHeight } from "../../../../../../../hooks/useElementHeight";
+import { useAuth } from "../../../../../../../hooks/useAuth";
+import { useHistory } from "../../../../../../../hooks/useHistory";
 import { CONFIRM_STRING } from "./constants";
 import { useMembers } from "../../../../../../../hooks/useMembers";
 import {
@@ -18,6 +20,8 @@ const Remove = ({
   member: MemberEntity;
   closeModal: () => void;
 }) => {
+  const { pushToHistory } = useHistory();
+  const { user } = useAuth();
   const { ref, height } = useElementHeight<HTMLDivElement>();
   const { members, setMembers, project } = useMembers();
 
@@ -30,10 +34,17 @@ const Remove = ({
       const deleteMemberPayload: DeleteMemberPayload = {
         member_id: member.id,
         project_id: project,
+        deleted_by: user!.uid,
       };
 
-      await deleteMember(deleteMemberPayload);
+      const removedMember = await deleteMember(deleteMemberPayload);
       setMembers(members!.filter((m) => m.id !== member.id));
+      pushToHistory({
+        performed_by: user!.displayName ?? user!.uid,
+        action_type: "removed_from_project",
+        performed_on: member.name,
+        occurred_at: removedMember.deleted_on,
+      });
       closeModal();
     } catch (err) {
       setError("deleteMember endpoint failed");

@@ -1,5 +1,7 @@
 import { useEffect, useState, type ChangeEvent } from "react";
-import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
+import { useHistory } from "../../../../../../hooks/useHistory";
+import { useMembers } from "../../../../../../hooks/useMembers";
+import { useAuth } from "../../../../../../hooks/useAuth";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { createInvite } from "../../../../../../services/invites/invites.service";
 import { validateMaxUses } from "./util";
@@ -12,13 +14,17 @@ import Error from "../../../../../../components/error/Error";
 import styles from "./GenerateInvite.module.scss";
 
 const GenerateInvite = ({
+  invite,
   setInvite,
   closeModal,
 }: {
+  invite: InviteEntity | null;
   setInvite: (invite: InviteEntity | null) => void;
   closeModal: () => void;
 }) => {
-  const { getParam } = useQueryParams();
+  const { pushToHistory } = useHistory();
+  const { project } = useMembers();
+  const { user } = useAuth();
   const { ref, height } = useElementHeight<HTMLDivElement>();
 
   const [maxUses, setMaxUses] = useState<string>("20");
@@ -43,16 +49,22 @@ const GenerateInvite = ({
   const [requestError, setRequestError] = useState<string | null>(null);
 
   const generateInvite = async () => {
-    const project = getParam("project")!;
-
     try {
       const createInvitePayload: CreateInvitePayload = {
         project_id: project,
         max_uses: parseInt(maxUses, 10),
+        created_by: user!.uid,
+        paused: invite ? invite.paused : false,
       };
 
-      const { invite } = await createInvite(createInvitePayload);
-      setInvite(invite);
+      const { invite: createdInvite } = await createInvite(createInvitePayload);
+      setInvite(createdInvite);
+      pushToHistory({
+        performed_by: user!.displayName ?? user!.uid,
+        action_type: "created_invite",
+        performed_on: null,
+        occurred_at: createdInvite.created_on,
+      });
       closeModal();
     } catch (err) {
       setRequestError("createInvite endpoint failed");

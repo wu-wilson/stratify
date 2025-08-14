@@ -10,6 +10,7 @@ export type MemberEntity = {
 export type DeleteMemberPayload = {
   member_id: string;
   project_id: string;
+  deleted_by: string;
 };
 
 export type DeleteMemberResponse = {
@@ -20,12 +21,14 @@ export type DeleteMemberResponse = {
     role: Role;
     joined_on: string;
   };
+  deleted_on: string;
 };
 
 export type UpdateRolePayload = {
   member_id: string;
   project_id: string;
   role: Role;
+  updated_by: string;
 };
 
 export type UpdateRoleResponse = {
@@ -36,4 +39,5 @@ export type UpdateRoleResponse = {
     role: Role;
     joined_on: string;
   };
+  updated_on: string;
 };

@@ -18,6 +18,7 @@ export const getProjects = async (req: Request, res: Response) => {
        ORDER BY m.joined_on DESC`,
       [userId]
     );
+
     res.json(projects);
   } catch (error) {
     console.error("Error fetching projects:", error);
@@ -45,18 +46,27 @@ export const createProject = async (req: Request, res: Response) => {
       [owner_id, name, description || null]
     );
 
-    await pool.query(
+    const {
+      rows: [member],
+    } = await pool.query(
       `INSERT INTO members (id, project_id, role)
-       VALUES ($1, $2, $3)`,
+       VALUES ($1, $2, $3)
+       RETURNING *`,
       [owner_id, newProject.id, "owner"]
     );
+
+    await pool.query(
+      `INSERT INTO history (project_id, performed_by, action_type, occurred_at)
+       VALUES($1, $2, $3, $4)`,
+      [newProject.id, owner_id, "joined_project", member.joined_on]
+    );
+
+    await pool.query("COMMIT");
 
     res.status(201).json({
       message: "Project created successfully",
       project: newProject,
     });
-
-    await pool.query("COMMIT");
   } catch (error) {
     await pool.query("ROLLBACK");
     console.error("Error creating project:", error);

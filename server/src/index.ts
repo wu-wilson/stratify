@@ -3,6 +3,7 @@ import { Pool } from "pg";
 import { projectsRouter } from "./controllers/projects/projects";
 import { membersRouter } from "./controllers/members/members";
 import { invitesRouter } from "./controllers/invites/invites";
+import { historyRouter } from "./controllers/history/history";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -40,6 +41,7 @@ testDbConnection();
 app.use("/projects", projectsRouter);
 app.use("/members", membersRouter);
 app.use("/invites", invitesRouter);
+app.use("/history", historyRouter);
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, "../../certs/localhost-key.pem")),

@@ -6,7 +6,7 @@ import styles from "./Table.module.scss";
 const Table = <T extends Row>({
   columns,
   rows,
-  fallback = "N/A",
+  fallback = "-",
   actionIcons = [],
   rowsPerPage = rows.length,
 }: {

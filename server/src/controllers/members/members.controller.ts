@@ -37,14 +37,18 @@ export const getMembers = async (req: Request, res: Response) => {
 };
 
 export const deleteMember = async (req: Request, res: Response) => {
-  const { member_id, project_id } = req.body;
+  const { member_id, project_id, deleted_by } = req.body;
 
   if (!member_id || !project_id) {
-    res.status(400).json({ error: "member_id and project_id are required" });
+    res
+      .status(400)
+      .json({ error: "member_id, project_id, and deleted_by are required" });
     return;
   }
 
   try {
+    await pool.query("BEGIN");
+
     const {
       rows: [deletedMember],
     } = await pool.query(
@@ -59,27 +63,42 @@ export const deleteMember = async (req: Request, res: Response) => {
       return;
     }
 
+    const {
+      rows: [historyEntry],
+    } = await pool.query(
+      `INSERT INTO history (project_id, performed_by, action_type, performed_on)
+       VALUES($1, $2, $3, $4)
+       RETURNING *`,
+      [project_id, deleted_by, "removed_from_project", member_id]
+    );
+
+    await pool.query("COMMIT");
+
     res.json({
       message: "Member removed successfully",
       deleted: deletedMember,
+      deleted_on: historyEntry.occurred_at,
     });
   } catch (error) {
+    await pool.query("ROLLBACK");
     console.error("Error deleting members:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
 export const updateRole = async (req: Request, res: Response) => {
-  const { member_id, project_id, role } = req.body;
+  const { member_id, project_id, role, updated_by } = req.body;
 
   if (!member_id || !project_id || !role) {
-    res
-      .status(400)
-      .json({ error: "member_id, project_id, and role are required" });
+    res.status(400).json({
+      error: "member_id, project_id, role, and updated_by are required",
+    });
     return;
   }
 
   try {
+    await pool.query("BEGIN");
+
     const {
       rows: [updatedMember],
     } = await pool.query(
@@ -95,8 +114,23 @@ export const updateRole = async (req: Request, res: Response) => {
       return;
     }
 
+    const {
+      rows: [historyEntry],
+    } = await pool.query(
+      `INSERT INTO history (project_id, performed_by, action_type, performed_on)
+       VALUES($1, $2, $3, $4)
+       RETURNING *`,
+      [project_id, updated_by, "promoted_to_owner", member_id]
+    );
+
+    await pool.query("COMMIT");
+
     updatedMember.role = role;
-    res.json({ message: "Role updated successfully", updated: updatedMember });
+    res.json({
+      message: "Role updated successfully",
+      updated: updatedMember,
+      updated_on: historyEntry.occurred_at,
+    });
   } catch (error) {
     console.error("Error updating role:", error);
     res.status(500).json({ error: "Internal server error" });

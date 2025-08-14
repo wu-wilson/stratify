@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useHistory } from "../../../../../hooks/useHistory";
 import { getInvite } from "../../../../../services/invites/invites.service";
 import { useQueryParams } from "../../../../../hooks/query-params/useQueryParams";
 import { type InviteEntity } from "../../../../../services/invites/types";
@@ -9,48 +10,50 @@ import NoActiveInvite from "./views/no-active-invite/NoActiveInvite";
 import styles from "./Invite.module.scss";
 
 const Invite = () => {
+  const { loading: historyLoading, error: historyError } = useHistory();
   const [invite, setInvite] = useState<InviteEntity | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [inviteLoading, setInviteLoading] = useState<boolean>(true);
+  const [inviteError, setInviteError] = useState<string | null>(null);
 
   const { getParam } = useQueryParams();
   const project = getParam("project")!;
 
   useEffect(() => {
-    setLoading(true);
+    setInviteLoading(true);
   }, [project]);
 
   const fetchInvite = async () => {
     try {
       const invite = await getInvite(project);
-      setError(null);
+      setInviteError(null);
       setInvite(invite);
     } catch (error) {
-      setError("getInvite endpoint failed");
+      setInviteError("getInvite endpoint failed");
       setInvite(null);
     } finally {
-      setLoading(false);
+      setInviteLoading(false);
     }
   };
 
   useEffect(() => {
-    if (loading) {
+    if (inviteLoading) {
       fetchInvite();
     }
-  }, [loading]);
+  }, [inviteLoading]);
 
-  if (loading) {
+  if (inviteLoading || historyLoading) {
     return (
       <div className={styles.container}>
-        <Spinner size={50} text="Fetching invite..." />
+        <Spinner size={50} text="Perparing invite card..." />
       </div>
     );
   }
 
-  if (error) {
+  const errorMsg = historyError || inviteError;
+  if (errorMsg) {
     return (
       <div className={styles.container}>
-        <Error errorMsg={error} />
+        <Error errorMsg={errorMsg} />
       </div>
     );
   }

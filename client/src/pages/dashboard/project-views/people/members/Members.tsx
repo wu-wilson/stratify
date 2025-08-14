@@ -2,6 +2,7 @@ import { COLUMNS } from "./constants";
 import { useMemo, useState } from "react";
 import { useAuth } from "../../../../../hooks/useAuth";
 import { useMembers } from "../../../../../hooks/useMembers";
+import { useHistory } from "../../../../../hooks/useHistory";
 import { getActionIcons } from "./util";
 import { useTimeFormat } from "../../../../../hooks/useTimeFormat";
 import { type MemberEntity } from "../../../../../services/members/types";
@@ -15,12 +16,17 @@ import moment from "moment";
 import styles from "./Members.module.scss";
 
 const Members = () => {
-  const { members, loading, error } = useMembers();
+  const {
+    members,
+    loading: membersLoading,
+    error: membersError,
+  } = useMembers();
+  const { loading: historyLoading, error: historyError } = useHistory();
   const { formatString } = useTimeFormat();
 
   const rows = useMemo(
     () =>
-      loading
+      membersLoading
         ? []
         : members.map((member, index) => ({
             row: index + 1,
@@ -49,18 +55,19 @@ const Members = () => {
     return currUser?.role === "owner";
   }, [user, members]);
 
-  if (loading) {
+  if (membersLoading || historyLoading) {
     return (
       <div className={styles.container}>
-        <Spinner size={50} text="Fetching members..." />
+        <Spinner size={50} text={"Perparing members card..."} />
       </div>
     );
   }
 
-  if (error) {
+  const errorMsg = membersError || historyError;
+  if (errorMsg) {
     return (
       <div className={styles.container}>
-        <Error errorMsg={error} />
+        <Error errorMsg={errorMsg} />
       </div>
     );
   }

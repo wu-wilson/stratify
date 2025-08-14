@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useHistory } from "../../../../../../../hooks/useHistory";
 import { updateRole } from "../../../../../../../services/members/members.service";
 import { useElementHeight } from "../../../../../../../hooks/useElementHeight";
 import { CONFIRM_STRING } from "./constants";
 import { useMembers } from "../../../../../../../hooks/useMembers";
+import { useAuth } from "../../../../../../../hooks/useAuth";
 import {
   type MemberEntity,
   type UpdateRolePayload,
@@ -18,6 +20,8 @@ const Owner = ({
   member: MemberEntity;
   closeModal: () => void;
 }) => {
+  const { pushToHistory } = useHistory();
+  const { user } = useAuth();
   const { ref, height } = useElementHeight<HTMLDivElement>();
   const { members, setMembers, project } = useMembers();
 
@@ -31,12 +35,19 @@ const Owner = ({
         member_id: member.id,
         project_id: project,
         role: "owner",
+        updated_by: user!.uid,
       };
 
-      await updateRole(makeOwnerPayload);
+      const updated = await updateRole(makeOwnerPayload);
       setMembers(
         members!.map((m) => (m.id === member.id ? { ...m, role: "owner" } : m))
       );
+      pushToHistory({
+        performed_by: user!.displayName ?? user!.uid,
+        action_type: "promoted_to_owner",
+        performed_on: member.name,
+        occurred_at: updated.updated_on,
+      });
       closeModal();
     } catch (err) {
       setError("deleteMember endpoint failed");

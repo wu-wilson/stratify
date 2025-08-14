@@ -31,6 +31,26 @@ CREATE TABLE IF NOT EXISTS invites (
     created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     max_uses INT NOT NULL CHECK (max_uses > 0),
     uses INT NOT NULL DEFAULT 0 CHECK (uses >= 0),
-    paused BOOLEAN NOT NULL DEFAULT FALSE,
+    paused BOOLEAN NOT NULL,
     UNIQUE (project_id)
+);
+
+-- Create history table
+CREATE TABLE IF NOT EXISTS history (
+    id BIGSERIAL PRIMARY KEY,
+    project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    performed_by TEXT NOT NULL,
+    action_type TEXT NOT NULL CHECK (
+        action_type IN (
+            'joined_project',
+            'left_project',
+            'removed_from_project',
+            'promoted_to_owner',
+            'created_invite',
+            'paused_invite',
+            'unpaused_invite'
+        )
+    ),
+    performed_on TEXT,
+    occurred_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

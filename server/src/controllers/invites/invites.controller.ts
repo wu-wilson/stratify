@@ -5,6 +5,7 @@ import admin from "../../firebase/config";
 
 export const getInvite = async (req: Request, res: Response) => {
   const projectId = req.query.project_id as string;
+
   if (!projectId) {
     res.status(400).json({ error: "project_id is required" });
     return;
@@ -83,10 +84,17 @@ export const getInviteMetadata = async (req: Request, res: Response) => {
 };
 
 export const createInvite = async (req: Request, res: Response) => {
-  const { project_id, max_uses } = req.body;
+  const { project_id, max_uses, created_by, paused } = req.body;
 
-  if (!project_id) {
-    res.status(400).json({ error: "project_id is required" });
+  if (
+    !project_id ||
+    typeof max_uses !== "number" ||
+    !created_by ||
+    typeof paused !== "boolean"
+  ) {
+    res.status(400).json({
+      error: "project_id, max_uses, created_by, and paused are required",
+    });
     return;
   }
 
@@ -99,10 +107,16 @@ export const createInvite = async (req: Request, res: Response) => {
     const {
       rows: [invite],
     } = await pool.query(
-      `INSERT INTO invites (token, project_id, max_uses, uses, paused, created_on)
-       VALUES ($1, $2, $3, 0, FALSE, NOW())
+      `INSERT INTO invites (token, project_id, max_uses, uses, paused)
+       VALUES ($1, $2, $3, 0, $4)
        RETURNING *`,
-      [token, project_id, max_uses]
+      [token, project_id, max_uses, paused]
+    );
+
+    await pool.query(
+      `INSERT INTO history (project_id, performed_by, action_type, occurred_at)
+       VALUES($1, $2, $3, $4)`,
+      [project_id, created_by, "created_invite", invite.created_on]
     );
 
     await pool.query("COMMIT");
@@ -119,14 +133,18 @@ export const createInvite = async (req: Request, res: Response) => {
 };
 
 export const updateInviteStatus = async (req: Request, res: Response) => {
-  const { project_id, paused } = req.body;
+  const { project_id, paused, updated_by } = req.body;
 
   if (!project_id || typeof paused !== "boolean") {
-    res.status(400).json({ error: "project_id and paused are required" });
+    res
+      .status(400)
+      .json({ error: "project_id, paused, and updated_by are required" });
     return;
   }
 
   try {
+    await pool.query("BEGIN");
+
     const {
       rows: [updatedInvite],
     } = await pool.query(
@@ -142,12 +160,26 @@ export const updateInviteStatus = async (req: Request, res: Response) => {
       return;
     }
 
+    const action = paused ? "paused_invite" : "unpaused_invite";
+    const {
+      rows: [historyEntry],
+    } = await pool.query(
+      `INSERT INTO history (project_id, performed_by, action_type)
+       VALUES($1, $2, $3)
+       RETURNING *`,
+      [project_id, updated_by, action]
+    );
+
+    await pool.query("COMMIT");
+
     updatedInvite.paused = paused;
     res.json({
       message: "Invite status updated successfully",
       updated: updatedInvite,
+      updated_on: historyEntry.occurred_at,
     });
   } catch (error) {
+    await pool.query("ROLLBACK");
     console.error("Error pausing invite:", error);
     res.status(500).json({ error: "Internal server error" });
   }
@@ -195,6 +227,14 @@ export const acceptInvite = async (req: Request, res: Response) => {
       [member_id, project_id, "member"]
     );
 
+    await pool.query(
+      `INSERT INTO history (project_id, performed_by, action_type, occurred_at)
+       VALUES($1, $2, $3, $4)`,
+      [project_id, member_id, "joined_project", addedMember.joined_on]
+    );
+
+    await pool.query("COMMIT");
+
     const user = await admin.auth().getUser(member_id);
     addedMember.name = user.displayName;
 
@@ -202,8 +242,6 @@ export const acceptInvite = async (req: Request, res: Response) => {
       message: "Invite accepted successfully",
       added: addedMember,
     });
-
-    await pool.query("COMMIT");
   } catch (error) {
     await pool.query("ROLLBACK");
     console.error("Error adding member:", error);

@@ -20,6 +20,8 @@ export type GetInviteMetadataResponse = {
 export type CreateInvitePayload = {
   project_id: string;
   max_uses: number;
+  created_by: string;
+  paused: boolean;
 };
 
 export type CreateInviteResponse = {
@@ -30,11 +32,13 @@ export type CreateInviteResponse = {
 export type UpdateInviteStatusPayload = {
   project_id: string;
   paused: boolean;
+  updated_by: string;
 };
 
 export type UpdateInviteStatusResponse = {
   message: string;
   updated: InviteEntity;
+  updated_on: string;
 };
 
 export type AcceptInvitePayload = {

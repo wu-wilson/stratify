@@ -3,10 +3,10 @@ import { type ActionIcons, type Column, type Row } from "../types";
 import Table from "../Table";
 import styles from "./SearchTable.module.scss";
 
-const SearchableTable = <T extends Row>({
+const SearchTable = <T extends Row>({
   columns,
   rows,
-  fallback = "N/A",
+  fallback = "-",
   actionIcons = [],
   rowsPerPage = rows.length,
 }: {
@@ -55,4 +55,4 @@ const SearchableTable = <T extends Row>({
   );
 };
 
-export default SearchableTable;
+export default SearchTable;

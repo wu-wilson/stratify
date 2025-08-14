@@ -1,7 +1,9 @@
 import { BASE_JOIN_URL } from "./constants";
 import { useEffect, useMemo, useState } from "react";
 import { useMembers } from "../../../../../../../hooks/useMembers";
+import { useHistory } from "../../../../../../../hooks/useHistory";
 import { updateInviteStatus } from "../../../../../../../services/invites/invites.service";
+import { useAuth } from "../../../../../../../hooks/useAuth";
 import { useTimeFormat } from "../../../../../../../hooks/useTimeFormat";
 import {
   type InviteEntity,
@@ -23,6 +25,8 @@ const ActiveInvite = ({
   invite: InviteEntity;
   setInvite: (invite: InviteEntity | null) => void;
 }) => {
+  const { pushToHistory } = useHistory();
+  const { user } = useAuth();
   const { formatString } = useTimeFormat();
   const createdOn = useMemo(
     () => moment(invite.created_on).format(formatString),
@@ -45,10 +49,21 @@ const ActiveInvite = ({
       const updateInviteStatusPayload: UpdateInviteStatusPayload = {
         project_id: project,
         paused: !joinsEnabled,
+        updated_by: user!.uid,
       };
 
-      const { updated } = await updateInviteStatus(updateInviteStatusPayload);
+      const { updated, updated_on } = await updateInviteStatus(
+        updateInviteStatusPayload
+      );
       setInvite(updated);
+      pushToHistory({
+        performed_by: user!.displayName ?? user!.uid,
+        action_type: updateInviteStatusPayload.paused
+          ? "paused_invite"
+          : "unpaused_invite",
+        performed_on: null,
+        occurred_at: updated_on,
+      });
     } catch (err) {
       setError("updateInviteStatus endpoint failed");
     } finally {
@@ -88,6 +103,7 @@ const ActiveInvite = ({
       {openModal && (
         <Modal close={() => setOpenModal(false)}>
           <GenerateInvite
+            invite={invite}
             setInvite={setInvite}
             closeModal={() => setOpenModal(false)}
           />
