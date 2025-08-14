@@ -9,9 +9,9 @@ import Spinner from "../../../../../../../components/spinner/Spinner";
 import styles from "./Name.module.scss";
 
 const Name = ({ setView }: { setView: (view: View) => void }) => {
-  const { user } = useAuth();
+  const { user, displayName, setDisplayName } = useAuth();
 
-  const [name, setName] = useState<string>(user?.displayName ?? DISPLAY_NAME);
+  const [name, setName] = useState<string>(displayName ?? DISPLAY_NAME);
   const [requestError, setRequestError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,6 +20,7 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
     if (!user) return;
     try {
       await updateProfile(user, { displayName: name });
+      setDisplayName(name);
       setView("root");
     } catch (err) {
       setRequestError("Firebase update profile endpoint failed");
@@ -35,7 +36,7 @@ const Name = ({ setView }: { setView: (view: View) => void }) => {
   }, [loading]);
 
   useEffect(() => {
-    const { valid, msg } = validateDisplayName(name, user?.displayName ?? "");
+    const { valid, msg } = validateDisplayName(name, displayName ?? "");
     if (valid) {
       setValidationError(null);
     } else {

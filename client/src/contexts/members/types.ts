@@ -1,7 +1,6 @@
 import { type MemberEntity } from "../../services/members/types";
 
 type BaseMembersContext = {
-  project: string;
   setMembers: (members: MemberEntity[] | null) => void;
   error: string | null;
 };

@@ -4,6 +4,7 @@ import { updateRole } from "../../../../../../../services/members/members.servic
 import { useElementHeight } from "../../../../../../../hooks/useElementHeight";
 import { CONFIRM_STRING } from "./constants";
 import { useMembers } from "../../../../../../../hooks/useMembers";
+import { useQueryParams } from "../../../../../../../hooks/query-params/useQueryParams";
 import { useAuth } from "../../../../../../../hooks/useAuth";
 import {
   type MemberEntity,
@@ -21,9 +22,10 @@ const Owner = ({
   closeModal: () => void;
 }) => {
   const { pushToHistory } = useHistory();
-  const { user } = useAuth();
+  const { getParam } = useQueryParams();
+  const { user, displayName } = useAuth();
   const { ref, height } = useElementHeight<HTMLDivElement>();
-  const { members, setMembers, project } = useMembers();
+  const { members, setMembers } = useMembers();
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,6 +33,8 @@ const Owner = ({
 
   const makeOwner = async () => {
     try {
+      const project = getParam("project")!;
+
       const makeOwnerPayload: UpdateRolePayload = {
         member_id: member.id,
         project_id: project,
@@ -43,7 +47,7 @@ const Owner = ({
         members!.map((m) => (m.id === member.id ? { ...m, role: "owner" } : m))
       );
       pushToHistory({
-        performed_by: user!.displayName ?? user!.uid,
+        performed_by: displayName ?? user!.uid,
         action_type: "promoted_to_owner",
         performed_on: member.name,
         occurred_at: updated.updated_on,

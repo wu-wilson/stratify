@@ -2,7 +2,7 @@ import { useTimeFormat } from "../../../../../../../hooks/useTimeFormat";
 import { useAuth } from "../../../../../../../hooks/useAuth";
 import { useTheme } from "../../../../../../../hooks/useTheme";
 import { getTimezone } from "../../../../../../../util";
-import { getDisplayName } from "./util";
+import { getTruncatedDisplayName } from "./util";
 import { type View } from "../../types";
 import Copy from "../../../../../../../components/copy/Copy";
 import Toggle from "../../../../../../../components/toggle/Toggle";
@@ -11,7 +11,7 @@ import styles from "./Root.module.scss";
 
 const Root = ({ setView }: { setView: (view: View) => void }) => {
   const { auto, setAuto } = useTheme();
-  const { user } = useAuth();
+  const { user, displayName } = useAuth();
   const { format, setFormat } = useTimeFormat();
 
   const toggleTimeFormat = (checked: boolean) => {
@@ -24,7 +24,7 @@ const Root = ({ setView }: { setView: (view: View) => void }) => {
 
   const timezone = getTimezone(true);
 
-  const displayName = getDisplayName(user);
+  const truncatedDisplayName = getTruncatedDisplayName(displayName);
 
   return (
     <>
@@ -39,7 +39,8 @@ const Root = ({ setView }: { setView: (view: View) => void }) => {
         >
           Display Name
           <span>
-            {displayName} <span className={styles.chevron}>&gt;</span>
+            {truncatedDisplayName}
+            <span className={styles.chevron}>&gt;</span>
           </span>
         </div>
       </div>

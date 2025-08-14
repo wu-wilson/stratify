@@ -1,5 +1,6 @@
 import { useQueryParams } from "../../hooks/query-params/useQueryParams";
 import { getMembers } from "../../services/members/members.service";
+import { useAuth } from "../../hooks/useAuth";
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import { type MembersContextType } from "./types";
 import { type MemberEntity } from "../../services/members/types";
@@ -39,11 +40,15 @@ export const MembersProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [loading]);
 
+  const { displayName } = useAuth();
+
+  useEffect(() => {
+    setLoading(true);
+  }, [displayName]);
+
   return (
     <MembersContext.Provider
-      value={
-        { project, members, setMembers, loading, error } as MembersContextType
-      }
+      value={{ members, setMembers, loading, error } as MembersContextType}
     >
       {children}
     </MembersContext.Provider>

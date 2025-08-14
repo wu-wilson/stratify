@@ -7,15 +7,15 @@ import styles from "./People.module.scss";
 
 const People = () => {
   return (
-    <MembersProvider>
-      <HistoryProvider>
-        <div className={styles.container}>
+    <div className={styles.container}>
+      <MembersProvider>
+        <HistoryProvider>
           <Members />
           <Invite />
           <History />
-        </div>
-      </HistoryProvider>
-    </MembersProvider>
+        </HistoryProvider>
+      </MembersProvider>
+    </div>
   );
 };
 

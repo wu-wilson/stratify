@@ -1,4 +1,5 @@
 import { useQueryParams } from "../../hooks/query-params/useQueryParams";
+import { useAuth } from "../../hooks/useAuth";
 import { getHistory } from "../../services/history/history.service";
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import { type HistoryContextType } from "./types";
@@ -38,6 +39,12 @@ export const HistoryProvider = ({ children }: { children: ReactNode }) => {
       fetchHistory();
     }
   }, [loading]);
+
+  const { displayName } = useAuth();
+
+  useEffect(() => {
+    setLoading(true);
+  }, [displayName]);
 
   const pushToHistory = (entry: HistoryEntity) => {
     if (history) {

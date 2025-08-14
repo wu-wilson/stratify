@@ -1,6 +1,6 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useHistory } from "../../../../../../hooks/useHistory";
-import { useMembers } from "../../../../../../hooks/useMembers";
+import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useAuth } from "../../../../../../hooks/useAuth";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { createInvite } from "../../../../../../services/invites/invites.service";
@@ -23,8 +23,8 @@ const GenerateInvite = ({
   closeModal: () => void;
 }) => {
   const { pushToHistory } = useHistory();
-  const { project } = useMembers();
-  const { user } = useAuth();
+  const { getParam } = useQueryParams();
+  const { user, displayName } = useAuth();
   const { ref, height } = useElementHeight<HTMLDivElement>();
 
   const [maxUses, setMaxUses] = useState<string>("20");
@@ -50,6 +50,8 @@ const GenerateInvite = ({
 
   const generateInvite = async () => {
     try {
+      const project = getParam("project")!;
+
       const createInvitePayload: CreateInvitePayload = {
         project_id: project,
         max_uses: parseInt(maxUses, 10),
@@ -60,7 +62,7 @@ const GenerateInvite = ({
       const { invite: createdInvite } = await createInvite(createInvitePayload);
       setInvite(createdInvite);
       pushToHistory({
-        performed_by: user!.displayName ?? user!.uid,
+        performed_by: displayName ?? user!.uid,
         action_type: "created_invite",
         performed_on: null,
         occurred_at: createdInvite.created_on,

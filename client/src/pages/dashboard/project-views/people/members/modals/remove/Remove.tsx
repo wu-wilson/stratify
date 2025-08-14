@@ -3,6 +3,7 @@ import { deleteMember } from "../../../../../../../services/members/members.serv
 import { useElementHeight } from "../../../../../../../hooks/useElementHeight";
 import { useAuth } from "../../../../../../../hooks/useAuth";
 import { useHistory } from "../../../../../../../hooks/useHistory";
+import { useQueryParams } from "../../../../../../../hooks/query-params/useQueryParams";
 import { CONFIRM_STRING } from "./constants";
 import { useMembers } from "../../../../../../../hooks/useMembers";
 import {
@@ -21,9 +22,10 @@ const Remove = ({
   closeModal: () => void;
 }) => {
   const { pushToHistory } = useHistory();
-  const { user } = useAuth();
+  const { getParam } = useQueryParams();
+  const { user, displayName } = useAuth();
   const { ref, height } = useElementHeight<HTMLDivElement>();
-  const { members, setMembers, project } = useMembers();
+  const { members, setMembers } = useMembers();
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,6 +33,8 @@ const Remove = ({
 
   const removeMember = async () => {
     try {
+      const project = getParam("project")!;
+
       const deleteMemberPayload: DeleteMemberPayload = {
         member_id: member.id,
         project_id: project,
@@ -40,7 +44,7 @@ const Remove = ({
       const removedMember = await deleteMember(deleteMemberPayload);
       setMembers(members!.filter((m) => m.id !== member.id));
       pushToHistory({
-        performed_by: user!.displayName ?? user!.uid,
+        performed_by: displayName ?? user!.uid,
         action_type: "removed_from_project",
         performed_on: member.name,
         occurred_at: removedMember.deleted_on,

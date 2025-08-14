@@ -1,6 +1,6 @@
 import { BASE_JOIN_URL } from "./constants";
 import { useEffect, useMemo, useState } from "react";
-import { useMembers } from "../../../../../../../hooks/useMembers";
+import { useQueryParams } from "../../../../../../../hooks/query-params/useQueryParams";
 import { useHistory } from "../../../../../../../hooks/useHistory";
 import { updateInviteStatus } from "../../../../../../../services/invites/invites.service";
 import { useAuth } from "../../../../../../../hooks/useAuth";
@@ -26,14 +26,13 @@ const ActiveInvite = ({
   setInvite: (invite: InviteEntity | null) => void;
 }) => {
   const { pushToHistory } = useHistory();
-  const { user } = useAuth();
+  const { getParam } = useQueryParams();
+  const { user, displayName } = useAuth();
   const { formatString } = useTimeFormat();
   const createdOn = useMemo(
     () => moment(invite.created_on).format(formatString),
     [invite.created_on, formatString]
   );
-  const { project } = useMembers();
-
   const [joinsEnabled, setJoinsEnabled] = useState<boolean>(!invite.paused);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +45,8 @@ const ActiveInvite = ({
 
   const syncInviteStatus = async () => {
     try {
+      const project = getParam("project")!;
+
       const updateInviteStatusPayload: UpdateInviteStatusPayload = {
         project_id: project,
         paused: !joinsEnabled,
@@ -57,7 +58,7 @@ const ActiveInvite = ({
       );
       setInvite(updated);
       pushToHistory({
-        performed_by: user!.displayName ?? user!.uid,
+        performed_by: displayName ?? user!.uid,
         action_type: updateInviteStatusPayload.paused
           ? "paused_invite"
           : "unpaused_invite",
