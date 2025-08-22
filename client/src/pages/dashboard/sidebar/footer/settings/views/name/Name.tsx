@@ -4,11 +4,12 @@ import { updateProfile } from "firebase/auth";
 import { validateDisplayName } from "./util";
 import { DISPLAY_NAME } from "./constants";
 import { type View } from "../../types";
+import { type Dispatch, type SetStateAction } from "react";
 import Error from "../../../../../../../components/error/Error";
 import Spinner from "../../../../../../../components/spinner/Spinner";
 import styles from "./Name.module.scss";
 
-const Name = ({ setView }: { setView: (view: View) => void }) => {
+const Name = ({ setView }: { setView: Dispatch<SetStateAction<View>> }) => {
   const { user, displayName, setDisplayName } = useAuth();
 
   const [name, setName] = useState<string>(displayName ?? DISPLAY_NAME);

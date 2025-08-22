@@ -1,4 +1,5 @@
-import type { ToggleIcons } from "./types";
+import { type ToggleIcons } from "./types";
+import { type Dispatch, type SetStateAction } from "react";
 import styles from "./Toggle.module.scss";
 
 const Toggle = ({
@@ -10,7 +11,7 @@ const Toggle = ({
 }: {
   id: string;
   checked: boolean;
-  setChecked: (checked: boolean) => void;
+  setChecked: Dispatch<SetStateAction<boolean>>;
   icons?: ToggleIcons;
   disabled?: boolean;
 }) => {

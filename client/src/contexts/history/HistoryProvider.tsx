@@ -48,7 +48,7 @@ export const HistoryProvider = ({ children }: { children: ReactNode }) => {
 
   const pushToHistory = (entry: HistoryEntity) => {
     if (history) {
-      setHistory([entry, ...history]);
+      setHistory((prev) => [entry, ...prev!]);
     }
   };
 

@@ -1,4 +1,5 @@
 import { IoSettingsSharp, IoTrashSharp } from "react-icons/io5";
+import { type Dispatch, type SetStateAction } from "react";
 import { type MemberEntity } from "../../../../../services/members/types";
 import {
   type ActionIcons,
@@ -6,8 +7,8 @@ import {
 } from "../../../../../components/table/types";
 
 export const getActionIcons = (
-  setModal: (modal: "remove" | "owner" | null) => void,
-  setSelectedMember: (member: MemberEntity | null) => void,
+  setModal: Dispatch<SetStateAction<"remove" | "owner" | null>>,
+  setSelectedMember: Dispatch<SetStateAction<MemberEntity | null>>,
   isOwner: boolean
 ): ActionIcons[] => {
   if (!isOwner) return [];

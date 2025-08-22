@@ -1,4 +1,10 @@
-import { useEffect, useState, type ChangeEvent } from "react";
+import {
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { useHistory } from "../../../../../../hooks/useHistory";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useAuth } from "../../../../../../hooks/useAuth";
@@ -19,7 +25,7 @@ const GenerateInvite = ({
   closeModal,
 }: {
   invite: InviteEntity | null;
-  setInvite: (invite: InviteEntity | null) => void;
+  setInvite: Dispatch<SetStateAction<InviteEntity | null>>;
   closeModal: () => void;
 }) => {
   const { pushToHistory } = useHistory();

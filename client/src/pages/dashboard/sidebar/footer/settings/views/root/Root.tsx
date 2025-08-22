@@ -4,12 +4,13 @@ import { useTheme } from "../../../../../../../hooks/useTheme";
 import { getTimezone } from "../../../../../../../util";
 import { getTruncatedDisplayName } from "./util";
 import { type View } from "../../types";
+import { type Dispatch, type SetStateAction } from "react";
 import Copy from "../../../../../../../components/copy/Copy";
 import Toggle from "../../../../../../../components/toggle/Toggle";
 import ThemeToggle from "../../../../../../../components/toggle/theme-toggle/ThemeToggle";
 import styles from "./Root.module.scss";
 
-const Root = ({ setView }: { setView: (view: View) => void }) => {
+const Root = ({ setView }: { setView: Dispatch<SetStateAction<View>> }) => {
   const { auto, setAuto } = useTheme();
   const { user, displayName } = useAuth();
   const { format, setFormat } = useTimeFormat();
@@ -50,7 +51,7 @@ const Root = ({ setView }: { setView: (view: View) => void }) => {
           <Toggle
             id="settings-time-24hr-toggle"
             checked={format === "24hr"}
-            setChecked={toggleTimeFormat}
+            setChecked={toggleTimeFormat as Dispatch<SetStateAction<boolean>>}
           />
         </div>
         <div className={styles.row}>

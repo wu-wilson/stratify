@@ -2,6 +2,7 @@ import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
 } from "react-icons/tb";
+import { type Dispatch, type SetStateAction } from "react";
 import Logo from "../../../../components/logo/Logo";
 import styles from "./Header.module.scss";
 
@@ -10,7 +11,7 @@ const Header = ({
   setExpanded,
 }: {
   expanded: boolean;
-  setExpanded: (expand: boolean) => void;
+  setExpanded: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
     <div

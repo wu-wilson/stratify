@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { TbFolderOpen } from "react-icons/tb";
 import { SUBTEXT } from "./constants";
 import { type InviteEntity } from "../../../../../../../services/invites/types";
@@ -9,7 +9,7 @@ import styles from "./NoActiveInvite.module.scss";
 const NoActiveInvite = ({
   setInvite,
 }: {
-  setInvite: (invite: InviteEntity | null) => void;
+  setInvite: Dispatch<SetStateAction<InviteEntity | null>>;
 }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 

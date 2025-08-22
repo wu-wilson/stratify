@@ -1,5 +1,11 @@
 import { BASE_JOIN_URL } from "./constants";
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { useQueryParams } from "../../../../../../../hooks/query-params/useQueryParams";
 import { useHistory } from "../../../../../../../hooks/useHistory";
 import { updateInviteStatus } from "../../../../../../../services/invites/invites.service";
@@ -23,7 +29,7 @@ const ActiveInvite = ({
   setInvite,
 }: {
   invite: InviteEntity;
-  setInvite: (invite: InviteEntity | null) => void;
+  setInvite: Dispatch<SetStateAction<InviteEntity | null>>;
 }) => {
   const { pushToHistory } = useHistory();
   const { getParam } = useQueryParams();

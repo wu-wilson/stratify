@@ -6,12 +6,10 @@ import styles from "./Snackbar.module.scss";
 const Snackbar = ({
   message,
   type = "info",
-  duration = 5000,
   onDismiss,
 }: {
   message: string;
   type?: SnackbarType;
-  duration?: number;
   onDismiss?: () => void;
 }) => {
   const Icon = ICON_MAP[type];
@@ -22,10 +20,10 @@ const Snackbar = ({
 
     const timer = setTimeout(() => {
       setVisible(false);
-    }, duration);
+    }, 5000);
 
     return () => clearTimeout(timer);
-  }, [message, duration]);
+  }, [message]);
 
   const onTransitionEnd = () => {
     if (!visible && onDismiss) {

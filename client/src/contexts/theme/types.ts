@@ -1,6 +1,8 @@
+import { type Dispatch, type SetStateAction } from "react";
+
 export type ThemeContextType = {
   darkMode: boolean | null;
-  setDarkMode: (darkMode: boolean | null) => void;
+  setDarkMode: Dispatch<SetStateAction<boolean | null>>;
   auto: boolean;
-  setAuto: (auto: boolean) => void;
+  setAuto: Dispatch<SetStateAction<boolean>>;
 };

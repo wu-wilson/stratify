@@ -1,5 +1,6 @@
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useTheme } from "../../../hooks/useTheme";
+import { type Dispatch, type SetStateAction } from "react";
 import Toggle from "../Toggle";
 
 const ThemeToggle = ({
@@ -15,7 +16,7 @@ const ThemeToggle = ({
     <Toggle
       id={`theme-toggle-${id}`}
       checked={darkMode ? darkMode : false}
-      setChecked={setDarkMode}
+      setChecked={setDarkMode as Dispatch<SetStateAction<boolean>>}
       icons={{ checked: FaMoon, unchecked: FaSun }}
       disabled={disabled}
     />

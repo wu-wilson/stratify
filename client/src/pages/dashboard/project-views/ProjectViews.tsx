@@ -6,6 +6,7 @@ import Overview from "./overview/Overview";
 import People from "./people/People";
 import Statuses from "./statuses/Statuses";
 import styles from "./ProjectViews.module.scss";
+import { SnackbarProvider } from "../../../contexts/snackbar/SnackbarProvider";
 
 const ProjectViews = () => {
   const { getParam, setParam } = useQueryParams();
@@ -27,7 +28,11 @@ const ProjectViews = () => {
         />
       </div>
       {tab === "Overview" && <Overview />}
-      {tab === "Statuses" && <Statuses />}
+      {tab === "Statuses" && (
+        <SnackbarProvider>
+          <Statuses />
+        </SnackbarProvider>
+      )}
       {tab === "People" && <People />}
     </div>
   );

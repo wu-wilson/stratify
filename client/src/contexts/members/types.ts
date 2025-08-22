@@ -1,7 +1,8 @@
+import { type Dispatch, type SetStateAction } from "react";
 import { type MemberEntity } from "../../services/members/types";
 
 type BaseMembersContext = {
-  setMembers: (members: MemberEntity[] | null) => void;
+  setMembers: Dispatch<SetStateAction<MemberEntity[] | null>>;
   error: string | null;
 };
 
