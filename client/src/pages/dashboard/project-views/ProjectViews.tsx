@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { tabs } from "./constants";
 import { useQueryParams } from "../../../hooks/query-params/useQueryParams";
+import { SnackbarProvider } from "../../../contexts/snackbar/SnackbarProvider";
 import Tabs from "../../../components/tabs/Tabs";
 import Overview from "./overview/Overview";
 import People from "./people/People";
 import Statuses from "./statuses/Statuses";
 import styles from "./ProjectViews.module.scss";
-import { SnackbarProvider } from "../../../contexts/snackbar/SnackbarProvider";
 
 const ProjectViews = () => {
   const { getParam, setParam } = useQueryParams();
@@ -27,13 +27,11 @@ const ProjectViews = () => {
           onClick={(tab) => setParam({ tab: tab.label })}
         />
       </div>
-      {tab === "Overview" && <Overview />}
-      {tab === "Statuses" && (
-        <SnackbarProvider>
-          <Statuses />
-        </SnackbarProvider>
-      )}
-      {tab === "People" && <People />}
+      <SnackbarProvider>
+        {tab === "Overview" && <Overview />}
+        {tab === "Statuses" && <Statuses />}
+        {tab === "People" && <People />}
+      </SnackbarProvider>
     </div>
   );
 };

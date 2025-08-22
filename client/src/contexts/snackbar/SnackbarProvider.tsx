@@ -1,4 +1,5 @@
-import { createContext, useState, type ReactNode } from "react";
+import { createContext, useEffect, useState, type ReactNode } from "react";
+import { useQueryParams } from "../../hooks/query-params/useQueryParams";
 import { type SnackbarContextType, type SnackbarMessage } from "./types";
 import Snackbar from "../../components/snackbar/Snackbar";
 import styles from "./SnackbarPRovider.module.scss";
@@ -8,7 +9,14 @@ export const SnackbarContext = createContext<SnackbarContextType | undefined>(
 );
 
 export const SnackbarProvider = ({ children }: { children: ReactNode }) => {
+  const { getParam } = useQueryParams();
+  const project = getParam("project")!;
+
   const [messages, setMessages] = useState<SnackbarMessage[]>([]);
+
+  useEffect(() => {
+    setMessages([]);
+  }, [project]);
 
   const pushMessage = (message: Omit<SnackbarMessage, "id">) => {
     setMessages((prev) => [{ ...message, id: crypto.randomUUID() }, ...prev]);
