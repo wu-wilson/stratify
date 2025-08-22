@@ -1,0 +1,93 @@
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+
+@keyframes shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.container {
+  position: relative;
+  width: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  font-size: 0.75rem;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+
+  @include mixins.themed using ($props) {
+    background-color: map.get($props, "snackbar-bg");
+    border: map.get($props, "snackbar-border");
+  }
+
+  &.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  &.hide {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  .progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    animation: shrink 5s linear forwards;
+
+    &.error {
+      background-color: vars.$error-color;
+    }
+
+    &.info {
+      background-color: vars.$primary-color;
+    }
+
+    &.warning {
+      background-color: vars.$warning-color;
+    }
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-right: 0.5rem;
+      min-height: 1.3rem;
+      min-width: 1.3rem;
+
+      &.error {
+        color: vars.$error-color;
+      }
+
+      &.info {
+        color: vars.$primary-color;
+      }
+
+      &.warning {
+        color: vars.$warning-color;
+      }
+    }
+  }
+
+  .dismiss {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+      color: vars.$primary-color;
+    }
+  }
+}

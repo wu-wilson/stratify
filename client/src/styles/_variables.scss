@@ -32,6 +32,8 @@ $themes: (
     tab-bg: #ededed,
     selected-tab-bg: white,
     table-bg: #ededed,
+    snackbar-bg: white,
+    snackbar-border: 1px solid rgb(213, 212, 212),
   ),
   dark: (
     page-bg: #1c1c1c,
@@ -55,5 +57,7 @@ $themes: (
     tab-bg: #151515,
     selected-tab-bg: #242426,
     table-bg: #151515,
+    snackbar-bg: #242426,
+    snackbar-border: none,
   ),
 );
