@@ -26,6 +26,7 @@
   @include mixins.themed using ($props) {
     background-color: map.get($props, "snackbar-bg");
     border: map.get($props, "snackbar-border");
+    box-shadow: map.get($props, "snackbar-box-shadow");
   }
 
   &.show {
