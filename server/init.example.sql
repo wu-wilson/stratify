@@ -5,7 +5,7 @@
 
 -- Create projects table
 CREATE TABLE IF NOT EXISTS projects (
-    id BIGSERIAL PRIMARY KEY CHECK (id > 0), 
+    id BIGSERIAL PRIMARY KEY CHECK (id > 0),
     owner_id TEXT NOT NULL,
     name TEXT NOT NULL,
     description TEXT,
@@ -53,4 +53,48 @@ CREATE TABLE IF NOT EXISTS history (
     ),
     performed_on TEXT,
     occurred_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Create statuses table
+CREATE TABLE IF NOT EXISTS statuses (
+    id BIGSERIAL PRIMARY KEY,
+    project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    position INT NOT NULL,
+    created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    -- Unique constraint to prevent duplicate status names per project
+    CONSTRAINT uq_project_status_name UNIQUE (project_id, name)
+);
+
+-- Create tasks table
+CREATE TABLE IF NOT EXISTS tasks (
+    id BIGSERIAL PRIMARY KEY,
+    project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    status_id BIGINT NOT NULL REFERENCES statuses(id) ON DELETE CASCADE,
+    created_by TEXT NOT NULL,
+    assigned_to TEXT,
+    title TEXT NOT NULL,
+    description TEXT,
+    position INT NOT NULL,
+    created_on TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Create tags table
+CREATE TABLE IF NOT EXISTS tags (
+    id BIGSERIAL PRIMARY KEY,
+    project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    color TEXT,
+    created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    -- Unique constraint to prevent duplicate tags per project
+    CONSTRAINT uq_project_tag_name UNIQUE (project_id, name)
+);
+
+-- Create taggings table
+CREATE TABLE IF NOT EXISTS taggings (
+    task_id BIGINT NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+    tag_id BIGINT NOT NULL REFERENCES tags(id) ON DELETE CASCADE,
+    PRIMARY KEY (task_id, tag_id)
 );
