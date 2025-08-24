@@ -5,7 +5,7 @@ import { SnackbarProvider } from "../../../contexts/snackbar/SnackbarProvider";
 import Tabs from "../../../components/tabs/Tabs";
 import Overview from "./overview/Overview";
 import People from "./people/People";
-import Statuses from "./statuses/Statuses";
+import Tasks from "./tasks/Tasks";
 import styles from "./ProjectViews.module.scss";
 
 const ProjectViews = () => {
@@ -29,7 +29,7 @@ const ProjectViews = () => {
       </div>
       <SnackbarProvider>
         {tab === "Overview" && <Overview />}
-        {tab === "Statuses" && <Statuses />}
+        {tab === "Tasks" && <Tasks />}
         {tab === "People" && <People />}
       </SnackbarProvider>
     </div>
