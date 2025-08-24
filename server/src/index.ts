@@ -4,6 +4,10 @@ import { projectsRouter } from "./controllers/projects/projects";
 import { membersRouter } from "./controllers/members/members";
 import { invitesRouter } from "./controllers/invites/invites";
 import { historyRouter } from "./controllers/history/history";
+import { statusesRouter } from "./controllers/statuses/statuses";
+import { taggingsRouter } from "./controllers/taggings/taggings";
+import { tagsRouter } from "./controllers/tags/tags";
+import { tasksRouter } from "./controllers/tasks/tasks";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -42,6 +46,10 @@ app.use("/projects", projectsRouter);
 app.use("/members", membersRouter);
 app.use("/invites", invitesRouter);
 app.use("/history", historyRouter);
+app.use("/statuses", statusesRouter);
+app.use("/taggings", taggingsRouter);
+app.use("/tags", tagsRouter);
+app.use("/tasks", tasksRouter);
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, "../../certs/localhost-key.pem")),
