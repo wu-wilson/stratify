@@ -26,7 +26,7 @@ const History = () => {
   if (loading) {
     return (
       <div className={styles.container}>
-        <Spinner size={50} text={"Perparing history card..."} />
+        <Spinner size={50} text={"Fetching history..."} />
       </div>
     );
   }

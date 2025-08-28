@@ -11,7 +11,7 @@ export const getTags = async (req: Request, res: Response) => {
 
   try {
     const { rows: tags } = await pool.query(
-      `SELECT *
+      `SELECT id, name, color, created_on
        FROM tags
        WHERE tags.project_id = $1`,
       [projectId]

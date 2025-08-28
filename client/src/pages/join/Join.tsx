@@ -26,7 +26,6 @@ const Join = () => {
       setMetadata(metadata);
     } catch (err) {
       setError("getInviteMetadata endpoint failed");
-      setMetadata(null);
     } finally {
       setLoading(false);
     }

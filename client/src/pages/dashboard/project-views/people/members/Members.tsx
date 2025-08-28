@@ -58,7 +58,7 @@ const Members = () => {
   if (membersLoading || historyLoading) {
     return (
       <div className={styles.container}>
-        <Spinner size={50} text={"Perparing members card..."} />
+        <Spinner size={50} text={"Fetching members..."} />
       </div>
     );
   }

@@ -44,7 +44,7 @@ const Invite = () => {
   if (inviteLoading || historyLoading) {
     return (
       <div className={styles.container}>
-        <Spinner size={50} text="Perparing invite card..." />
+        <Spinner size={50} text="Fetching invite..." />
       </div>
     );
   }

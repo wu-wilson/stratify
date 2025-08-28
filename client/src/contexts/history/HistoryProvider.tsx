@@ -28,7 +28,6 @@ export const HistoryProvider = ({ children }: { children: ReactNode }) => {
       setHistory(history);
     } catch (error) {
       setError("getHistory endpoint failed");
-      setHistory([]);
     } finally {
       setLoading(false);
     }

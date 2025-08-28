@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { tabs } from "./constants";
 import { useQueryParams } from "../../../hooks/query-params/useQueryParams";
 import { SnackbarProvider } from "../../../contexts/snackbar/SnackbarProvider";
+import { KanbanProvider } from "../../../contexts/kanban/KanbanProvider";
 import Tabs from "../../../components/tabs/Tabs";
 import Overview from "./overview/Overview";
 import People from "./people/People";
@@ -29,7 +30,11 @@ const ProjectViews = () => {
       </div>
       <SnackbarProvider>
         {tab === "Overview" && <Overview />}
-        {tab === "Tasks" && <Tasks />}
+        {tab === "Tasks" && (
+          <KanbanProvider>
+            <Tasks />
+          </KanbanProvider>
+        )}
         {tab === "People" && <People />}
       </SnackbarProvider>
     </div>

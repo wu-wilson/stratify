@@ -11,7 +11,7 @@ export const getStatuses = async (req: Request, res: Response) => {
 
   try {
     const { rows: statuses } = await pool.query(
-      `SELECT *
+      `SELECT id, name, position, created_on
        FROM statuses
        WHERE statuses.project_id = $1`,
       [projectId]
