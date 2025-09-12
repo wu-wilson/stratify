@@ -43,12 +43,14 @@ const Remove = ({
 
       const removedMember = await deleteMember(deleteMemberPayload);
       setMembers(members!.filter((m) => m.id !== member.id));
+
       pushToHistory({
         performed_by: displayName ?? user!.uid,
         action_type: "removed_from_project",
         performed_on: member.name,
         occurred_at: removedMember.deleted_on,
       });
+
       closeModal();
     } catch (err) {
       setError("deleteMember endpoint failed");

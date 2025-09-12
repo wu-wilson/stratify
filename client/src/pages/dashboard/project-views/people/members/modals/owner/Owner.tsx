@@ -46,12 +46,14 @@ const Owner = ({
       setMembers(
         members!.map((m) => (m.id === member.id ? { ...m, role: "owner" } : m))
       );
+
       pushToHistory({
         performed_by: displayName ?? user!.uid,
         action_type: "promoted_to_owner",
         performed_on: member.name,
         occurred_at: updated.updated_on,
       });
+
       closeModal();
     } catch (err) {
       setError("deleteMember endpoint failed");

@@ -73,6 +73,7 @@ const GenerateInvite = ({
         performed_on: null,
         occurred_at: createdInvite.created_on,
       });
+
       closeModal();
     } catch (err) {
       setRequestError("createInvite endpoint failed");

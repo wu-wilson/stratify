@@ -30,9 +30,11 @@ const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
         name: name.trim(),
         description: description ?? undefined,
       };
+
       const newProject = await createProject(createProjectPayload);
       setParam({ project: newProject.project.id });
       setProjects((prev) => [newProject.project, ...prev!]);
+
       closeModal();
     } catch (err) {
       setRequestError("createProject endpoint failed");

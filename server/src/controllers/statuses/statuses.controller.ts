@@ -23,3 +23,33 @@ export const getStatuses = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const createStatus = async (req: Request, res: Response) => {
+  const { project_id, name, position } = req.body;
+
+  if (!project_id || !name || typeof position !== "number") {
+    res
+      .status(400)
+      .json({ error: "project_id, name, and position are required" });
+    return;
+  }
+
+  try {
+    const {
+      rows: [newStatus],
+    } = await pool.query(
+      `INSERT INTO statuses (project_id, name, position)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [project_id, name, position]
+    );
+
+    res.status(201).json({
+      message: "Status created successfully",
+      status: newStatus,
+    });
+  } catch (error) {
+    console.error("Error creating status:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
