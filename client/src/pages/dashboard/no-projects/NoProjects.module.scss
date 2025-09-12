@@ -9,25 +9,4 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  .title {
-    display: flex;
-    align-items: center;
-    font-size: 1.1rem;
-    font-weight: bold;
-
-    .icon {
-      color: vars.$warning-color;
-      height: 2rem;
-      width: 2rem;
-      margin-right: 0.5rem;
-    }
-  }
-
-  .subtext {
-    width: 30rem;
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 0.8rem;
-  }
 }

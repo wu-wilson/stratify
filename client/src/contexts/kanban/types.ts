@@ -12,7 +12,7 @@ export type KanbanState = {
 };
 
 type BaseKanbanContext = {
-  setKanban: Dispatch<SetStateAction<KanbanState[] | null>>;
+  setKanban: Dispatch<SetStateAction<KanbanState | null>>;
   kanban: KanbanState | null;
   error: string | null;
 };
@@ -24,5 +24,5 @@ export type KanbanContextType =
     })
   | (BaseKanbanContext & {
       loading: false;
-      kanban: KanbanState[];
+      kanban: KanbanState;
     });

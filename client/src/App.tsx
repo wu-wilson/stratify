@@ -9,7 +9,7 @@ import Join from "./pages/join/Join";
 import Login from "./pages/login/Login";
 import ErrorPage from "./pages/error-page/ErrorPage";
 import NoSupport from "./pages/no-support/NoSupport";
-import NotFound from "./pages/not-found/NotFound";
+import NotFoundPage from "./pages/not-found-page/NotFoundPage";
 
 const App = () => {
   useSmallScreenRedirect();
@@ -42,7 +42,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/error" element={<ErrorPage />} />
         <Route path="/no-support" element={<NoSupport />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );

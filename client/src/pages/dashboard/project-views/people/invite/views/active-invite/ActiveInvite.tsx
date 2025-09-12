@@ -120,7 +120,7 @@ const ActiveInvite = ({
       <div className={styles.section}>
         <div className={styles.row}>
           Invite Link
-          <Copy text={`${BASE_JOIN_URL}/${invite.token}`} />
+          <Copy text={`${BASE_JOIN_URL}/${invite.token}`} fontSize="0.7rem" />
         </div>
         <div className={styles.row}>
           Joins Enabled

@@ -3,13 +3,14 @@
 @use "sass:map";
 
 .container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  @include mixins.grid-bg;
+  text-align: center;
+
   @include mixins.themed using ($props) {
     color: map.get($props, "font-color");
   }
@@ -19,22 +20,25 @@
     align-items: center;
     font-size: 1.1rem;
     font-weight: bold;
-    white-space: pre-wrap;
 
-    .highlight {
-      color: vars.$primary-color;
+    .icon {
+      color: vars.$warning-color;
+      margin-right: 0.5rem;
+      height: 2rem;
+      width: 2rem;
     }
   }
 
   .subtext {
-    width: 20rem;
-    text-align: center;
     margin-top: 1rem;
     font-size: 0.8rem;
+    white-space: pre-wrap;
   }
 
-  .home {
-    margin-top: 1rem;
-    @include mixins.button($width: 8rem, $height: 2.5rem);
+  .button {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    font-family: inherit;
+    @include mixins.button($padding: 0.75rem 1.5rem);
   }
 }

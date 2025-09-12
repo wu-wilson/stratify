@@ -6,7 +6,7 @@ import { KanbanProvider } from "../../../contexts/kanban/KanbanProvider";
 import Tabs from "../../../components/tabs/Tabs";
 import Overview from "./overview/Overview";
 import People from "./people/People";
-import Tasks from "./tasks/Tasks";
+import Board from "./board/Board";
 import styles from "./ProjectViews.module.scss";
 
 const ProjectViews = () => {
@@ -30,9 +30,9 @@ const ProjectViews = () => {
       </div>
       <SnackbarProvider>
         {tab === "Overview" && <Overview />}
-        {tab === "Tasks" && (
+        {tab === "Board" && (
           <KanbanProvider>
-            <Tasks />
+            <Board />
           </KanbanProvider>
         )}
         {tab === "People" && <People />}

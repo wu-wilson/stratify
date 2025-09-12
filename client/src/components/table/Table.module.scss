@@ -66,11 +66,7 @@
     .paginator {
       font-size: inherit;
 
-      @include mixins.button(
-        $border-radius: 10px,
-        $padding: 0.5rem,
-        $bg-key: "table-bg"
-      );
+      @include mixins.button($padding: 0.5rem, $bg-key: "table-bg");
 
       @include mixins.themed using ($props) {
         color: map.get($props, "font-color");

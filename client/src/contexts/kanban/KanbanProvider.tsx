@@ -12,7 +12,7 @@ export const KanbanContext = createContext<KanbanContextType | undefined>(
 );
 
 export const KanbanProvider = ({ children }: { children: ReactNode }) => {
-  const [kanban, setKanban] = useState<KanbanState[] | null>(null);
+  const [kanban, setKanban] = useState<KanbanState | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +38,7 @@ export const KanbanProvider = ({ children }: { children: ReactNode }) => {
         callWithCustomError(getTasks(project), "getTasks endpoint failed"),
       ]);
       setError(null);
-      setKanban([{ statuses, taggings, tags, tasks }]);
+      setKanban({ statuses, taggings, tags, tasks });
     } catch (error) {
       setError((error as Error).message);
     } finally {

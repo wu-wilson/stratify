@@ -53,6 +53,6 @@
     font-family: inherit;
     cursor: pointer;
 
-    @include mixins.button($border-radius: 10px);
+    @include mixins.button();
   }
 }

@@ -1,8 +1,8 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
-import { TbFolderOpen } from "react-icons/tb";
-import { SUBTEXT } from "./constants";
+import { BUTTON_LABEL, SUBTEXT, TITLE } from "./constants";
 import { type InviteEntity } from "../../../../../../../services/invites/types";
 import Modal from "../../../../../../../components/modal/Modal";
+import NotFound from "../../../../../../../components/not-found/NotFound";
 import GenerateInvite from "../../generate-invite/GenerateInvite";
 import styles from "./NoActiveInvite.module.scss";
 
@@ -26,17 +26,11 @@ const NoActiveInvite = ({
         </Modal>
       )}
       <div className={styles.content}>
-        <span className={styles.title}>
-          <TbFolderOpen className={styles.icon} />
-          No Invite Link Found
-        </span>
-        <span className={styles.subtext}>{SUBTEXT}</span>
-        <button
-          className={styles.generateInvite}
-          onClick={() => setOpenModal(true)}
-        >
-          Generate Invite Link
-        </button>
+        <NotFound
+          title={TITLE}
+          subtext={SUBTEXT}
+          button={{ label: BUTTON_LABEL, onClick: () => setOpenModal(true) }}
+        />
       </div>
     </div>
   );

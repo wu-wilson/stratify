@@ -18,7 +18,7 @@ const ErrorPage = () => {
       <div className={styles.content}>
         <Error errorMsg={errorMsg} subtext={SUBTEXT} />
         <button className={styles.home} onClick={redirect}>
-          Go Home
+          Go to Home
         </button>
       </div>
     </div>
