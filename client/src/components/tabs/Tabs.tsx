@@ -28,13 +28,15 @@ const Tabs = ({
           {tab.label}
         </div>
       ))}
-      <div
-        className={styles.selected}
-        style={{
-          width: tabWidth,
-          left: `calc(${tabWidth} * ${selectedIndex})`,
-        }}
-      />
+      {selectedIndex !== -1 && (
+        <div
+          className={styles.selected}
+          style={{
+            width: tabWidth,
+            left: `calc(${tabWidth} * ${selectedIndex})`,
+          }}
+        />
+      )}
     </div>
   );
 };
