@@ -40,6 +40,6 @@
 
   .join {
     margin-top: 1rem;
-    @include mixins.button($width: 8rem, $height: 2.5rem);
+    @include mixins.button($padding: 0.75rem 1.5rem);
   }
 }
