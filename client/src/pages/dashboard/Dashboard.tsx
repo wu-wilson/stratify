@@ -14,7 +14,7 @@ const Dashboard = () => {
   const hasAccess = projects?.some((p) => p.id === selectedProjectId);
 
   return (
-    <div className={styles.container}>
+    <div id="dashboard" className={styles.container}>
       <Sidebar />
       {hasAccess ? (
         <ProjectViews />

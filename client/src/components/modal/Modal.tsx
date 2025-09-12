@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { IoMdClose } from "react-icons/io";
 import styles from "./Modal.module.scss";
 
@@ -36,7 +37,7 @@ const Modal = ({
     }
   };
 
-  return (
+  return createPortal(
     <div
       className={[
         styles.container,
@@ -62,7 +63,8 @@ const Modal = ({
         </button>
         {children}
       </div>
-    </div>
+    </div>,
+    document.getElementById("dashboard")!
   );
 };
 
