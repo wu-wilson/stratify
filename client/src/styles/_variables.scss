@@ -36,7 +36,9 @@ $themes: (
     snackbar-border: 1px solid rgb(213, 212, 212),
     snackbar-box-shadow: 0 0 5px rgb(198, 198, 198),
     draggable-area-bg: #ededed,
+    draggable-area-border: 1px solid rgb(213, 212, 212),
     draggable-item-bg: white,
+    draggable-item-border: 1px solid rgb(213, 212, 212),
   ),
   dark: (
     page-bg: #1c1c1c,
@@ -64,6 +66,8 @@ $themes: (
     snackbar-border: 1px solid #242426,
     snackbar-box-shadow: 0 0 5px rgb(0, 0, 0),
     draggable-area-bg: #151515,
-    draggable-item-bg: #242426,
+    draggable-area-border: none,
+    draggable-item-bg: #1d1d1e,
+    draggable-item-border: 1px solid transparent,
   ),
 );

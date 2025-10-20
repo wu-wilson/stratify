@@ -55,6 +55,12 @@ const ActiveBoard = () => {
       };
 
       await updateStatusIndex(updateStatusIndexPayload);
+
+      const snackbarSuccessMessage = {
+        type: "info",
+        message: "Successfully reordered status.",
+      } as Omit<SnackbarMessage, "id">;
+      pushMessage(snackbarSuccessMessage);
     } catch (err) {
       const snackbarFailureMessage = {
         type: "error",
@@ -89,23 +95,25 @@ const ActiveBoard = () => {
   return (
     <div className={styles.container}>
       <span className={styles.header}>Kanban Board</span>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        modifiers={[restrictToHorizontalAxis, restrictToParentElement]}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext
-          items={sortedStatuses.map((status) => status.id)}
-          strategy={horizontalListSortingStrategy}
+      <div className={styles.dragWrapper}>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          modifiers={[restrictToHorizontalAxis, restrictToParentElement]}
+          onDragEnd={handleDragEnd}
         >
-          <div className={styles.dragContainer}>
-            {sortedStatuses.map((status) => (
-              <Status status={status} key={status.id} />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
+          <SortableContext
+            items={sortedStatuses.map((status) => status.id)}
+            strategy={horizontalListSortingStrategy}
+          >
+            <div className={styles.dragContainer}>
+              {sortedStatuses.map((status) => (
+                <Status status={status} key={status.id} />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
+      </div>
     </div>
   );
 };
