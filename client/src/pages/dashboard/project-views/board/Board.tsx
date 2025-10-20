@@ -26,11 +26,7 @@ const Board = () => {
 
   return (
     <div className={styles.container}>
-      {kanban.statuses.length > 0 ? (
-        <ActiveBoard kanban={kanban} />
-      ) : (
-        <EmptyBoard />
-      )}
+      {kanban.statuses.length > 0 ? <ActiveBoard /> : <EmptyBoard />}
     </div>
   );
 };
