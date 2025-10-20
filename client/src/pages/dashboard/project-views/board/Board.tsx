@@ -2,6 +2,7 @@ import { useKanban } from "../../../../hooks/useKanban";
 import Spinner from "../../../../components/spinner/Spinner";
 import Error from "../../../../components/error/Error";
 import EmptyBoard from "./views/empty-board/EmptyBoard";
+import ActiveBoard from "./views/active-board/ActiveBoard";
 import styles from "./Board.module.scss";
 
 const Board = () => {
@@ -25,7 +26,11 @@ const Board = () => {
 
   return (
     <div className={styles.container}>
-      {kanban.statuses.length > 0 ? "Board" : <EmptyBoard />}
+      {kanban.statuses.length > 0 ? (
+        <ActiveBoard kanban={kanban} />
+      ) : (
+        <EmptyBoard />
+      )}
     </div>
   );
 };
