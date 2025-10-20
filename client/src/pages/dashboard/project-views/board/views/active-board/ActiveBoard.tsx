@@ -64,7 +64,7 @@ const ActiveBoard = () => {
     } catch (err) {
       const snackbarFailureMessage = {
         type: "error",
-        message: "Failed to reorder status. Please try again.",
+        message: "Failed to reorder status. Please refresh the page.",
       } as Omit<SnackbarMessage, "id">;
       pushMessage(snackbarFailureMessage);
     }
