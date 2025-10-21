@@ -6,7 +6,6 @@
   height: 100vh;
   display: flex;
   align-items: flex-start;
-  overflow: hidden;
   @include mixins.grid-bg;
   @include mixins.themed using ($props) {
     color: map.get($props, "font-color");

@@ -2,4 +2,5 @@
 
 .container {
   @include mixins.card($height: 100%);
+  min-height: fit-content;
 }

@@ -66,8 +66,8 @@ $themes: (
     snackbar-border: 1px solid #242426,
     snackbar-box-shadow: 0 0 5px rgb(0, 0, 0),
     draggable-area-bg: #151515,
-    draggable-area-border: none,
-    draggable-item-bg: #1d1d1e,
-    draggable-item-border: 1px solid transparent,
+    draggable-area-border: 1px solid #1d1d1e,
+    draggable-item-bg: #242426,
+    draggable-item-border: 1px solid #1d1d1e,
   ),
 );
