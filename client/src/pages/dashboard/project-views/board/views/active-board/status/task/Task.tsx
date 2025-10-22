@@ -14,7 +14,7 @@ const Task = ({ task }: { task: TaskEntity }) => {
     isDragging,
   } = useSortable({
     id: task.id,
-    data: { type: Draggable.TASK, task: task },
+    data: { type: Draggable.TASK, metadata: task },
   });
 
   if (isDragging) {

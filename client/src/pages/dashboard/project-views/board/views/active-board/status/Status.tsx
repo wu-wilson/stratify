@@ -21,7 +21,7 @@ const Status = ({ status }: { status: StatusEntity }) => {
     isDragging,
   } = useSortable({
     id: status.id,
-    data: { type: Draggable.STATUS, status: status },
+    data: { type: Draggable.STATUS, metadata: status },
   });
 
   const { kanban } = useKanban();
@@ -54,7 +54,7 @@ const Status = ({ status }: { status: StatusEntity }) => {
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={styles.container}
     >
-      <span className={styles.title}>{status.name}</span>
+      <span className={styles.title}>{`${status.name} (${status.id})`}</span>
       <SortableContext
         items={sortedTasks.map((task) => task.id)}
         strategy={verticalListSortingStrategy}

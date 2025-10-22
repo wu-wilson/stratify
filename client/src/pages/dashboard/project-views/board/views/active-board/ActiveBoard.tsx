@@ -5,25 +5,28 @@ import {
   rectIntersection,
   useSensor,
   useSensors,
+  type DragEndEvent,
   type DragOverEvent,
   type DragStartEvent,
 } from "@dnd-kit/core";
 import {
+  arrayMove,
   horizontalListSortingStrategy,
   SortableContext,
 } from "@dnd-kit/sortable";
-import { useKanban } from "../../../../../../hooks/useKanban";
-import { useEffect, useMemo, useState } from "react";
-import { Draggable, type DragItem } from "./types";
-import { type TaskEntity } from "../../../../../../services/tasks/types";
-import Status from "./status/Status";
-import Task from "./status/task/Task";
-import styles from "./ActiveBoard.module.scss";
 import {
   restrictToFirstScrollableAncestor,
   restrictToHorizontalAxis,
   restrictToParentElement,
 } from "@dnd-kit/modifiers";
+import { useKanban } from "../../../../../../hooks/useKanban";
+import { useMemo, useState } from "react";
+import { isStatusEntity, isTaskEntity } from "./types";
+import { type TaskEntity } from "../../../../../../services/tasks/types";
+import { type StatusEntity } from "../../../../../../services/statuses/types";
+import Status from "./status/Status";
+import Task from "./status/task/Task";
+import styles from "./ActiveBoard.module.scss";
 
 const ActiveBoard = () => {
   const { kanban, setKanban } = useKanban();
@@ -34,77 +37,112 @@ const ActiveBoard = () => {
     return kanban!.statuses.sort((a, b) => a.position - b.position);
   }, [kanban!.statuses]);
 
-  const [activeItem, setActiveItem] = useState<DragItem | null>(null);
-  const [dragOverItem, setDragOverItem] = useState<DragItem | null>(null);
+  const [activeItem, setActiveItem] = useState<
+    StatusEntity | TaskEntity | null
+  >(null);
 
   const onDragStart = (event: DragStartEvent) => {
     const { active } = event;
 
-    const activeItem = {
-      id: active.id,
-      type: active.data.current?.type,
-      data:
-        active.data.current?.type === Draggable.STATUS
-          ? active.data.current?.status
-          : active.data.current?.task,
-    } as DragItem;
-
-    setActiveItem(activeItem);
+    if (
+      isStatusEntity(active.data.current?.metadata) ||
+      isTaskEntity(active.data.current?.metadata)
+    ) {
+      setActiveItem(active.data.current.metadata);
+    }
   };
 
-  const onDragEnd = (event: DragStartEvent) => {
-    setActiveItem(null);
-    setDragOverItem(null);
+  const onDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (isStatusEntity(active.data.current?.metadata)) {
+      const oldIndex = active.data.current.metadata.position;
+      const newIndex = over!.data.current!.sortable.index;
 
-    console.log("Drag ended", event);
+      setKanban((prev) => {
+        const moved = arrayMove(sortedStatuses, oldIndex, newIndex);
+        const updated = moved.map((s, idx) => ({ ...s, position: idx }));
+
+        return {
+          ...prev!,
+          statuses: updated,
+        };
+      });
+    } else if (isTaskEntity(active.data.current?.metadata)) {
+      let position: number;
+      let status_id: string;
+
+      if (isStatusEntity(over!.data.current!.metadata)) {
+        position = kanban!.tasks.filter(
+          (t) => t.status_id === over!.id && t.id !== active.id
+        ).length;
+        status_id = over!.id as string;
+      } else {
+        position = over!.data.current!.sortable.index;
+        status_id = over!.data.current!.metadata.status_id;
+      }
+
+      setKanban((prev) => {
+        const tasks = prev!.tasks
+          .filter((t) => t.status_id === status_id && t.id !== active.id)
+          .sort((a, b) => a.position - b.position);
+
+        const reordered = [
+          ...tasks.slice(0, position),
+          { ...active.data.current!.metadata, status_id, position },
+          ...tasks.slice(position),
+        ].map((t, idx) => ({ ...t, position: idx }));
+
+        const untouched = prev!.tasks.filter((t) => t.status_id !== status_id);
+
+        const updated = [...reordered, ...untouched];
+
+        return {
+          ...prev!,
+          tasks: updated,
+        };
+      });
+    }
+
+    setActiveItem(null);
   };
 
   const onDragOver = (event: DragOverEvent) => {
-    const { over } = event;
-    if (!over) {
+    const { active, over } = event;
+    if (!over || !isTaskEntity(active.data.current?.metadata)) {
       return;
     }
-
-    const dragOverItem = {
-      id: over.id,
-      type: over.data.current?.type,
-      data:
-        over.data.current?.type === Draggable.STATUS
-          ? over.data.current?.status
-          : over.data.current?.task,
-    } as DragItem;
-
-    setDragOverItem(dragOverItem);
-  };
-
-  useEffect(() => {
-    if (!activeItem || !dragOverItem || activeItem.type !== Draggable.TASK) {
-      return;
-    }
-
-    let dragOverStatusId: string;
-
-    if (dragOverItem.type === Draggable.STATUS) {
-      dragOverStatusId = dragOverItem.id;
-    } else {
-      dragOverStatusId = dragOverItem.data.status_id;
-    }
-
-    const task = activeItem.data as TaskEntity;
 
     setKanban((prev) => {
-      if (!prev) {
-        return prev;
-      }
+      const reordered = prev!.tasks
+        .filter(
+          (t) =>
+            t.status_id === active.data.current!.metadata.status_id &&
+            t.id !== active.id
+        )
+        .sort((a, b) => a.position - b.position)
+        .map((t, idx) => ({ ...t, position: idx }));
+
+      const untouched = prev!.tasks.filter(
+        (t) => t.status_id !== active.data.current!.metadata.status_id
+      );
+
+      const updated = [
+        ...reordered,
+        ...untouched,
+        {
+          ...active.data.current!.metadata,
+          status_id: isStatusEntity(over.data.current?.metadata)
+            ? over.id
+            : over.data.current!.metadata.status_id,
+        },
+      ];
 
       return {
-        ...prev,
-        tasks: prev.tasks.map((t) =>
-          t.id === task.id ? { ...t, status_id: dragOverStatusId } : t
-        ),
+        ...prev!,
+        tasks: updated,
       };
     });
-  }, [activeItem, dragOverItem]);
+  };
 
   return (
     <div className={styles.container}>
@@ -114,7 +152,7 @@ const ActiveBoard = () => {
           sensors={sensors}
           collisionDetection={rectIntersection}
           modifiers={
-            activeItem?.type === Draggable.STATUS
+            isStatusEntity(activeItem)
               ? [restrictToHorizontalAxis, restrictToParentElement]
               : [restrictToFirstScrollableAncestor]
           }
@@ -133,12 +171,8 @@ const ActiveBoard = () => {
             </div>
           </SortableContext>
           <DragOverlay>
-            {activeItem?.type === Draggable.STATUS && (
-              <Status status={activeItem.data} />
-            )}
-            {activeItem?.type === Draggable.TASK && (
-              <Task task={activeItem.data} />
-            )}
+            {isStatusEntity(activeItem) && <Status status={activeItem} />}
+            {isTaskEntity(activeItem) && <Task task={activeItem} />}
           </DragOverlay>
         </DndContext>
       </div>
