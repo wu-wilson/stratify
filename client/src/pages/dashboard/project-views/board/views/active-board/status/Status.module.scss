@@ -1,3 +1,4 @@
+@use "../../../../../../../styles/variables" as vars;
 @use "../../../../../../../styles/mixins" as mixins;
 @use "sass:map";
 
@@ -7,12 +8,44 @@
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   box-sizing: border-box;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem;
   font-size: 0.8rem;
   border-radius: 10px;
+
   @include mixins.themed using ($props) {
     background-color: map.get($props, "draggable-item-bg");
     border: map.get($props, "draggable-item-border");
+  }
+
+  .title {
+    text-decoration: underline;
+    margin-bottom: 0.5rem;
+  }
+
+  .dragContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border-radius: 10px;
+    gap: 1rem;
+
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "draggable-area-bg");
+      border: map.get($props, "draggable-area-border");
+    }
+  }
+}
+
+.ghost {
+  opacity: 0.3;
+
+  @include mixins.themed using ($props) {
+    border: map.get($props, "dragging-ghost-border");
   }
 }

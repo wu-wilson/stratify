@@ -1,0 +1,23 @@
+@use "../../../../../../../../styles/mixins" as mixins;
+@use "sass:map";
+
+.container {
+  height: 150px;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+
+  @include mixins.themed using ($props) {
+    background-color: map.get($props, "draggable-item-bg");
+    border: map.get($props, "draggable-item-border");
+  }
+}
+
+.ghost {
+  opacity: 0.3;
+
+  @include mixins.themed using ($props) {
+    border: map.get($props, "dragging-ghost-border");
+  }
+}

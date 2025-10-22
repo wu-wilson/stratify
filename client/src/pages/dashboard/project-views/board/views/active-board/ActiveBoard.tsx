@@ -1,96 +1,110 @@
-import { useMemo } from "react";
-import { useKanban } from "../../../../../../hooks/useKanban";
-import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
-import { useSnackbar } from "../../../../../../hooks/useSnackbar";
-import { updateStatusIndex } from "../../../../../../services/statuses/statuses.service";
 import {
-  restrictToHorizontalAxis,
-  restrictToParentElement,
-} from "@dnd-kit/modifiers";
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  rectIntersection,
+  useSensor,
+  useSensors,
+  type DragOverEvent,
+  type DragStartEvent,
+} from "@dnd-kit/core";
 import {
-  arrayMove,
   horizontalListSortingStrategy,
   SortableContext,
 } from "@dnd-kit/sortable";
-import {
-  closestCenter,
-  DndContext,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  type StatusEntity,
-  type UpdateStatusIndexPayload,
-} from "../../../../../../services/statuses/types";
-import { type SnackbarMessage } from "../../../../../../contexts/snackbar/types";
+import { useKanban } from "../../../../../../hooks/useKanban";
+import { useEffect, useMemo, useState } from "react";
+import { Draggable, type DragItem } from "./types";
+import { type TaskEntity } from "../../../../../../services/tasks/types";
 import Status from "./status/Status";
+import Task from "./status/task/Task";
 import styles from "./ActiveBoard.module.scss";
+import {
+  restrictToFirstScrollableAncestor,
+  restrictToHorizontalAxis,
+  restrictToParentElement,
+} from "@dnd-kit/modifiers";
 
 const ActiveBoard = () => {
-  const { kanban, setKanban } = useKanban()!;
-  const { getParam } = useQueryParams();
-  const { pushMessage } = useSnackbar();
-
-  const sortedStatuses = useMemo(
-    () => kanban!.statuses.slice().sort((a, b) => a.position - b.position),
-    [kanban!.statuses]
-  );
+  const { kanban, setKanban } = useKanban();
 
   const sensors = useSensors(useSensor(PointerSensor));
 
-  const updateStatusPosition = async (
-    status: StatusEntity,
-    newIndex: number
-  ) => {
-    try {
-      const project = getParam("project")!;
+  const sortedStatuses = useMemo(() => {
+    return kanban!.statuses.sort((a, b) => a.position - b.position);
+  }, [kanban!.statuses]);
 
-      const updateStatusIndexPayload: UpdateStatusIndexPayload = {
-        project_id: project,
-        status_id: status.id,
-        old_index: status.position,
-        new_index: newIndex,
-      };
+  const [activeItem, setActiveItem] = useState<DragItem | null>(null);
+  const [dragOverItem, setDragOverItem] = useState<DragItem | null>(null);
 
-      await updateStatusIndex(updateStatusIndexPayload);
+  const onDragStart = (event: DragStartEvent) => {
+    const { active } = event;
 
-      const snackbarSuccessMessage = {
-        type: "info",
-        message: "Successfully reordered status.",
-      } as Omit<SnackbarMessage, "id">;
-      pushMessage(snackbarSuccessMessage);
-    } catch (err) {
-      const snackbarFailureMessage = {
-        type: "error",
-        message: "Failed to reorder status. Please refresh the page.",
-      } as Omit<SnackbarMessage, "id">;
-      pushMessage(snackbarFailureMessage);
-    }
+    const activeItem = {
+      id: active.id,
+      type: active.data.current?.type,
+      data:
+        active.data.current?.type === Draggable.STATUS
+          ? active.data.current?.status
+          : active.data.current?.task,
+    } as DragItem;
+
+    setActiveItem(activeItem);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) {
+  const onDragEnd = (event: DragStartEvent) => {
+    setActiveItem(null);
+    setDragOverItem(null);
+
+    console.log("Drag ended", event);
+  };
+
+  const onDragOver = (event: DragOverEvent) => {
+    const { over } = event;
+    if (!over) {
       return;
     }
 
-    const status = sortedStatuses.find((s) => s.id === active.id)!;
-    const newIndex = sortedStatuses.findIndex((s) => s.id === over.id);
+    const dragOverItem = {
+      id: over.id,
+      type: over.data.current?.type,
+      data:
+        over.data.current?.type === Draggable.STATUS
+          ? over.data.current?.status
+          : over.data.current?.task,
+    } as DragItem;
 
-    setKanban((prevKanban) => {
-      const moved = arrayMove(sortedStatuses, status.position, newIndex);
-      const updated = moved.map((s, idx) => ({ ...s, position: idx }));
+    setDragOverItem(dragOverItem);
+  };
+
+  useEffect(() => {
+    if (!activeItem || !dragOverItem || activeItem.type !== Draggable.TASK) {
+      return;
+    }
+
+    let dragOverStatusId: string;
+
+    if (dragOverItem.type === Draggable.STATUS) {
+      dragOverStatusId = dragOverItem.id;
+    } else {
+      dragOverStatusId = dragOverItem.data.status_id;
+    }
+
+    const task = activeItem.data as TaskEntity;
+
+    setKanban((prev) => {
+      if (!prev) {
+        return prev;
+      }
 
       return {
-        ...prevKanban!,
-        statuses: updated,
+        ...prev,
+        tasks: prev.tasks.map((t) =>
+          t.id === task.id ? { ...t, status_id: dragOverStatusId } : t
+        ),
       };
     });
-
-    updateStatusPosition(status, newIndex);
-  };
+  }, [activeItem, dragOverItem]);
 
   return (
     <div className={styles.container}>
@@ -98,9 +112,15 @@ const ActiveBoard = () => {
       <div className={styles.dragWrapper}>
         <DndContext
           sensors={sensors}
-          collisionDetection={closestCenter}
-          modifiers={[restrictToHorizontalAxis, restrictToParentElement]}
-          onDragEnd={handleDragEnd}
+          collisionDetection={rectIntersection}
+          modifiers={
+            activeItem?.type === Draggable.STATUS
+              ? [restrictToHorizontalAxis, restrictToParentElement]
+              : [restrictToFirstScrollableAncestor]
+          }
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onDragOver={onDragOver}
         >
           <SortableContext
             items={sortedStatuses.map((status) => status.id)}
@@ -112,6 +132,14 @@ const ActiveBoard = () => {
               ))}
             </div>
           </SortableContext>
+          <DragOverlay>
+            {activeItem?.type === Draggable.STATUS && (
+              <Status status={activeItem.data} />
+            )}
+            {activeItem?.type === Draggable.TASK && (
+              <Task task={activeItem.data} />
+            )}
+          </DragOverlay>
         </DndContext>
       </div>
     </div>
