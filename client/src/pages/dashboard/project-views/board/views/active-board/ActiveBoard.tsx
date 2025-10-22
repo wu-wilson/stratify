@@ -20,16 +20,24 @@ import {
   restrictToParentElement,
 } from "@dnd-kit/modifiers";
 import { useKanban } from "../../../../../../hooks/useKanban";
+import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
+import { useSnackbar } from "../../../../../../hooks/useSnackbar";
 import { useMemo, useState } from "react";
 import { isStatusEntity, isTaskEntity } from "./types";
+import { updateStatusIndex } from "../../../../../../services/statuses/statuses.service";
 import { type TaskEntity } from "../../../../../../services/tasks/types";
-import { type StatusEntity } from "../../../../../../services/statuses/types";
+import {
+  type StatusEntity,
+  type UpdateStatusIndexPayload,
+} from "../../../../../../services/statuses/types";
 import Status from "./status/Status";
 import Task from "./status/task/Task";
 import styles from "./ActiveBoard.module.scss";
 
 const ActiveBoard = () => {
   const { kanban, setKanban } = useKanban();
+  const { getParam } = useQueryParams();
+  const { pushMessage } = useSnackbar();
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -52,11 +60,36 @@ const ActiveBoard = () => {
     }
   };
 
+  const updateStatusPosition = async (
+    status: StatusEntity,
+    newIndex: number
+  ) => {
+    try {
+      const project = getParam("project")!;
+
+      const updateStatusIndexPayload: UpdateStatusIndexPayload = {
+        old_index: status.position,
+        new_index: newIndex,
+        project_id: project,
+        status_id: status.id,
+      };
+
+      await updateStatusIndex(updateStatusIndexPayload);
+    } catch (err) {
+      pushMessage({
+        type: "error",
+        message: "Failed to reorder status. Please refresh and try again.",
+      });
+    }
+  };
+
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (isStatusEntity(active.data.current?.metadata)) {
       const oldIndex = active.data.current.metadata.position;
       const newIndex = over!.data.current!.sortable.index;
+
+      updateStatusPosition(active.data.current.metadata, newIndex);
 
       setKanban((prev) => {
         const moved = arrayMove(sortedStatuses, oldIndex, newIndex);
