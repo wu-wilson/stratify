@@ -17,25 +17,13 @@ const Task = ({ task }: { task: TaskEntity }) => {
     data: { type: Draggable.TASK, metadata: task },
   });
 
-  if (isDragging) {
-    return (
-      <div
-        ref={setNodeRef}
-        {...attributes}
-        {...listeners}
-        style={{ transform: CSS.Transform.toString(transform), transition }}
-        className={`${styles.container} ${styles.ghost}`}
-      />
-    );
-  }
-
   return (
     <div
       ref={setNodeRef}
       {...attributes}
       {...listeners}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={styles.container}
+      className={`${styles.container} ${isDragging && styles.ghost}`}
     >
       {task.title}
     </div>

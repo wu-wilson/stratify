@@ -34,25 +34,13 @@ const Status = ({ status }: { status: StatusEntity }) => {
     [kanban!.tasks, status.id]
   );
 
-  if (isDragging) {
-    return (
-      <div
-        ref={setNodeRef}
-        {...attributes}
-        {...listeners}
-        style={{ transform: CSS.Transform.toString(transform), transition }}
-        className={`${styles.container} ${styles.ghost}`}
-      />
-    );
-  }
-
   return (
     <div
       ref={setNodeRef}
       {...attributes}
       {...listeners}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={styles.container}
+      className={`${styles.container} ${isDragging && styles.ghost}`}
     >
       <span className={styles.title}>{status.name}</span>
       <SortableContext

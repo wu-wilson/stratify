@@ -52,15 +52,22 @@ const ActiveBoard = () => {
   const [activeItem, setActiveItem] = useState<
     StatusEntity | TaskEntity | null
   >(null);
+  const [originalActiveItemPosition, setOriginalActiveItemPosition] = useState<
+    number | null
+  >(null);
 
   const onDragStart = (event: DragStartEvent) => {
     const { active } = event;
 
-    if (
-      isStatusEntity(active.data.current?.metadata) ||
-      isTaskEntity(active.data.current?.metadata)
-    ) {
-      setActiveItem(active.data.current.metadata);
+    const isStatus = isStatusEntity(active.data.current?.metadata);
+    const isTask = isTaskEntity(active.data.current?.metadata);
+
+    if (isStatus || isTask) {
+      setActiveItem(active.data.current!.metadata);
+
+      if (!originalActiveItemPosition && isTask) {
+        setOriginalActiveItemPosition(active.data.current?.metadata.position);
+      }
     }
   };
 
@@ -103,7 +110,7 @@ const ActiveBoard = () => {
 
     try {
       const reorderTaskPayload: ReorderTaskPayload = {
-        old_index: task.position,
+        old_index: originalActiveItemPosition!,
         new_index: newIndex,
         old_status_id: task.status_id,
         new_status_id: newStatusId,
@@ -179,6 +186,7 @@ const ActiveBoard = () => {
     }
 
     setActiveItem(null);
+    setOriginalActiveItemPosition(null);
   };
 
   const onDragOver = (event: DragOverEvent) => {
@@ -209,6 +217,10 @@ const ActiveBoard = () => {
           status_id: isStatusEntity(over.data.current?.metadata)
             ? over.id
             : over.data.current!.metadata.status_id,
+          position: isStatusEntity(over.data.current?.metadata)
+            ? prev!.tasks.filter((t) => t.status_id === (over.id as string))
+                .length
+            : originalActiveItemPosition!,
         },
       ];
 
