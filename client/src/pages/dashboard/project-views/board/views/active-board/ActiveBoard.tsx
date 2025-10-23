@@ -53,10 +53,6 @@ const ActiveBoard = () => {
     StatusEntity | TaskEntity | null
   >(null);
 
-  const [originalActiveStatusId, setOriginalActiveStatusId] = useState<
-    string | null
-  >(null);
-
   const onDragStart = (event: DragStartEvent) => {
     const { active } = event;
 
@@ -91,18 +87,14 @@ const ActiveBoard = () => {
     }
   };
 
-  const updateTaskPosition = async (
-    task: TaskEntity,
-    newStatusId: string,
-    newIndex: number
-  ) => {
+  const updateTaskPosition = async (newStatusId: string, newIndex: number) => {
     try {
       const reorderTaskPayload: ReorderTaskPayload = {
-        old_index: task.position,
+        old_index: (activeItem as TaskEntity).position,
         new_index: newIndex,
-        old_status_id: originalActiveStatusId!,
+        old_status_id: (activeItem as TaskEntity).status_id,
         new_status_id: newStatusId,
-        task_id: task.id,
+        task_id: activeItem!.id,
       };
 
       await reorderTask(reorderTaskPayload);
@@ -116,11 +108,11 @@ const ActiveBoard = () => {
 
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (isStatusEntity(active.data.current?.metadata)) {
-      const oldIndex = active.data.current.metadata.position;
+    if (isStatusEntity(activeItem)) {
+      const oldIndex = activeItem.position;
       const newIndex = over!.data.current!.sortable.index;
 
-      updateStatusPosition(active.data.current.metadata, newIndex);
+      updateStatusPosition(activeItem, newIndex);
 
       setKanban((prev) => {
         const moved = arrayMove(sortedStatuses, oldIndex, newIndex);
@@ -131,7 +123,7 @@ const ActiveBoard = () => {
           statuses: updated,
         };
       });
-    } else if (isTaskEntity(active.data.current?.metadata)) {
+    } else if (isTaskEntity(activeItem)) {
       let position: number;
       let status_id: string;
 
@@ -145,7 +137,7 @@ const ActiveBoard = () => {
         status_id = over!.data.current!.metadata.status_id;
       }
 
-      updateTaskPosition(active.data.current.metadata, status_id, position);
+      updateTaskPosition(status_id, position);
 
       setKanban((prev) => {
         const tasks = prev!.tasks
@@ -154,7 +146,7 @@ const ActiveBoard = () => {
 
         const reordered = [
           ...tasks.slice(0, position),
-          { ...active.data.current!.metadata, status_id, position },
+          { ...activeItem, status_id, position },
           ...tasks.slice(position),
         ].map((t, idx) => ({ ...t, position: idx }));
 
@@ -170,17 +162,12 @@ const ActiveBoard = () => {
     }
 
     setActiveItem(null);
-    setOriginalActiveStatusId(null);
   };
 
   const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
-    if (!over || !isTaskEntity(active.data.current?.metadata)) {
+    if (!over || !isTaskEntity(activeItem)) {
       return;
-    }
-
-    if (!originalActiveStatusId) {
-      setOriginalActiveStatusId(active.data.current?.metadata.status_id);
     }
 
     setKanban((prev) => {
@@ -201,7 +188,7 @@ const ActiveBoard = () => {
         ...reordered,
         ...untouched,
         {
-          ...active.data.current!.metadata,
+          ...activeItem,
           status_id: isStatusEntity(over.data.current?.metadata)
             ? over.id
             : over.data.current!.metadata.status_id,
