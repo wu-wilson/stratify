@@ -64,10 +64,13 @@ const ActiveBoard = () => {
     }
   };
 
-  const updateStatusPosition = async (
-    status: StatusEntity,
-    newIndex: number
-  ) => {
+  const updateStatusPosition = async (newIndex: number) => {
+    const status = activeItem as StatusEntity;
+
+    if (status.position === newIndex) {
+      return;
+    }
+
     try {
       const project = getParam("project")!;
 
@@ -92,13 +95,19 @@ const ActiveBoard = () => {
   };
 
   const updateTaskPosition = async (newStatusId: string, newIndex: number) => {
+    const task = activeItem as TaskEntity;
+
+    if (task.status_id === newStatusId && task.position === newIndex) {
+      return;
+    }
+
     try {
       const reorderTaskPayload: ReorderTaskPayload = {
-        old_index: (activeItem as TaskEntity).position,
+        old_index: task.position,
         new_index: newIndex,
-        old_status_id: (activeItem as TaskEntity).status_id,
+        old_status_id: task.status_id,
         new_status_id: newStatusId,
-        task_id: activeItem!.id,
+        task_id: task.id,
       };
 
       await reorderTask(reorderTaskPayload);
@@ -120,7 +129,7 @@ const ActiveBoard = () => {
       const oldIndex = activeItem.position;
       const newIndex = over!.data.current!.sortable.index;
 
-      updateStatusPosition(activeItem, newIndex);
+      updateStatusPosition(newIndex);
 
       setKanban((prev) => {
         const moved = arrayMove(sortedStatuses, oldIndex, newIndex);
