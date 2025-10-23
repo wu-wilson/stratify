@@ -16,14 +16,14 @@ export type CreateStatusResponse = {
   status: StatusEntity;
 };
 
-export type UpdateStatusIndexPayload = {
+export type ReorderStatusPayload = {
   old_index: number;
   new_index: number;
   project_id: string;
   status_id: string;
 };
 
-export type UpdateStatusIndexResponse = {
+export type ReorderStatusResponse = {
   message: string;
   updated: StatusEntity;
 };

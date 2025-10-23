@@ -24,11 +24,15 @@ import { useQueryParams } from "../../../../../../hooks/query-params/useQueryPar
 import { useSnackbar } from "../../../../../../hooks/useSnackbar";
 import { useMemo, useState } from "react";
 import { isStatusEntity, isTaskEntity } from "./types";
-import { updateStatusIndex } from "../../../../../../services/statuses/statuses.service";
-import { type TaskEntity } from "../../../../../../services/tasks/types";
+import { reorderStatus } from "../../../../../../services/statuses/statuses.service";
+import { reorderTask } from "../../../../../../services/tasks/tasks.service";
+import {
+  type ReorderTaskPayload,
+  type TaskEntity,
+} from "../../../../../../services/tasks/types";
 import {
   type StatusEntity,
-  type UpdateStatusIndexPayload,
+  type ReorderStatusPayload,
 } from "../../../../../../services/statuses/types";
 import Status from "./status/Status";
 import Task from "./status/task/Task";
@@ -49,6 +53,10 @@ const ActiveBoard = () => {
     StatusEntity | TaskEntity | null
   >(null);
 
+  const [originalActiveStatusId, setOriginalActiveStatusId] = useState<
+    string | null
+  >(null);
+
   const onDragStart = (event: DragStartEvent) => {
     const { active } = event;
 
@@ -67,18 +75,41 @@ const ActiveBoard = () => {
     try {
       const project = getParam("project")!;
 
-      const updateStatusIndexPayload: UpdateStatusIndexPayload = {
+      const reorderStatusPayload: ReorderStatusPayload = {
         old_index: status.position,
         new_index: newIndex,
         project_id: project,
         status_id: status.id,
       };
 
-      await updateStatusIndex(updateStatusIndexPayload);
+      await reorderStatus(reorderStatusPayload);
     } catch (err) {
       pushMessage({
         type: "error",
         message: "Failed to reorder status. Please refresh and try again.",
+      });
+    }
+  };
+
+  const updateTaskPosition = async (
+    task: TaskEntity,
+    newStatusId: string,
+    newIndex: number
+  ) => {
+    try {
+      const reorderTaskPayload: ReorderTaskPayload = {
+        old_index: task.position,
+        new_index: newIndex,
+        old_status_id: originalActiveStatusId!,
+        new_status_id: newStatusId,
+        task_id: task.id,
+      };
+
+      await reorderTask(reorderTaskPayload);
+    } catch (err) {
+      pushMessage({
+        type: "error",
+        message: "Failed to reorder task. Please refresh and try again.",
       });
     }
   };
@@ -114,6 +145,8 @@ const ActiveBoard = () => {
         status_id = over!.data.current!.metadata.status_id;
       }
 
+      updateTaskPosition(active.data.current.metadata, status_id, position);
+
       setKanban((prev) => {
         const tasks = prev!.tasks
           .filter((t) => t.status_id === status_id && t.id !== active.id)
@@ -137,12 +170,17 @@ const ActiveBoard = () => {
     }
 
     setActiveItem(null);
+    setOriginalActiveStatusId(null);
   };
 
   const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over || !isTaskEntity(active.data.current?.metadata)) {
       return;
+    }
+
+    if (!originalActiveStatusId) {
+      setOriginalActiveStatusId(active.data.current?.metadata.status_id);
     }
 
     setKanban((prev) => {

@@ -3,8 +3,8 @@ import {
   type CreateStatusPayload,
   type CreateStatusResponse,
   type StatusEntity,
-  type UpdateStatusIndexPayload,
-  type UpdateStatusIndexResponse,
+  type ReorderStatusPayload,
+  type ReorderStatusResponse,
 } from "./types";
 import axios from "axios";
 
@@ -25,12 +25,12 @@ export const createStatus = async (
   return response.data;
 };
 
-export const updateStatusIndex = async (
-  updateStatusIndexPayload: UpdateStatusIndexPayload
+export const reorderStatus = async (
+  reorderStatusPayload: ReorderStatusPayload
 ) => {
-  const response = await axios.patch<UpdateStatusIndexResponse>(
-    `${BASE_URL}/update/index`,
-    updateStatusIndexPayload
+  const response = await axios.patch<ReorderStatusResponse>(
+    `${BASE_URL}/reorder`,
+    reorderStatusPayload
   );
   return response.data;
 };

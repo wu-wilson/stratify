@@ -54,7 +54,7 @@ export const createStatus = async (req: Request, res: Response) => {
   }
 };
 
-export const updateStatusIndex = async (req: Request, res: Response) => {
+export const reorderStatus = async (req: Request, res: Response) => {
   const { status_id, old_index, new_index, project_id } = req.body;
 
   if (
@@ -101,7 +101,7 @@ export const updateStatusIndex = async (req: Request, res: Response) => {
     await pool.query("COMMIT");
 
     res.json({
-      message: "Status index updated successfully",
+      message: "Status reordered successfully",
       updated: updatedStatus,
     });
   } catch (error) {

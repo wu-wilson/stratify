@@ -5,4 +5,4 @@ export const statusesRouter = express.Router();
 
 statusesRouter.get("/", util.getStatuses);
 statusesRouter.post("/create", util.createStatus);
-statusesRouter.patch("/update/index", util.updateStatusIndex);
+statusesRouter.patch("/reorder", util.reorderStatus);
