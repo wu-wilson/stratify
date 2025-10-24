@@ -132,7 +132,7 @@ const ActiveBoard = () => {
 
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (isStatusEntity(activeItem)) {
+    if (isStatusEntity(activeItem) && over) {
       const oldIndex = activeItem.position;
       const newIndex = over!.data.current!.sortable.index;
 
