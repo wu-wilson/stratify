@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { PLACEHOLDER, SUBTITLE } from "./constants";
-import { useKanban } from "../../../../../hooks/useKanban";
-import { useQueryParams } from "../../../../../hooks/query-params/useQueryParams";
-import { useElementHeight } from "../../../../../hooks/useElementHeight";
+import { useKanban } from "../../../../../../hooks/useKanban";
+import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
+import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { validateStatusName } from "./util";
-import { createStatus } from "../../../../../services/statuses/statuses.service";
-import { type CreateStatusPayload } from "../../../../../services/statuses/types";
-import Spinner from "../../../../../components/spinner/Spinner";
-import Error from "../../../../../components/error/Error";
+import { createStatus } from "../../../../../../services/statuses/statuses.service";
+import { type CreateStatusPayload } from "../../../../../../services/statuses/types";
+import Spinner from "../../../../../../components/spinner/Spinner";
+import Error from "../../../../../../components/error/Error";
 import styles from "./CreateStatus.module.scss";
 
 const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {

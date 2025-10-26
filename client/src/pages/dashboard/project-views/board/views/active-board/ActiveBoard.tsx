@@ -33,6 +33,8 @@ import {
   type StatusEntity,
   type ReorderStatusPayload,
 } from "../../../../../../services/statuses/types";
+import Modal from "../../../../../../components/modal/Modal";
+import CreateStatus from "../../modals/create-status/CreateStatus";
 import Status from "./status/Status";
 import Task from "./status/task/Task";
 import styles from "./ActiveBoard.module.scss";
@@ -251,8 +253,15 @@ const ActiveBoard = () => {
     }
   };
 
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
   return (
     <div className={styles.container}>
+      {openModal && (
+        <Modal close={() => setOpenModal(false)}>
+          <CreateStatus closeModal={() => setOpenModal(false)} />
+        </Modal>
+      )}
       <span className={styles.header}>Kanban Board</span>
       <div className={styles.dragWrapper}>
         <DndContext
@@ -275,6 +284,12 @@ const ActiveBoard = () => {
               {sortedStatuses.map((status) => (
                 <Status status={status} key={status.id} />
               ))}
+              <button
+                className={styles.addStatus}
+                onClick={() => setOpenModal(true)}
+              >
+                Add Status
+              </button>
             </div>
           </SortableContext>
           <DragOverlay>

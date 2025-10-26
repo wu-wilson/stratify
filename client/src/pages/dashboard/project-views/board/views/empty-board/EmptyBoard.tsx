@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BUTTON_LABEL, SUBTEXT, TITLE } from "./constants";
 import Modal from "../../../../../../components/modal/Modal";
-import CreateStatus from "../../create-status/CreateStatus";
+import CreateStatus from "../../modals/create-status/CreateStatus";
 import NotFound from "../../../../../../components/not-found/NotFound";
 import styles from "./EmptyBoard.module.scss";
 

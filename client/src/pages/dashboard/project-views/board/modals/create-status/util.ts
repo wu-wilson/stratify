@@ -1,4 +1,4 @@
-import type { StatusEntity } from "../../../../../services/statuses/types";
+import { type StatusEntity } from "../../../../../../services/statuses/types";
 
 export const validateStatusName = (
   name: string,

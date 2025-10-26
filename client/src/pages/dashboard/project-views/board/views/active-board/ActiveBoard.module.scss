@@ -41,6 +41,12 @@
       height: 100%;
       display: flex;
       gap: 1rem;
+
+      .addStatus {
+        font-size: 0.75rem;
+        font-family: inherit;
+        @include mixins.button($height: fit-content);
+      }
     }
   }
 }
