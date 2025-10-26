@@ -6,8 +6,11 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { Draggable } from "../types";
 import { useKanban } from "../../../../../../../hooks/useKanban";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { IoTrashSharp } from "react-icons/io5";
 import { type StatusEntity } from "../../../../../../../services/statuses/types";
+import Modal from "../../../../../../../components/modal/Modal";
+import DeleteStatus from "../../../modals/delete-status/DeleteStatus";
 import Task from "./task/Task";
 import styles from "./Status.module.scss";
 
@@ -34,6 +37,8 @@ const Status = ({ status }: { status: StatusEntity }) => {
     [kanban!.tasks, status.id]
   );
 
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+
   return (
     <div
       ref={setNodeRef}
@@ -42,7 +47,22 @@ const Status = ({ status }: { status: StatusEntity }) => {
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={`${styles.container} ${isDragging && styles.ghost}`}
     >
-      <span className={styles.title}>{status.name}</span>
+      {openDeleteModal && (
+        <Modal close={() => setOpenDeleteModal(false)}>
+          <DeleteStatus
+            status={status}
+            closeModal={() => setOpenDeleteModal(false)}
+          />
+        </Modal>
+      )}
+      <div className={styles.header}>
+        <span className={styles.title}>{status.name}</span>
+        <IoTrashSharp
+          className={styles.trash}
+          onClick={() => setOpenDeleteModal(true)}
+        />
+      </div>
+
       <SortableContext
         items={sortedTasks.map((task) => task.id)}
         strategy={verticalListSortingStrategy}

@@ -19,9 +19,28 @@
     border: map.get($props, "draggable-item-border");
   }
 
-  .title {
-    text-decoration: underline;
-    margin-bottom: 0.5rem;
+  .header {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .title {
+      text-decoration: underline;
+    }
+
+    .trash {
+      position: absolute;
+      right: 0;
+      height: 1rem;
+      width: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        color: vars.$primary-color;
+      }
+    }
   }
 
   .dragContainer {
@@ -33,6 +52,7 @@
     box-sizing: border-box;
     padding: 0.5rem;
     border-radius: 10px;
+    margin-top: 0.5rem;
     gap: 1rem;
 
     @include mixins.themed using ($props) {

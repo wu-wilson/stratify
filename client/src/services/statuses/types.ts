@@ -16,6 +16,16 @@ export type CreateStatusResponse = {
   status: StatusEntity;
 };
 
+export type DeleteStatusPayload = {
+  status_id: string;
+  index: number;
+};
+
+export type DeleteStatusResponse = {
+  message: string;
+  deleted: StatusEntity;
+};
+
 export type ReorderStatusPayload = {
   old_index: number;
   new_index: number;

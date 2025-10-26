@@ -81,7 +81,7 @@ export const deleteMember = async (req: Request, res: Response) => {
     });
   } catch (error) {
     await pool.query("ROLLBACK");
-    console.error("Error deleting members:", error);
+    console.error("Error deleting member:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

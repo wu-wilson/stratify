@@ -1,8 +1,10 @@
 import { BASE_URL } from "./constants";
 import {
+  type StatusEntity,
   type CreateStatusPayload,
   type CreateStatusResponse,
-  type StatusEntity,
+  type DeleteStatusPayload,
+  type DeleteStatusResponse,
   type ReorderStatusPayload,
   type ReorderStatusResponse,
 } from "./types";
@@ -21,6 +23,16 @@ export const createStatus = async (
   const response = await axios.post<CreateStatusResponse>(
     `${BASE_URL}/create`,
     createStatusPayload
+  );
+  return response.data;
+};
+
+export const deleteStatus = async (
+  deleteStatusPayload: DeleteStatusPayload
+) => {
+  const response = await axios.delete<DeleteStatusResponse>(
+    `${BASE_URL}/delete`,
+    { data: deleteStatusPayload }
   );
   return response.data;
 };

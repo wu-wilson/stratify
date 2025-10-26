@@ -54,6 +54,46 @@ export const createStatus = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteStatus = async (req: Request, res: Response) => {
+  const { status_id, index } = req.body;
+
+  if (!status_id || typeof index !== "number") {
+    res.status(400).json({ error: "status_id and index are required" });
+    return;
+  }
+
+  try {
+    await pool.query("BEGIN");
+
+    await pool.query(
+      `UPDATE statuses
+       SET position = position - 1
+       WHERE position > $1`,
+      [index]
+    );
+
+    const {
+      rows: [deletedStatus],
+    } = await pool.query(
+      `DELETE FROM statuses
+       WHERE id = $1
+       RETURNING *`,
+      [status_id]
+    );
+
+    await pool.query("COMMIT");
+
+    res.json({
+      message: "Status deleted successfully",
+      deleted: deletedStatus,
+    });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error("Error deleting status:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export const reorderStatus = async (req: Request, res: Response) => {
   const { status_id, old_index, new_index, project_id } = req.body;
 

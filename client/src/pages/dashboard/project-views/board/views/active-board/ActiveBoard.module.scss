@@ -43,6 +43,7 @@
       gap: 1rem;
 
       .addStatus {
+        min-width: fit-content;
         font-size: 0.75rem;
         font-family: inherit;
         @include mixins.button($height: fit-content);

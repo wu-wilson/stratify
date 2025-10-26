@@ -92,7 +92,7 @@ const Remove = ({
       <span className={styles.title}>Remove Member</span>
       <span
         className={styles.subtext}
-      >{`Confirm that you want to remove ${member.name} from this project`}</span>
+      >{`Are you sure you want to remove ${member.name}?`}</span>
       <input
         className={styles.input}
         value={input}

@@ -44,7 +44,9 @@ const ActiveBoard = () => {
   const { getParam } = useQueryParams();
   const { pushMessage } = useSnackbar();
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 3 } })
+  );
 
   const sortedStatuses = useMemo(() => {
     return kanban!.statuses.sort((a, b) => a.position - b.position);
