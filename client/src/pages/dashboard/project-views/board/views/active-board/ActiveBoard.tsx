@@ -10,7 +10,6 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   horizontalListSortingStrategy,
   SortableContext,
 } from "@dnd-kit/sortable";
@@ -132,19 +131,26 @@ const ActiveBoard = () => {
 
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (isStatusEntity(activeItem) && over) {
-      const oldIndex = activeItem.position;
-      const newIndex = over!.data.current!.sortable.index;
+    if (isStatusEntity(activeItem)) {
+      const newIndex = over
+        ? over.data.current!.sortable.index
+        : sortedStatuses.length - 1;
 
       updateStatusPosition(newIndex);
 
       setKanban((prev) => {
-        const moved = arrayMove(sortedStatuses, oldIndex, newIndex);
-        const updated = moved.map((s, idx) => ({ ...s, position: idx }));
+        const statuses = prev!.statuses
+          .filter((s) => s.id !== active.id)
+          .sort((a, b) => a.position - b.position);
+        const reordered = [
+          ...statuses.slice(0, newIndex),
+          { ...activeItem, position: newIndex },
+          ...statuses.slice(newIndex),
+        ].map((s, idx) => ({ ...s, position: idx }));
 
         return {
           ...prev!,
-          statuses: updated,
+          statuses: reordered,
         };
       });
     } else if (isTaskEntity(activeItem)) {
@@ -191,44 +197,58 @@ const ActiveBoard = () => {
 
   const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
-    if (!over || !isTaskEntity(activeItem)) {
-      return;
+
+    if (isTaskEntity(activeItem) && over) {
+      setKanban((prev) => {
+        const reordered = prev!.tasks
+          .filter(
+            (t) =>
+              t.status_id === active.data.current!.metadata.status_id &&
+              t.id !== active.id
+          )
+          .sort((a, b) => a.position - b.position)
+          .map((t, idx) => ({ ...t, position: idx }));
+
+        const untouched = prev!.tasks.filter(
+          (t) => t.status_id !== active.data.current!.metadata.status_id
+        );
+
+        const updated = [
+          ...reordered,
+          ...untouched,
+          {
+            ...activeItem,
+            status_id: isStatusEntity(over.data.current?.metadata)
+              ? over.id
+              : over.data.current!.metadata.status_id,
+            position: isStatusEntity(over.data.current?.metadata)
+              ? prev!.tasks.filter((t) => t.status_id === (over.id as string))
+                  .length
+              : originalActiveItemPosition!,
+          },
+        ];
+
+        return {
+          ...prev!,
+          tasks: updated,
+        };
+      });
+    } else if (isStatusEntity(activeItem) && !over) {
+      setKanban((prev) => {
+        const reordered = prev!.statuses
+          .filter((s) => s.id !== active.id)
+          .sort((a, b) => a.position - b.position)
+          .map((s, idx) => ({ ...s, position: idx }));
+
+        return {
+          ...prev!,
+          statuses: [
+            ...reordered,
+            { ...activeItem, position: reordered.length },
+          ],
+        };
+      });
     }
-
-    setKanban((prev) => {
-      const reordered = prev!.tasks
-        .filter(
-          (t) =>
-            t.status_id === active.data.current!.metadata.status_id &&
-            t.id !== active.id
-        )
-        .sort((a, b) => a.position - b.position)
-        .map((t, idx) => ({ ...t, position: idx }));
-
-      const untouched = prev!.tasks.filter(
-        (t) => t.status_id !== active.data.current!.metadata.status_id
-      );
-
-      const updated = [
-        ...reordered,
-        ...untouched,
-        {
-          ...activeItem,
-          status_id: isStatusEntity(over.data.current?.metadata)
-            ? over.id
-            : over.data.current!.metadata.status_id,
-          position: isStatusEntity(over.data.current?.metadata)
-            ? prev!.tasks.filter((t) => t.status_id === (over.id as string))
-                .length
-            : originalActiveItemPosition!,
-        },
-      ];
-
-      return {
-        ...prev!,
-        tasks: updated,
-      };
-    });
   };
 
   return (
