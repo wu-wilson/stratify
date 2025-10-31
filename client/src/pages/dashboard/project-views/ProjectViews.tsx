@@ -4,7 +4,6 @@ import { useQueryParams } from "../../../hooks/query-params/useQueryParams";
 import { SnackbarProvider } from "../../../contexts/snackbar/SnackbarProvider";
 import { KanbanProvider } from "../../../contexts/kanban/KanbanProvider";
 import Tabs from "../../../components/tabs/Tabs";
-import Overview from "./overview/Overview";
 import People from "./people/People";
 import Board from "./board/Board";
 import styles from "./ProjectViews.module.scss";
@@ -29,7 +28,6 @@ const ProjectViews = () => {
         />
       </div>
       <SnackbarProvider>
-        {tab === "Overview" && <Overview />}
         {tab === "Board" && (
           <KanbanProvider>
             <Board />
