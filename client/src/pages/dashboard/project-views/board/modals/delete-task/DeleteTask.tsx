@@ -42,10 +42,13 @@ const DeleteTask = ({
           ...s,
           position: idx,
         }));
+      const untouched = kanban!.tasks.filter(
+        (t) => t.status_id !== task.status_id
+      );
 
       setKanban((prev) => ({
         ...prev!,
-        tasks: updatedTasks,
+        tasks: [...untouched, ...updatedTasks],
       }));
 
       closeModal();
