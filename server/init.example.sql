@@ -72,12 +72,14 @@ CREATE TABLE IF NOT EXISTS tasks (
     id BIGSERIAL PRIMARY KEY,
     project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     status_id BIGINT NOT NULL REFERENCES statuses(id) ON DELETE CASCADE,
-    created_by TEXT NOT NULL,
+    created_by TEXT,
     assigned_to TEXT,
     title TEXT NOT NULL,
     description TEXT,
     position INT NOT NULL,
-    created_on TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (created_by, project_id) REFERENCES members(id, project_id) ON DELETE SET NULL,
+    FOREIGN KEY (assigned_to, project_id) REFERENCES members(id, project_id) ON DELETE SET NULL
 );
 
 -- Create tags table

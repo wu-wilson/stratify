@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { pool } from "../../index";
+import { deserializeTaskId, serializeTaskId } from "./util";
+import { deserializeStatusId, serializeStatusId } from "../statuses/util";
 
 export const getTasks = async (req: Request, res: Response) => {
   const projectId = req.query.project_id as string;
@@ -17,9 +19,72 @@ export const getTasks = async (req: Request, res: Response) => {
       [projectId]
     );
 
+    tasks.forEach((task) => {
+      task.id = serializeTaskId(task.id);
+      task.status_id = serializeStatusId(task.status_id);
+    });
+
     res.json(tasks);
   } catch (error) {
     console.error("Error fetching tasks:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const createTask = async (req: Request, res: Response) => {
+  const {
+    project_id,
+    status_id,
+    created_by,
+    assigned_to,
+    title,
+    description,
+    position,
+  } = req.body;
+
+  if (
+    !project_id ||
+    !status_id ||
+    !created_by ||
+    !title ||
+    typeof position !== "number"
+  ) {
+    res.status(400).json({
+      error:
+        "project_id, status_id, created_by, title, and position are required",
+    });
+    return;
+  }
+
+  try {
+    const deserializedStatusId = deserializeStatusId(status_id);
+
+    const {
+      rows: [newTask],
+    } = await pool.query(
+      `INSERT INTO tasks (project_id, status_id, created_by, assigned_to, title, description, position)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       RETURNING *`,
+      [
+        project_id,
+        deserializedStatusId,
+        created_by,
+        assigned_to,
+        title,
+        description,
+        position,
+      ]
+    );
+
+    newTask.id = serializeTaskId(newTask.id);
+    newTask.status_id = serializeStatusId(newTask.status_id);
+
+    res.status(201).json({
+      message: "Task created successfully",
+      task: newTask,
+    });
+  } catch (error) {
+    console.error("Error creating task:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -47,6 +112,10 @@ export const reorderTask = async (req: Request, res: Response) => {
 
     let updatedTask;
 
+    const deserializedOldStatusId = deserializeStatusId(old_status_id);
+    const deserializedNewStatusId = deserializeStatusId(new_status_id);
+    const deserializedTaskId = deserializeTaskId(task_id);
+
     if (old_status_id === new_status_id) {
       if (old_index < new_index) {
         await pool.query(
@@ -55,7 +124,7 @@ export const reorderTask = async (req: Request, res: Response) => {
            WHERE status_id = $1
            AND position > $2
            AND position <= $3`,
-          [old_status_id, old_index, new_index]
+          [deserializedOldStatusId, old_index, new_index]
         );
       } else if (old_index > new_index) {
         await pool.query(
@@ -64,7 +133,7 @@ export const reorderTask = async (req: Request, res: Response) => {
            WHERE status_id = $1
            AND position >= $3
            AND position < $2`,
-          [old_status_id, old_index, new_index]
+          [deserializedOldStatusId, old_index, new_index]
         );
       }
 
@@ -75,7 +144,7 @@ export const reorderTask = async (req: Request, res: Response) => {
          SET position = $1 
          WHERE id = $2 
          RETURNING *`,
-        [new_index, task_id]
+        [new_index, deserializedTaskId]
       );
 
       updatedTask = updated;
@@ -85,7 +154,7 @@ export const reorderTask = async (req: Request, res: Response) => {
          SET position = position - 1
          WHERE status_id = $1
          AND position > $2`,
-        [old_status_id, old_index]
+        [deserializedOldStatusId, old_index]
       );
 
       await pool.query(
@@ -93,7 +162,7 @@ export const reorderTask = async (req: Request, res: Response) => {
          SET position = position + 1
          WHERE status_id = $1
          AND position >= $2`,
-        [new_status_id, new_index]
+        [deserializedNewStatusId, new_index]
       );
 
       const {
@@ -103,13 +172,16 @@ export const reorderTask = async (req: Request, res: Response) => {
          SET status_id = $1, position = $2
          WHERE id = $3
          RETURNING *`,
-        [new_status_id, new_index, task_id]
+        [deserializedNewStatusId, new_index, deserializedTaskId]
       );
 
       updatedTask = updated;
     }
 
     await pool.query("COMMIT");
+
+    updatedTask.id = serializeTaskId(updatedTask.id);
+    updatedTask.status_id = serializeStatusId(updatedTask.status_id);
 
     res.json({
       message: "Task reordered successfully",

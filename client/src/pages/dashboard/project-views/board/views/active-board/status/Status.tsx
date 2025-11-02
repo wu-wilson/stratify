@@ -11,6 +11,7 @@ import { IoTrashSharp } from "react-icons/io5";
 import { type StatusEntity } from "../../../../../../../services/statuses/types";
 import Modal from "../../../../../../../components/modal/Modal";
 import DeleteStatus from "../../../modals/delete-status/DeleteStatus";
+import CreateTask from "../../../modals/create-task/CreateTask";
 import Task from "./task/Task";
 import styles from "./Status.module.scss";
 
@@ -38,12 +39,16 @@ const Status = ({ status }: { status: StatusEntity }) => {
   );
 
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const [openCreateTaskModal, setOpenCreateTaskModal] =
+    useState<boolean>(false);
+
+  const isModalOpen = openDeleteModal || openCreateTaskModal;
 
   return (
     <div
       ref={setNodeRef}
-      {...attributes}
-      {...listeners}
+      {...(!isModalOpen ? attributes : {})}
+      {...(!isModalOpen ? listeners : {})}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={`${styles.container} ${isDragging && styles.ghost}`}
     >
@@ -52,6 +57,14 @@ const Status = ({ status }: { status: StatusEntity }) => {
           <DeleteStatus
             status={status}
             closeModal={() => setOpenDeleteModal(false)}
+          />
+        </Modal>
+      )}
+      {openCreateTaskModal && (
+        <Modal close={() => setOpenCreateTaskModal(false)}>
+          <CreateTask
+            statusId={status.id}
+            closeModal={() => setOpenCreateTaskModal(false)}
           />
         </Modal>
       )}
@@ -73,6 +86,12 @@ const Status = ({ status }: { status: StatusEntity }) => {
           ))}
         </div>
       </SortableContext>
+      <div
+        className={styles.addTask}
+        onClick={() => setOpenCreateTaskModal(true)}
+      >
+        Add Task
+      </div>
     </div>
   );
 };

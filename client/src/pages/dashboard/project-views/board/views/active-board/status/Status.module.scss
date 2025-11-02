@@ -27,7 +27,7 @@
     align-items: center;
 
     .title {
-      text-decoration: underline;
+      font-weight: bold;
     }
 
     .trash {
@@ -53,11 +53,21 @@
     padding: 0.5rem;
     border-radius: 10px;
     margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     gap: 1rem;
 
     @include mixins.themed using ($props) {
       background-color: map.get($props, "draggable-area-bg");
       border: map.get($props, "draggable-area-border");
+    }
+  }
+
+  .addTask {
+    text-decoration: underline;
+
+    &:hover {
+      cursor: pointer;
+      color: vars.$primary-color;
     }
   }
 }

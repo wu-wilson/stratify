@@ -23,7 +23,7 @@ export function isTaskEntity(obj: any): obj is TaskEntity {
     typeof obj === "object" &&
     typeof obj.id === "string" &&
     typeof obj.status_id === "string" &&
-    typeof obj.created_by === "string" &&
+    (typeof obj.created_by === "string" || obj.created_by === null) &&
     (typeof obj.assigned_to === "string" || obj.assigned_to === null) &&
     typeof obj.title === "string" &&
     (typeof obj.description === "string" || obj.description === null) &&

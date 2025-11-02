@@ -1,4 +1,3 @@
-import { MembersProvider } from "../../../../contexts/members/MembersProvider";
 import { HistoryProvider } from "../../../../contexts/history/HistoryProvider";
 import Members from "./members/Members";
 import Invite from "./invite/Invite";
@@ -8,13 +7,11 @@ import styles from "./People.module.scss";
 const People = () => {
   return (
     <div className={styles.container}>
-      <MembersProvider>
-        <HistoryProvider>
-          <Members />
-          <Invite />
-          <History />
-        </HistoryProvider>
-      </MembersProvider>
+      <HistoryProvider>
+        <Members />
+        <Invite />
+        <History />
+      </HistoryProvider>
     </div>
   );
 };

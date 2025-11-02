@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { pool } from "../../index";
+import { deserializeStatusId, serializeStatusId } from "./util";
 
 export const getStatuses = async (req: Request, res: Response) => {
   const projectId = req.query.project_id as string;
@@ -16,6 +17,10 @@ export const getStatuses = async (req: Request, res: Response) => {
        WHERE statuses.project_id = $1`,
       [projectId]
     );
+
+    statuses.forEach((status) => {
+      status.id = serializeStatusId(status.id);
+    });
 
     res.json(statuses);
   } catch (error) {
@@ -43,6 +48,8 @@ export const createStatus = async (req: Request, res: Response) => {
        RETURNING *`,
       [project_id, name, position]
     );
+
+    newStatus.id = serializeStatusId(newStatus.id);
 
     res.status(201).json({
       message: "Status created successfully",
@@ -72,16 +79,20 @@ export const deleteStatus = async (req: Request, res: Response) => {
       [index]
     );
 
+    const deserializedStatusId = deserializeStatusId(status_id);
+
     const {
       rows: [deletedStatus],
     } = await pool.query(
       `DELETE FROM statuses
        WHERE id = $1
        RETURNING *`,
-      [status_id]
+      [deserializedStatusId]
     );
 
     await pool.query("COMMIT");
+
+    deletedStatus.id = serializeStatusId(deletedStatus.id);
 
     res.json({
       message: "Status deleted successfully",
@@ -128,6 +139,8 @@ export const reorderStatus = async (req: Request, res: Response) => {
       );
     }
 
+    const deserializedStatusId = deserializeStatusId(status_id);
+
     const {
       rows: [updatedStatus],
     } = await pool.query(
@@ -135,10 +148,12 @@ export const reorderStatus = async (req: Request, res: Response) => {
        SET position = $2
        WHERE id = $1
        RETURNING *`,
-      [status_id, new_index]
+      [deserializedStatusId, new_index]
     );
 
     await pool.query("COMMIT");
+
+    updatedStatus.id = serializeStatusId(updatedStatus.id);
 
     res.json({
       message: "Status reordered successfully",

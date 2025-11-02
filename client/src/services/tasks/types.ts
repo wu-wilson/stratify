@@ -1,12 +1,27 @@
 export type TaskEntity = {
   id: string;
   status_id: string;
-  created_by: string;
+  created_by: string | null;
   assigned_to: string | null;
   title: string;
   description: string | null;
   position: number;
   created_on: string;
+};
+
+export type CreateTaskPayload = {
+  project_id: string;
+  status_id: string;
+  created_by: string;
+  assigned_to: string | null;
+  title: string;
+  description: string | null;
+  position: number;
+};
+
+export type CreateTaskResponse = {
+  message: string;
+  task: TaskEntity;
 };
 
 export type ReorderTaskPayload = {
