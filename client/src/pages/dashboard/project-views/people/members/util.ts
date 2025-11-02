@@ -8,11 +8,8 @@ import {
 
 export const getActionIcons = (
   setModal: Dispatch<SetStateAction<"remove" | "owner" | null>>,
-  setSelectedMember: Dispatch<SetStateAction<MemberEntity | null>>,
-  isOwner: boolean
+  setSelectedMember: Dispatch<SetStateAction<MemberEntity | null>>
 ): ActionIcons[] => {
-  if (!isOwner) return [];
-
   return [
     {
       icon: IoSettingsSharp,

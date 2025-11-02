@@ -1,6 +1,5 @@
 import { COLUMNS } from "./constants";
 import { useMemo, useState } from "react";
-import { useAuth } from "../../../../../hooks/useAuth";
 import { useMembers } from "../../../../../hooks/useMembers";
 import { useHistory } from "../../../../../hooks/useHistory";
 import { getActionIcons } from "./util";
@@ -45,16 +44,6 @@ const Members = () => {
     setModal(null);
   };
 
-  const { user } = useAuth();
-  const isOwner = useMemo(() => {
-    const id = user?.uid;
-    if (!id) {
-      return false;
-    }
-    const currUser = members?.find((member) => member.id === id);
-    return currUser?.role === "owner";
-  }, [user, members]);
-
   if (membersLoading || historyLoading) {
     return (
       <div className={styles.container}>
@@ -88,7 +77,7 @@ const Members = () => {
       <SearchTable
         rows={rows}
         columns={COLUMNS}
-        actionIcons={getActionIcons(setModal, setSelectedMember, isOwner)}
+        actionIcons={getActionIcons(setModal, setSelectedMember)}
         rowsPerPage={4}
       />
     </div>

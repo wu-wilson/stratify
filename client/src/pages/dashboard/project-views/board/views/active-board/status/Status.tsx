@@ -3,10 +3,13 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useMemo, useState } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { Draggable } from "../types";
 import { useKanban } from "../../../../../../../hooks/useKanban";
-import { useMemo, useState } from "react";
+import { useAuth } from "../../../../../../../hooks/useAuth";
+import { useMembers } from "../../../../../../../hooks/useMembers";
+import { useIsOwner } from "../../../../../../../hooks/useIsOwner";
 import { IoTrashSharp } from "react-icons/io5";
 import { type StatusEntity } from "../../../../../../../services/statuses/types";
 import Modal from "../../../../../../../components/modal/Modal";
@@ -29,6 +32,10 @@ const Status = ({ status }: { status: StatusEntity }) => {
   });
 
   const { kanban } = useKanban();
+  const { user } = useAuth();
+  const { members } = useMembers();
+
+  const isOwner = useIsOwner(user, members);
 
   const sortedTasks = useMemo(
     () =>
@@ -70,12 +77,13 @@ const Status = ({ status }: { status: StatusEntity }) => {
       )}
       <div className={styles.header}>
         <span className={styles.title}>{status.name}</span>
-        <IoTrashSharp
-          className={styles.trash}
-          onClick={() => setOpenDeleteModal(true)}
-        />
+        {isOwner && (
+          <IoTrashSharp
+            className={styles.trash}
+            onClick={() => setOpenDeleteModal(true)}
+          />
+        )}
       </div>
-
       <SortableContext
         items={sortedTasks.map((task) => task.id)}
         strategy={verticalListSortingStrategy}
