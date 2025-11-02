@@ -24,6 +24,17 @@ export type CreateTaskResponse = {
   task: TaskEntity;
 };
 
+export type DeleteTaskPayload = {
+  task_id: string;
+  status_id: string;
+  index: number;
+};
+
+export type DeleteTaskResponse = {
+  message: string;
+  deleted: TaskEntity;
+};
+
 export type ReorderTaskPayload = {
   old_index: number;
   new_index: number;

@@ -1,7 +1,14 @@
+import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { Draggable } from "../../types";
+import { IoTrashSharp } from "react-icons/io5";
 import { CSS } from "@dnd-kit/utilities";
+import { useAuth } from "../../../../../../../../hooks/useAuth";
+import { useMembers } from "../../../../../../../../hooks/useMembers";
+import { useIsOwner } from "../../../../../../../../hooks/useIsOwner";
 import { type TaskEntity } from "../../../../../../../../services/tasks/types";
+import Modal from "../../../../../../../../components/modal/Modal";
+import DeleteTask from "../../../../modals/delete-task/DeleteTask";
 import styles from "./Task.module.scss";
 
 const Task = ({ task }: { task: TaskEntity }) => {
@@ -17,6 +24,13 @@ const Task = ({ task }: { task: TaskEntity }) => {
     data: { type: Draggable.TASK, metadata: task },
   });
 
+  const { user } = useAuth();
+  const { members } = useMembers();
+
+  const isOwner = useIsOwner(user, members);
+
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+
   return (
     <div
       ref={setNodeRef}
@@ -25,7 +39,23 @@ const Task = ({ task }: { task: TaskEntity }) => {
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={`${styles.container} ${isDragging && styles.ghost}`}
     >
-      {task.title}
+      {openDeleteModal && (
+        <Modal close={() => setOpenDeleteModal(false)}>
+          <DeleteTask
+            task={task}
+            closeModal={() => setOpenDeleteModal(false)}
+          />
+        </Modal>
+      )}
+      <div className={styles.header}>{task.title}</div>
+      <div className={styles.footer}>
+        {isOwner && (
+          <IoTrashSharp
+            className={styles.trash}
+            onClick={() => setOpenDeleteModal(true)}
+          />
+        )}
+      </div>
     </div>
   );
 };

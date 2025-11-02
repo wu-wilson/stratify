@@ -2,6 +2,8 @@ import { BASE_URL } from "./constants";
 import {
   type CreateTaskPayload,
   type CreateTaskResponse,
+  type DeleteTaskPayload,
+  type DeleteTaskResponse,
   type ReorderTaskPayload,
   type ReorderTaskResponse,
   type TaskEntity,
@@ -19,6 +21,14 @@ export const createTask = async (createTaskPayload: CreateTaskPayload) => {
   const response = await axios.post<CreateTaskResponse>(
     `${BASE_URL}/create`,
     createTaskPayload
+  );
+  return response.data;
+};
+
+export const deleteTask = async (deleteTaskPayload: DeleteTaskPayload) => {
+  const response = await axios.delete<DeleteTaskResponse>(
+    `${BASE_URL}/delete`,
+    { data: deleteTaskPayload }
   );
   return response.data;
 };

@@ -62,10 +62,12 @@ export const createStatus = async (req: Request, res: Response) => {
 };
 
 export const deleteStatus = async (req: Request, res: Response) => {
-  const { status_id, index } = req.body;
+  const { project_id, status_id, index } = req.body;
 
-  if (!status_id || typeof index !== "number") {
-    res.status(400).json({ error: "status_id and index are required" });
+  if (!project_id || !status_id || typeof index !== "number") {
+    res
+      .status(400)
+      .json({ error: "project_id, status_id, and index are required" });
     return;
   }
 
@@ -75,8 +77,8 @@ export const deleteStatus = async (req: Request, res: Response) => {
     await pool.query(
       `UPDATE statuses
        SET position = position - 1
-       WHERE position > $1`,
-      [index]
+       WHERE position > $1 AND project_id = $2`,
+      [index, project_id]
     );
 
     const deserializedStatusId = deserializeStatusId(status_id);

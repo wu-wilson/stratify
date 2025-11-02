@@ -1,58 +1,50 @@
 import { useEffect, useState } from "react";
 import { useKanban } from "../../../../../../hooks/useKanban";
-import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { CONFIRM_STRING, SUBTITLE } from "./constants";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
-import { deleteStatus } from "../../../../../../services/statuses/statuses.service";
+import { deleteTask } from "../../../../../../services/tasks/tasks.service";
 import {
-  type DeleteStatusPayload,
-  type StatusEntity,
-} from "../../../../../../services/statuses/types";
+  type DeleteTaskPayload,
+  type TaskEntity,
+} from "../../../../../../services/tasks/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "./DeleteStatus.module.scss";
+import styles from "./DeleteTask.module.scss";
 
-const DeleteStatus = ({
-  status,
+const DeleteTask = ({
+  task,
   closeModal,
 }: {
-  status: StatusEntity;
+  task: TaskEntity;
   closeModal: () => void;
 }) => {
   const { kanban, setKanban } = useKanban();
-  const { getParam } = useQueryParams();
   const { ref, height } = useElementHeight<HTMLDivElement>();
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const removeStatus = async () => {
+  const removeTask = async () => {
     try {
-      const project = getParam("project")!;
-
-      const deleteStatusPayload: DeleteStatusPayload = {
-        project_id: project,
-        status_id: status.id,
-        index: status.position,
+      const deleteTaskPayload: DeleteTaskPayload = {
+        task_id: task.id,
+        status_id: task.status_id,
+        index: task.position,
       };
 
-      await deleteStatus(deleteStatusPayload);
+      await deleteTask(deleteTaskPayload);
 
-      const updatedStatuses = kanban!.statuses
-        .filter((s) => s.id !== status.id)
+      const updatedTasks = kanban!.tasks
+        .filter((t) => t.id !== task.id && t.status_id === task.status_id)
         .sort((a, b) => a.position - b.position)
         .map((s, idx) => ({
           ...s,
           position: idx,
         }));
-      const updatedTasks = kanban!.tasks.filter(
-        (t) => t.status_id !== status.id
-      );
 
       setKanban((prev) => ({
         ...prev!,
-        statuses: updatedStatuses,
         tasks: updatedTasks,
       }));
 
@@ -66,7 +58,7 @@ const DeleteStatus = ({
 
   useEffect(() => {
     if (loading) {
-      removeStatus();
+      removeTask();
     }
   }, [loading]);
 
@@ -94,9 +86,9 @@ const DeleteStatus = ({
 
   return (
     <div className={styles.container} ref={ref}>
-      <span className={styles.title}>Delete Status</span>
+      <span className={styles.title}>Delete Task</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.warning}>{status.name}</span>
+      <span className={styles.warning}>{task.title}</span>
       <input
         className={styles.input}
         value={input}
@@ -119,4 +111,4 @@ const DeleteStatus = ({
   );
 };
 
-export default DeleteStatus;
+export default DeleteTask;

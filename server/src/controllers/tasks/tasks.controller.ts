@@ -89,6 +89,53 @@ export const createTask = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteTask = async (req: Request, res: Response) => {
+  const { task_id, status_id, index } = req.body;
+
+  if (!task_id || !status_id || typeof index !== "number") {
+    res.status(400).json({ error: "task_id and index are required" });
+    return;
+  }
+
+  try {
+    await pool.query("BEGIN");
+
+    const deserializedStatusId = deserializeStatusId(status_id);
+
+    await pool.query(
+      `UPDATE tasks
+       SET position = position - 1
+       WHERE position > $1 AND status_id = $2`,
+      [index, deserializedStatusId]
+    );
+
+    const deserializedTaskId = deserializeTaskId(task_id);
+
+    const {
+      rows: [deletedTask],
+    } = await pool.query(
+      `DELETE FROM tasks
+       WHERE id = $1
+       RETURNING *`,
+      [deserializedTaskId]
+    );
+
+    await pool.query("COMMIT");
+
+    deletedTask.id = serializeTaskId(deletedTask.id);
+    deletedTask.status_id = serializeStatusId(deletedTask.status_id);
+
+    res.json({
+      message: "Task deleted successfully",
+      deleted: deletedTask,
+    });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error("Error deleting task:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export const reorderTask = async (req: Request, res: Response) => {
   const { old_index, new_index, old_status_id, new_status_id, task_id } =
     req.body;

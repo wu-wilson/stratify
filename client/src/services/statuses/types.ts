@@ -17,6 +17,7 @@ export type CreateStatusResponse = {
 };
 
 export type DeleteStatusPayload = {
+  project_id: string;
   status_id: string;
   index: number;
 };
