@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useKanban } from "../../../../../../hooks/useKanban";
+import { useMembers } from "../../../../../../hooks/useMembers";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { useAuth } from "../../../../../../hooks/useAuth";
-import { validateTaskTitle } from "./util";
+import { getAssigneeLabel, getStatusLabel, validateTaskTitle } from "./util";
 import {
   DESCRIPTION_PLACEHOLDER,
   TITLE_PLACEHOLDER,
@@ -11,6 +12,7 @@ import {
 } from "./constants";
 import { createTask } from "../../../../../../services/tasks/tasks.service";
 import { type CreateTaskPayload } from "../../../../../../services/tasks/types";
+import Dropdown from "../../../../../../components/dropdown/Dropdown";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
 import styles from "./CreateTask.module.scss";
@@ -26,12 +28,22 @@ const CreateTask = ({
   const { getParam } = useQueryParams();
   const { ref, height } = useElementHeight<HTMLDivElement>();
   const { user } = useAuth();
+  const { members } = useMembers();
 
+  const [status, setStatus] = useState<string>(statusId);
+  const [assignee, setAssignee] = useState<string | null>(null);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [requestError, setRequestError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const statusOptions = useMemo(
+    () => kanban!.statuses.map((s) => s.id),
+    [kanban?.statuses]
+  );
+
+  const assigneeOptions = useMemo(() => members!.map((m) => m.id), [members]);
 
   const addTask = async () => {
     try {
@@ -39,12 +51,12 @@ const CreateTask = ({
 
       const createTaskPayload: CreateTaskPayload = {
         project_id: project,
-        status_id: statusId,
+        status_id: status,
         created_by: user!.uid,
-        assigned_to: null,
+        assigned_to: assignee,
         title: title.trim(),
         description: description.trim() || null,
-        position: kanban!.tasks.filter((t) => t.status_id === statusId).length,
+        position: kanban!.tasks.filter((t) => t.status_id === status).length,
       };
 
       const { task: createdTask } = await createTask(createTaskPayload);
@@ -102,6 +114,25 @@ const CreateTask = ({
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>New Task</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
+      <div className={styles.dropdown}>
+        <Dropdown
+          options={statusOptions}
+          selected={status}
+          setSelected={setStatus}
+          getLabel={(o) => getStatusLabel(kanban!.statuses, o)}
+          maxTextLength={48}
+        />
+      </div>
+      <div className={styles.dropdown}>
+        <Dropdown
+          options={assigneeOptions}
+          selected={assignee}
+          setSelected={setAssignee}
+          getLabel={(o) => getAssigneeLabel(members!, o)}
+          placeholder="Assignee"
+          maxTextLength={48}
+        />
+      </div>
       <input
         className={styles.input}
         value={title}

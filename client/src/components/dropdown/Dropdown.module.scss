@@ -1,0 +1,66 @@
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+@use "sass:color";
+
+.container {
+  position: relative;
+  font-size: 0.75rem;
+
+  .trigger,
+  .menu {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    overflow: hidden;
+
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "dropdown-bg");
+    }
+  }
+
+  .trigger,
+  .menu .option {
+    &:hover {
+      cursor: pointer;
+
+      @include mixins.themed using ($props) {
+        background-color: color.adjust(
+          map.get($props, "dropdown-bg"),
+          $lightness: -5%
+        );
+      }
+    }
+  }
+
+  .trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem;
+
+    .placeholder {
+      color: grey;
+    }
+
+    .icon {
+      min-width: 1.2rem;
+      min-height: 1.2rem;
+    }
+  }
+
+  .menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    margin-top: 0.5rem;
+
+    @include mixins.themed using ($props) {
+      box-shadow: map.get($props, "dropdown-box-shadow");
+    }
+
+    .option {
+      padding: 0.7rem;
+    }
+  }
+}

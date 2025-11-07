@@ -1,3 +1,5 @@
+import { type MemberEntity } from "../../../../../../services/members/types";
+import { type StatusEntity } from "../../../../../../services/statuses/types";
 import { type TaskEntity } from "../../../../../../services/tasks/types";
 
 export const validateTaskTitle = (
@@ -17,4 +19,26 @@ export const validateTaskTitle = (
   }
 
   return { valid: true, msg: null };
+};
+
+export const getStatusLabel = (statuses: StatusEntity[], statusId: string) => {
+  const label = statuses.find((s) => s.id === statusId)?.name;
+  if (!label) {
+    throw new Error(`Label not found for the given status id (${statusId})`);
+  }
+  return label;
+};
+
+export const getAssigneeLabel = (
+  members: MemberEntity[],
+  memberId: string | null
+) => {
+  if (memberId === null) {
+    return "Unassigned";
+  }
+  const label = members.find((m) => m.id === memberId)?.name;
+  if (!label) {
+    throw new Error(`Label not found for the given member id (${memberId})`);
+  }
+  return label;
 };
