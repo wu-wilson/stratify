@@ -26,10 +26,12 @@ const Task = ({ task }: { task: TaskEntity }) => {
 
   const { user } = useAuth();
   const { members } = useMembers();
-
   const isOwner = useIsOwner(user, members);
 
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+
+  const assignee =
+    members!.find((m) => m.id === task.assigned_to)?.name || "Unassigned";
 
   return (
     <div
@@ -47,7 +49,10 @@ const Task = ({ task }: { task: TaskEntity }) => {
           />
         </Modal>
       )}
-      <div className={styles.header}>{task.title}</div>
+      <div className={styles.header}>
+        <span className={styles.title}>{task.title}</span>
+        <span className={styles.assignee}>{assignee}</span>
+      </div>
       <div className={styles.footer}>
         {isOwner && (
           <IoTrashSharp

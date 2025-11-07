@@ -18,8 +18,21 @@
   }
 
   .header {
-    font-size: 0.75rem;
-    text-decoration: underline;
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      margin-bottom: 0.5rem;
+    }
+
+    .title {
+      font-size: 0.75rem;
+      text-decoration: underline;
+    }
+
+    .assignee {
+      font-size: 0.7rem;
+    }
   }
 
   .footer {

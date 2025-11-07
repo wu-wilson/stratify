@@ -92,6 +92,11 @@ const ActiveBoard = () => {
       };
 
       await reorderStatus(reorderStatusPayload);
+
+      pushMessage({
+        type: "info",
+        message: "Successfully reordered status.",
+      });
     } catch (err) {
       pushMessage({
         type: "error",
@@ -117,6 +122,11 @@ const ActiveBoard = () => {
       };
 
       await reorderTask(reorderTaskPayload);
+
+      pushMessage({
+        type: "info",
+        message: "Successfully reordered task.",
+      });
     } catch (err) {
       pushMessage({
         type: "error",

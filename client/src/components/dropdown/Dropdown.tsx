@@ -43,10 +43,12 @@ const Dropdown = <T,>({
     };
   }, []);
 
-  const triggerLabel = useMemo(() => {
-    const label = selected ? getLabel(selected) : placeholder;
-    return getTruncatedText(label, maxTextLength ?? label.length);
-  }, [selected, maxTextLength, placeholder]);
+  const triggerLabel = selected
+    ? getTruncatedText(
+        getLabel(selected),
+        maxTextLength ?? getLabel(selected).length
+      )
+    : placeholder;
 
   const enrichedOptions: EnrichedOption<T>[] = useMemo(() => {
     return options
