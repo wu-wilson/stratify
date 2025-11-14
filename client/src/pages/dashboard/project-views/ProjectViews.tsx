@@ -6,6 +6,7 @@ import { MembersProvider } from "../../../contexts/members/MembersProvider";
 import { KanbanProvider } from "../../../contexts/kanban/KanbanProvider";
 import Tabs from "../../../components/tabs/Tabs";
 import People from "./people/People";
+import Tags from "./tags/Tags";
 import Board from "./board/Board";
 import styles from "./ProjectViews.module.scss";
 
@@ -22,7 +23,7 @@ const ProjectViews = () => {
     <div className={styles.container}>
       <div className={styles.tabs}>
         <Tabs
-          tabWidth="7rem"
+          tabWidth="6rem"
           tabs={tabs}
           selectedTab={tab}
           onClick={(tab) => setParam({ tab: tab.label })}
@@ -36,6 +37,7 @@ const ProjectViews = () => {
                 <Board />
               </KanbanProvider>
             )}
+            {tab === "Tags" && <Tags />}
             {tab === "People" && <People />}
           </MembersProvider>
         </SnackbarProvider>
