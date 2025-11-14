@@ -28,16 +28,18 @@ const ProjectViews = () => {
           onClick={(tab) => setParam({ tab: tab.label })}
         />
       </div>
-      <SnackbarProvider>
-        <MembersProvider>
-          {tab === "Board" && (
-            <KanbanProvider>
-              <Board />
-            </KanbanProvider>
-          )}
-          {tab === "People" && <People />}
-        </MembersProvider>
-      </SnackbarProvider>
+      <div className={styles.content}>
+        <SnackbarProvider>
+          <MembersProvider>
+            {tab === "Board" && (
+              <KanbanProvider>
+                <Board />
+              </KanbanProvider>
+            )}
+            {tab === "People" && <People />}
+          </MembersProvider>
+        </SnackbarProvider>
+      </div>
     </div>
   );
 };
