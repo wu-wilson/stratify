@@ -63,6 +63,12 @@
     margin-top: 0.5rem;
     gap: 1rem;
 
+    .dropdown {
+      min-width: 5rem;
+      display: flex;
+      align-items: center;
+    }
+
     .paginator {
       font-size: inherit;
 

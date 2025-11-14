@@ -78,7 +78,6 @@ const Members = () => {
         rows={rows}
         columns={COLUMNS}
         actionIcons={getActionIcons(setModal, setSelectedMember)}
-        rowsPerPage={4}
       />
     </div>
   );

@@ -42,7 +42,7 @@ const History = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>Membership History</div>
-      <SearchTable rows={rows} columns={COLUMNS} rowsPerPage={4} />
+      <SearchTable rows={rows} columns={COLUMNS} />
     </div>
   );
 };

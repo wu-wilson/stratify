@@ -2,20 +2,22 @@ import { useEffect, useMemo, useState } from "react";
 import { MdOutlineFirstPage, MdOutlineLastPage } from "react-icons/md";
 import { type ActionIcons, type Column, type Row } from "./types";
 import styles from "./Table.module.scss";
+import Dropdown from "../dropdown/Dropdown";
 
 const Table = <T extends Row>({
   columns,
   rows,
   fallback = "-",
   actionIcons = [],
-  rowsPerPage = rows.length,
 }: {
   columns: Column<T>[];
   rows: Row[];
   fallback?: string;
   actionIcons?: ActionIcons[];
-  rowsPerPage?: number;
 }) => {
+  const rowsPerPageOptions = [10, 20, 30, rows.length];
+  const [rowsPerPage, setRowsPerPage] = useState<number>(rowsPerPageOptions[0]);
+
   const [page, setPage] = useState(1);
   const totalPages = Math.max(1, Math.ceil(rows.length / rowsPerPage));
 
@@ -76,25 +78,34 @@ const Table = <T extends Row>({
           )}
         </tbody>
       </table>
-      {rowsPerPage < rows.length && (
-        <div className={styles.pagination}>
-          Page {page} of {totalPages}
-          <button
-            className={styles.paginator}
-            onClick={() => setPage(page - 1)}
-            disabled={page === 1}
-          >
-            <MdOutlineFirstPage className={styles.icon} />
-          </button>
-          <button
-            className={styles.paginator}
-            onClick={() => setPage(page + 1)}
-            disabled={page === totalPages}
-          >
-            <MdOutlineLastPage className={styles.icon} />
-          </button>
+      <div className={styles.pagination}>
+        Rows Per Page:
+        <div className={styles.dropdown}>
+          <Dropdown
+            options={rowsPerPageOptions}
+            selected={rowsPerPage}
+            setSelected={setRowsPerPage}
+            getLabel={(option: number) =>
+              option === rows.length ? "All" : String(option)
+            }
+          />
         </div>
-      )}
+        Page {page} of {totalPages}
+        <button
+          className={styles.paginator}
+          onClick={() => setPage(page - 1)}
+          disabled={page === 1}
+        >
+          <MdOutlineFirstPage className={styles.icon} />
+        </button>
+        <button
+          className={styles.paginator}
+          onClick={() => setPage(page + 1)}
+          disabled={page === totalPages}
+        >
+          <MdOutlineLastPage className={styles.icon} />
+        </button>
+      </div>
     </div>
   );
 };

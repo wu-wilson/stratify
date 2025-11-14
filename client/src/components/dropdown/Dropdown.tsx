@@ -77,15 +77,17 @@ const Dropdown = <T,>({
       </div>
       {open && (
         <div className={styles.menu}>
-          {enrichedOptions.map((o) => (
-            <div
-              key={o.id}
-              className={styles.option}
-              onClick={() => selectOption(o.option)}
-            >
-              {o.label}
-            </div>
-          ))}
+          {enrichedOptions
+            .sort((a, b) => a.id - b.id)
+            .map((o) => (
+              <div
+                key={o.id}
+                className={styles.option}
+                onClick={() => selectOption(o.option)}
+              >
+                {o.label}
+              </div>
+            ))}
         </div>
       )}
     </div>

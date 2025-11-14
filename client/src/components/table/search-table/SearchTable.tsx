@@ -8,13 +8,11 @@ const SearchTable = <T extends Row>({
   rows,
   fallback = "-",
   actionIcons = [],
-  rowsPerPage = rows.length,
 }: {
   columns: Column<T>[];
   rows: Row[];
   fallback?: string;
   actionIcons?: ActionIcons[];
-  rowsPerPage?: number;
 }) => {
   const [search, setSearch] = useState<string>("");
 
@@ -49,7 +47,6 @@ const SearchTable = <T extends Row>({
         rows={filtered}
         fallback={fallback}
         actionIcons={actionIcons}
-        rowsPerPage={rowsPerPage}
       />
     </div>
   );
