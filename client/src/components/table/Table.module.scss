@@ -32,6 +32,11 @@
         &.noRecords {
           text-align: center;
         }
+
+        &.columnHeader {
+          color: vars.$primary-color;
+          text-decoration: underline;
+        }
       }
 
       .iconCell {

@@ -36,7 +36,10 @@ const Table = <T extends Row>({
         <thead>
           <tr>
             {columns.map(({ key, label }) => (
-              <th className={styles.dataCell} key={key}>
+              <th
+                className={`${styles.dataCell} ${styles.columnHeader}`}
+                key={key}
+              >
                 {label}
               </th>
             ))}
