@@ -4,5 +4,6 @@
 .container {
   @include mixins.card($width: 34rem, $height: 100%);
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
 }

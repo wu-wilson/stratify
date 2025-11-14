@@ -8,9 +8,13 @@ const People = () => {
   return (
     <div className={styles.container}>
       <HistoryProvider>
-        <Members />
-        <Invite />
-        <History />
+        <div className={styles.row}>
+          <Members />
+          <Invite />
+        </div>
+        <div className={styles.row}>
+          <History />
+        </div>
       </HistoryProvider>
     </div>
   );
