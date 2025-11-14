@@ -3,6 +3,7 @@
 
 .container {
   @include mixins.card($width: 34rem, $height: 100%);
+  min-height: 20rem;
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
