@@ -17,9 +17,10 @@ export const useSmallScreenRedirect = (redirectPath = "/no-support") => {
       const redirected = location.pathname === redirectPath;
 
       if (small && !redirected) {
-        navigate(redirectPath, { replace: true });
+        navigate(redirectPath, { replace: true, state: { from: location } });
       } else if (!small && redirected) {
-        navigate("/", { replace: true });
+        const previous = location.state?.from;
+        navigate(previous || "/", { replace: true });
       }
     };
 
