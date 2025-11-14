@@ -1,1 +1,1 @@
-export const BASE_JOIN_URL = window.location.origin + "/join";
+export const BASE_JOIN_URL = window.location.host + "/join";

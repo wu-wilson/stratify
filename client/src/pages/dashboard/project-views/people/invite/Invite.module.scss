@@ -2,7 +2,7 @@
 @use "sass:map";
 
 .container {
-  @include mixins.card($width: 35rem, $height: 100%);
+  @include mixins.card($width: 34rem, $height: 100%);
   display: flex;
   flex-direction: column;
 }

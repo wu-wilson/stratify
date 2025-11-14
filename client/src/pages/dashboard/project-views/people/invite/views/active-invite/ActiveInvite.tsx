@@ -137,7 +137,7 @@ const ActiveInvite = ({
           <span>{invite.max_uses}</span>
         </div>
         <div className={styles.row}>
-          Current # of Uses
+          # of Uses
           <span>{invite.uses}</span>
         </div>
         <div className={styles.row}>
