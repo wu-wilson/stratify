@@ -1,51 +1,52 @@
-$primary-color: rgb(31, 185, 134);
+$primary-color: #1fb986;
 $font-family: Poppins;
-$error-color: rgb(227, 98, 98);
-$warning-color: rgb(255, 193, 7);
+$error-color: #e36262;
+$warning-color: #ffc107;
 
 :root {
-  --light-mode-font-color: rgb(72, 76, 80);
+  --primary-color: #{$primary-color};
+  --light-mode-font-color: #484c50;
   --dark-mode-font-color: white;
 }
 
 $themes: (
   light: (
     page-bg: white,
-    grid-lines: rgb(233, 233, 233),
+    grid-lines: #e9e9e9,
     font-color: var(--light-mode-font-color),
     card-bg: white,
-    card-border: 1px solid rgb(213, 212, 212),
+    card-border: 1px solid #d5d4d4,
     btn-bg: #ededed,
     primary-btn-bg: $primary-color,
     primary-btn-color: var(--dark-mode-font-color),
     secondary-btn-bg: #ededed,
     secondary-btn-color: var(--light-mode-font-color),
     disabled-btn-bg: #ededed,
-    disabled-btn-color: rgb(181, 181, 181),
+    disabled-btn-color: #b5b5b5,
     tooltip-bg: #e4e4e4,
     sidebar-bg: white,
-    sidebar-border: 1px solid rgb(213, 212, 212),
+    sidebar-border: 1px solid #d5d4d4,
     toggle-bg: #ccc,
     dropdown-bg: #ededed,
-    dropdown-box-shadow: 0 0 5px rgb(198, 198, 198),
+    dropdown-box-shadow: 0 0 5px #c6c6c6,
     modal-content-bg: #ededed,
-    copy-icon: rgb(178, 178, 178),
+    copy-icon: #b2b2b2,
     project-bg: #ededed,
     tab-bg: #ededed,
     selected-tab-bg: white,
     table-bg: #ededed,
     snackbar-bg: white,
-    snackbar-border: 1px solid rgb(213, 212, 212),
-    snackbar-box-shadow: 0 0 5px rgb(198, 198, 198),
+    snackbar-border: 1px solid #d5d4d4,
+    snackbar-box-shadow: 0 0 5px #c6c6c6,
     draggable-area-bg: #ededed,
-    draggable-area-border: 1px solid rgb(213, 212, 212),
+    draggable-area-border: 1px solid #d5d4d4,
     draggable-item-bg: white,
-    draggable-item-border: 1px solid rgb(213, 212, 212),
+    draggable-item-border: 1px solid #d5d4d4,
     dragging-ghost-border: 1px solid $primary-color,
   ),
   dark: (
     page-bg: #1c1c1c,
-    grid-lines: rgb(59, 59, 59),
+    grid-lines: #3b3b3b,
     font-color: var(--dark-mode-font-color),
     card-bg: #242426,
     card-border: none,
@@ -53,23 +54,23 @@ $themes: (
     primary-btn-color: var(--dark-mode-font-color),
     secondary-btn-bg: #1c1c1c,
     secondary-btn-color: var(--dark-mode-font-color),
-    disabled-btn-bg: rgb(121, 121, 121),
+    disabled-btn-bg: #797979,
     disabled-btn-color: white,
     tooltip-bg: #000000,
     sidebar-bg: #242426,
     sidebar-border: 1px solid transparent,
-    toggle-bg: rgb(99, 99, 99),
+    toggle-bg: #636363,
     dropdown-bg: #151515,
-    dropdown-box-shadow: 0 0 5px rgb(0, 0, 0),
+    dropdown-box-shadow: 0 0 5px black,
     modal-content-bg: #151515,
-    copy-icon: rgb(152, 152, 152),
+    copy-icon: #989898,
     project-bg: #151515,
     tab-bg: #151515,
     selected-tab-bg: #242426,
     table-bg: #151515,
     snackbar-bg: #242426,
     snackbar-border: 1px solid #242426,
-    snackbar-box-shadow: 0 0 5px rgb(0, 0, 0),
+    snackbar-box-shadow: 0 0 5px black,
     draggable-area-bg: #151515,
     draggable-area-border: 1px solid #151515,
     draggable-item-bg: #242426,

@@ -32,12 +32,10 @@ const ProjectViews = () => {
       <div className={styles.content}>
         <SnackbarProvider>
           <MembersProvider>
-            {tab === "Board" && (
-              <KanbanProvider>
-                <Board />
-              </KanbanProvider>
-            )}
-            {tab === "Tags" && <Tags />}
+            <KanbanProvider>
+              {tab === "Board" && <Board />}
+              {tab === "Tags" && <Tags />}
+            </KanbanProvider>
             {tab === "People" && <People />}
           </MembersProvider>
         </SnackbarProvider>

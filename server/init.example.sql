@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS tags (
     id BIGSERIAL PRIMARY KEY,
     project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
-    color TEXT,
+    color TEXT NOT NULL,
     created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
     -- Unique constraint to prevent duplicate tags per project

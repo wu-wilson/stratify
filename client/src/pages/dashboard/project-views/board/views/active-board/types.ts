@@ -6,7 +6,7 @@ export const Draggable = {
   TASK: "task",
 } as const;
 
-export function isStatusEntity(obj: any): obj is StatusEntity {
+export const isStatusEntity = (obj: any): obj is StatusEntity => {
   return (
     obj &&
     typeof obj === "object" &&
@@ -15,9 +15,9 @@ export function isStatusEntity(obj: any): obj is StatusEntity {
     typeof obj.position === "number" &&
     typeof obj.created_on === "string"
   );
-}
+};
 
-export function isTaskEntity(obj: any): obj is TaskEntity {
+export const isTaskEntity = (obj: any): obj is TaskEntity => {
   return (
     obj &&
     typeof obj === "object" &&
@@ -30,4 +30,4 @@ export function isTaskEntity(obj: any): obj is TaskEntity {
     typeof obj.position === "number" &&
     typeof obj.created_on === "string"
   );
-}
+};
