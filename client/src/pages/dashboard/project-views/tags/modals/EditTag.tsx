@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { useElementHeight } from "../../../../../../hooks/useElementHeight";
-import { useKanban } from "../../../../../../hooks/useKanban";
-import { validateTagName } from "../create-tag/util";
-import { updateTag } from "../../../../../../services/tags/tags.service";
-import { PLACEHOLDER } from "../create-tag/constants";
+import { useElementHeight } from "../../../../../hooks/useElementHeight";
+import { useKanban } from "../../../../../hooks/useKanban";
+import { validateTagName } from "./create-tag/util";
+import { updateTag } from "../../../../../services/tags/tags.service";
+import { PLACEHOLDER } from "./create-tag/constants";
 import { HexColorPicker } from "react-colorful";
 import {
   type TagEntity,
   type UpdateTagPayload,
-} from "../../../../../../services/tags/types";
-import Spinner from "../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../components/error/Error";
-import styles from "../create-tag/CreateTag.module.scss";
+} from "../../../../../services/tags/types";
+import Spinner from "../../../../../components/spinner/Spinner";
+import Error from "../../../../../components/error/Error";
+import styles from "../../../../../components/modal/BaseModalContent.module.scss";
 
 const EditTag = ({
   tag,
@@ -107,7 +107,9 @@ const EditTag = ({
         placeholder={PLACEHOLDER}
         autoFocus
       />
-      <div className={styles.inputError}>{validationError}</div>
+      {validationError && (
+        <div className={styles.criticalInputMsg}>{validationError}</div>
+      )}
       <span className={styles.label}>Color</span>
       <div className={styles.colorPicker}>
         <HexColorPicker color={color} onChange={setColor} />

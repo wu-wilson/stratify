@@ -12,7 +12,7 @@ export const validateTagName = (
 
   for (const t of tags) {
     if (cleanedName === t.name.toLowerCase().trim()) {
-      return { valid: false, msg: "Status name is already in use" };
+      return { valid: false, msg: "Tag name is already in use" };
     }
   }
 

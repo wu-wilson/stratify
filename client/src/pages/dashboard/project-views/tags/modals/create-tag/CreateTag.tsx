@@ -11,7 +11,7 @@ import { HexColorPicker } from "react-colorful";
 import { type CreateTagPayload } from "../../../../../../services/tags/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "./CreateTag.module.scss";
+import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
 
 const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
   const { kanban, setKanban } = useKanban();
@@ -102,7 +102,9 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
         placeholder={PLACEHOLDER}
         autoFocus
       />
-      <div className={styles.inputError}>{validationError}</div>
+      {validationError && (
+        <div className={styles.criticalInputMsg}>{validationError}</div>
+      )}
       <span className={styles.label}>Color</span>
       <div className={styles.colorPicker}>
         <HexColorPicker color={color} onChange={setColor} />

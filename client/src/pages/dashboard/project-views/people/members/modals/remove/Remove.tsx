@@ -4,7 +4,7 @@ import { useElementHeight } from "../../../../../../../hooks/useElementHeight";
 import { useAuth } from "../../../../../../../hooks/useAuth";
 import { useHistory } from "../../../../../../../hooks/useHistory";
 import { useQueryParams } from "../../../../../../../hooks/query-params/useQueryParams";
-import { CONFIRM_STRING } from "./constants";
+import { CONFIRM_STRING, SUBTITLE } from "./constants";
 import { useMembers } from "../../../../../../../hooks/useMembers";
 import {
   type DeleteMemberParams,
@@ -12,7 +12,7 @@ import {
 } from "../../../../../../../services/members/types";
 import Spinner from "../../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../../components/error/Error";
-import styles from "./Remove.module.scss";
+import styles from "../../../../../../../components/modal/BaseModalContent.module.scss";
 
 const Remove = ({
   member,
@@ -90,9 +90,8 @@ const Remove = ({
   return (
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>Remove Member</span>
-      <span
-        className={styles.subtext}
-      >{`Are you sure you want to remove ${member.name}?`}</span>
+      <span className={styles.subtitle}>{SUBTITLE}</span>
+      <span className={styles.highlightedMsg}>{member.name}</span>
       <input
         className={styles.input}
         value={input}
@@ -102,8 +101,10 @@ const Remove = ({
         placeholder={CONFIRM_STRING}
         autoFocus
       />
-      <div className={styles.inputMsg}>Type {CONFIRM_STRING} to confirm</div>
-      <div className={styles.remove}>
+      <div className={styles.criticalInputMsg}>
+        Type {CONFIRM_STRING} to confirm
+      </div>
+      <div className={styles.button}>
         <button
           onClick={() => setLoading(true)}
           disabled={input !== CONFIRM_STRING}

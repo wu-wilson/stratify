@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory } from "../../../../../../../hooks/useHistory";
 import { updateRole } from "../../../../../../../services/members/members.service";
 import { useElementHeight } from "../../../../../../../hooks/useElementHeight";
-import { CONFIRM_STRING } from "./constants";
+import { CONFIRM_STRING, SUBTITLE } from "./constants";
 import { useMembers } from "../../../../../../../hooks/useMembers";
 import { useQueryParams } from "../../../../../../../hooks/query-params/useQueryParams";
 import { useAuth } from "../../../../../../../hooks/useAuth";
@@ -12,7 +12,7 @@ import {
 } from "../../../../../../../services/members/types";
 import Spinner from "../../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../../components/error/Error";
-import styles from "./Owner.module.scss";
+import styles from "../../../../../../../components/modal/BaseModalContent.module.scss";
 
 const Owner = ({
   member,
@@ -93,9 +93,8 @@ const Owner = ({
   return (
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>Make Owner</span>
-      <span
-        className={styles.subtext}
-      >{`Confirm that you want to add ${member.name} as a project owner`}</span>
+      <span className={styles.subtitle}>{SUBTITLE}</span>
+      <span className={styles.highlightedMsg}>{member.name}</span>
       <input
         className={styles.input}
         value={input}
@@ -105,8 +104,10 @@ const Owner = ({
         placeholder={CONFIRM_STRING}
         autoFocus
       />
-      <div className={styles.inputMsg}>Type {CONFIRM_STRING} to confirm</div>
-      <div className={styles.update}>
+      <div className={styles.criticalInputMsg}>
+        Type {CONFIRM_STRING} to confirm
+      </div>
+      <div className={styles.button}>
         <button
           onClick={() => setLoading(true)}
           disabled={input !== CONFIRM_STRING}

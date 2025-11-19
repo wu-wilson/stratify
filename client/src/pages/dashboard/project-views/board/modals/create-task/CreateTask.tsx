@@ -15,7 +15,7 @@ import { type CreateTaskPayload } from "../../../../../../services/tasks/types";
 import Dropdown from "../../../../../../components/dropdown/Dropdown";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "./CreateTask.module.scss";
+import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
 
 const CreateTask = ({
   closeModal,
@@ -114,27 +114,23 @@ const CreateTask = ({
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>New Task</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
-      <div className={styles.dropdown}>
-        <span className={styles.label}>Status</span>
-        <Dropdown
-          options={statusOptions}
-          selected={status}
-          setSelected={setStatus}
-          getLabel={(o) => getStatusLabel(kanban!.statuses, o)}
-          maxTextLength={48}
-        />
-      </div>
-      <div className={styles.dropdown}>
-        <span className={styles.label}>Assignee</span>
-        <Dropdown
-          options={assigneeOptions}
-          selected={assignee}
-          setSelected={setAssignee}
-          getLabel={(o) => getAssigneeLabel(members!, o)}
-          placeholder="Select assignee"
-          maxTextLength={48}
-        />
-      </div>
+      <span className={styles.label}>Status</span>
+      <Dropdown
+        options={statusOptions}
+        selected={status}
+        setSelected={setStatus}
+        getLabel={(o) => getStatusLabel(kanban!.statuses, o)}
+        maxTextLength={48}
+      />
+      <span className={styles.label}>Assignee</span>
+      <Dropdown
+        options={assigneeOptions}
+        selected={assignee}
+        setSelected={setAssignee}
+        getLabel={(o) => getAssigneeLabel(members!, o)}
+        placeholder="Select assignee"
+        maxTextLength={48}
+      />
       <span className={styles.label}>Task Title</span>
       <input
         className={styles.input}
@@ -143,8 +139,11 @@ const CreateTask = ({
           setTitle(e.target.value);
         }}
         placeholder={TITLE_PLACEHOLDER}
+        autoFocus
       />
-      <div className={styles.inputError}>{validationError}</div>
+      {validationError && (
+        <div className={styles.criticalInputMsg}>{validationError}</div>
+      )}
       <span className={styles.label}>Task Description</span>
       <textarea
         className={styles.textarea}
@@ -154,7 +153,7 @@ const CreateTask = ({
         }}
         placeholder={DESCRIPTION_PLACEHOLDER}
       />
-      <div className={styles.create}>
+      <div className={styles.button}>
         <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Create
         </button>

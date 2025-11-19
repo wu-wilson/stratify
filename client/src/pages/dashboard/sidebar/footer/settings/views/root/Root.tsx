@@ -28,7 +28,7 @@ const Root = ({ setView }: { setView: Dispatch<SetStateAction<View>> }) => {
   const truncatedDisplayName = getTruncatedDisplayName(displayName);
 
   return (
-    <>
+    <div className={styles.container}>
       <span className={styles.title}>Settings</span>
       <div className={styles.section}>
         <div className={styles.row}>
@@ -72,7 +72,7 @@ const Root = ({ setView }: { setView: Dispatch<SetStateAction<View>> }) => {
           <ThemeToggle id="settings-theme-toggle" disabled={auto} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

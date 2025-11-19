@@ -54,7 +54,7 @@ const Name = ({ setView }: { setView: Dispatch<SetStateAction<View>> }) => {
   }
 
   return (
-    <>
+    <div className={styles.container}>
       <span className={styles.title}>Display Name</span>
       <span className={styles.back} onClick={() => setView("root")}>
         &lt; Settings
@@ -66,13 +66,15 @@ const Name = ({ setView }: { setView: Dispatch<SetStateAction<View>> }) => {
         placeholder="Display name"
         autoFocus
       />
-      <div className={styles.inputError}>{validationError}</div>
-      <div className={styles.save}>
+      {validationError && (
+        <div className={styles.criticalInputMsg}>{validationError}</div>
+      )}
+      <div className={styles.button}>
         <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Save
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

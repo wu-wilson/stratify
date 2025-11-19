@@ -7,7 +7,7 @@ import { type TagEntity } from "../../../../../../services/tags/types";
 import { type TaggingEntity } from "../../../../../../services/taggings/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "./DeleteTag.module.scss";
+import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
 
 const DeleteTag = ({
   tag,
@@ -75,7 +75,7 @@ const DeleteTag = ({
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>Delete Tag</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.warning}>{tag.name}</span>
+      <span className={styles.highlightedMsg}>{tag.name}</span>
       <input
         className={styles.input}
         value={input}
@@ -85,7 +85,9 @@ const DeleteTag = ({
         placeholder={CONFIRM_STRING}
         autoFocus
       />
-      <div className={styles.inputMsg}>Type {CONFIRM_STRING} to confirm</div>
+      <div className={styles.criticalInputMsg}>
+        Type {CONFIRM_STRING} to confirm
+      </div>
       <div className={styles.button}>
         <button
           onClick={() => setLoading(true)}

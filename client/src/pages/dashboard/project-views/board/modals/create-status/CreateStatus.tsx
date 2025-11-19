@@ -8,7 +8,7 @@ import { createStatus } from "../../../../../../services/statuses/statuses.servi
 import { type CreateStatusPayload } from "../../../../../../services/statuses/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "./CreateStatus.module.scss";
+import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
 
 const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {
   const { kanban, setKanban } = useKanban();
@@ -95,8 +95,10 @@ const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {
         placeholder={PLACEHOLDER}
         autoFocus
       />
-      <div className={styles.inputError}>{validationError}</div>
-      <div className={styles.create}>
+      {validationError && (
+        <div className={styles.criticalInputMsg}>{validationError}</div>
+      )}
+      <div className={styles.button}>
         <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Create
         </button>

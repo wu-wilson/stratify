@@ -11,13 +11,14 @@ import { useAuth } from "../../../../../../hooks/useAuth";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { createInvite } from "../../../../../../services/invites/invites.service";
 import { validateMaxUses } from "./util";
+import { SUBTITLE } from "./constants";
 import {
   type CreateInvitePayload,
   type InviteEntity,
 } from "../../../../../../services/invites/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "./GenerateInvite.module.scss";
+import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
 
 const GenerateInvite = ({
   invite,
@@ -113,6 +114,7 @@ const GenerateInvite = ({
   return (
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>Generate Invite</span>
+      <span className={styles.subtitle}>{SUBTITLE}</span>
       <label className={styles.label}>Max # of Uses</label>
       <input
         className={styles.input}
@@ -120,8 +122,10 @@ const GenerateInvite = ({
         onChange={onMaxUsesChange}
         autoFocus
       />
-      <div className={styles.inputError}>{validationError}</div>
-      <div className={styles.generate}>
+      {validationError && (
+        <div className={styles.criticalInputMsg}>{validationError}</div>
+      )}
+      <div className={styles.button}>
         <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Generate
         </button>

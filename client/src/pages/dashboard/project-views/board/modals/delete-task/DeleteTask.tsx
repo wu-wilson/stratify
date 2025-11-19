@@ -9,7 +9,7 @@ import {
 } from "../../../../../../services/tasks/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "./DeleteTask.module.scss";
+import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
 
 const DeleteTask = ({
   task,
@@ -91,7 +91,7 @@ const DeleteTask = ({
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>Delete Task</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.warning}>{task.title}</span>
+      <span className={styles.highlightedMsg}>{task.title}</span>
       <input
         className={styles.input}
         value={input}
@@ -101,8 +101,10 @@ const DeleteTask = ({
         placeholder={CONFIRM_STRING}
         autoFocus
       />
-      <div className={styles.inputMsg}>Type {CONFIRM_STRING} to confirm</div>
-      <div className={styles.delete}>
+      <div className={styles.criticalInputMsg}>
+        Type {CONFIRM_STRING} to confirm
+      </div>
+      <div className={styles.button}>
         <button
           onClick={() => setLoading(true)}
           disabled={input !== CONFIRM_STRING}

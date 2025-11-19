@@ -10,7 +10,7 @@ import {
 } from "../../../../../../services/statuses/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "./DeleteStatus.module.scss";
+import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
 
 const DeleteStatus = ({
   status,
@@ -96,7 +96,7 @@ const DeleteStatus = ({
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>Delete Status</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.warning}>{status.name}</span>
+      <span className={styles.highlightedMsg}>{status.name}</span>
       <input
         className={styles.input}
         value={input}
@@ -106,8 +106,10 @@ const DeleteStatus = ({
         placeholder={CONFIRM_STRING}
         autoFocus
       />
-      <div className={styles.inputMsg}>Type {CONFIRM_STRING} to confirm</div>
-      <div className={styles.delete}>
+      <div className={styles.criticalInputMsg}>
+        Type {CONFIRM_STRING} to confirm
+      </div>
+      <div className={styles.button}>
         <button
           onClick={() => setLoading(true)}
           disabled={input !== CONFIRM_STRING}

@@ -12,7 +12,7 @@ import moment from "moment";
 import Modal from "../../../../../../components/modal/Modal";
 import CreateTag from "../../modals/create-tag/CreateTag";
 import DeleteTag from "../../modals/delete-tag/DeleteTag";
-import EditTag from "../../modals/edit-tag/EditTag";
+import EditTag from "../../modals/EditTag";
 import styles from "./ExistingTags.module.scss";
 
 const ExistingTags = () => {

@@ -1,15 +1,7 @@
-@use "../../../../../../../styles/variables" as vars;
+@use "../../../../../../../components/modal/BaseModalContent.module.scss";
 @use "../../../../../../../styles/mixins" as mixins;
 @use "sass:map";
 @use "sass:color";
-
-.title {
-  display: flex;
-  justify-content: center;
-  font-size: 0.9rem;
-  text-decoration: underline;
-  margin-bottom: 2rem;
-}
 
 .section {
   border-radius: 10px;

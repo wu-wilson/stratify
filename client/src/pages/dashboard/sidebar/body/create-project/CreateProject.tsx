@@ -8,7 +8,8 @@ import { validateProjectName } from "./util";
 import { type CreateProjectPayload } from "../../../../../services/projects/types";
 import Spinner from "../../../../../components/spinner/Spinner";
 import Error from "../../../../../components/error/Error";
-import styles from "./CreateProject.module.scss";
+import styles from "../../../../../components/modal/BaseModalContent.module.scss";
+import { DESCRIPTION_PLACEHOLDER, NAME_PLACEHOLDER } from "./constants";
 
 const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
   const { ref, height } = useElementHeight<HTMLDivElement>();
@@ -81,27 +82,27 @@ const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
   }
 
   return (
-    <div
-      className={styles.container}
-      ref={ref}
-      style={{ height: height ? `${height}px` : undefined }}
-    >
+    <div className={styles.container} ref={ref}>
       <span className={styles.title}>New Project</span>
+      <span className={styles.label}>Name</span>
       <input
         className={styles.input}
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
+        placeholder={NAME_PLACEHOLDER}
         autoFocus
       />
-      <div className={styles.inputError}>{validationError}</div>
+      {validationError && (
+        <div className={styles.criticalInputMsg}>{validationError}</div>
+      )}
+      <span className={styles.label}>Description</span>
       <textarea
         className={styles.textarea}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
+        placeholder={DESCRIPTION_PLACEHOLDER}
       />
-      <div className={styles.create}>
+      <div className={styles.button}>
         <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Create
         </button>
