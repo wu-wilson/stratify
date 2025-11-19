@@ -115,6 +115,7 @@ const CreateTask = ({
       <span className={styles.title}>New Task</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
       <div className={styles.dropdown}>
+        <span className={styles.label}>Status</span>
         <Dropdown
           options={statusOptions}
           selected={status}
@@ -124,15 +125,17 @@ const CreateTask = ({
         />
       </div>
       <div className={styles.dropdown}>
+        <span className={styles.label}>Assignee</span>
         <Dropdown
           options={assigneeOptions}
           selected={assignee}
           setSelected={setAssignee}
           getLabel={(o) => getAssigneeLabel(members!, o)}
-          placeholder="Assignee"
+          placeholder="Select assignee"
           maxTextLength={48}
         />
       </div>
+      <span className={styles.label}>Task Title</span>
       <input
         className={styles.input}
         value={title}
@@ -142,6 +145,7 @@ const CreateTask = ({
         placeholder={TITLE_PLACEHOLDER}
       />
       <div className={styles.inputError}>{validationError}</div>
+      <span className={styles.label}>Task Description</span>
       <textarea
         className={styles.textarea}
         value={description}

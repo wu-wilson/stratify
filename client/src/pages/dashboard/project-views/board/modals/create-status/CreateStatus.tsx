@@ -85,6 +85,7 @@ const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>New Status</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
+      <span className={styles.label}>Status Name</span>
       <input
         className={styles.input}
         value={input}

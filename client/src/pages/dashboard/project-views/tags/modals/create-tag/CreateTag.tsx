@@ -92,6 +92,7 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>New Tag</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
+      <span className={styles.label}>Name</span>
       <input
         className={styles.input}
         value={name}
@@ -102,6 +103,7 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
         autoFocus
       />
       <div className={styles.inputError}>{validationError}</div>
+      <span className={styles.label}>Color</span>
       <div className={styles.colorPicker}>
         <HexColorPicker color={color} onChange={setColor} />
       </div>

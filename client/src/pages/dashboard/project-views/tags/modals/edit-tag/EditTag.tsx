@@ -97,6 +97,7 @@ const EditTag = ({
   return (
     <div className={styles.container} ref={ref}>
       <span className={styles.title}>Edit Tag</span>
+      <span className={styles.label}>Name</span>
       <input
         className={styles.input}
         value={name}
@@ -107,12 +108,13 @@ const EditTag = ({
         autoFocus
       />
       <div className={styles.inputError}>{validationError}</div>
+      <span className={styles.label}>Color</span>
       <div className={styles.colorPicker}>
         <HexColorPicker color={color} onChange={setColor} />
       </div>
       <div className={styles.button}>
         <button onClick={() => setLoading(true)} disabled={!!validationError}>
-          Save Changes
+          Save
         </button>
       </div>
     </div>
