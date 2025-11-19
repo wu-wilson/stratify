@@ -22,3 +22,14 @@ export type DeleteTagResponse = {
   message: string;
   deleted: TagEntity;
 };
+
+export type UpdateTagPayload = {
+  id: string;
+  name: string;
+  color: string;
+};
+
+export type UpdateTagResponse = {
+  message: string;
+  updated: TagEntity;
+};

@@ -37,7 +37,7 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
       };
 
       const { tag: createdTag } = await createTag(payload);
-      console.log(createdTag);
+
       setKanban((prev) => ({
         ...prev!,
         tags: [...prev!.tags, createdTag],
@@ -72,7 +72,7 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
         className={styles.container}
         style={{ height: height ? `${height}px` : undefined }}
       >
-        <Spinner size={50} text="Creating status..." />
+        <Spinner size={50} text="Creating tag..." />
       </div>
     );
   }
@@ -105,7 +105,7 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
       <div className={styles.colorPicker}>
         <HexColorPicker color={color} onChange={setColor} />
       </div>
-      <div className={styles.create}>
+      <div className={styles.button}>
         <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Create
         </button>

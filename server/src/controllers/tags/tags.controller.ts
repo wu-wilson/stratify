@@ -63,8 +63,6 @@ export const deleteTag = async (req: Request, res: Response) => {
   }
 
   try {
-    await pool.query("BEGIN");
-
     const {
       rows: [deletedTag],
     } = await pool.query(
@@ -74,15 +72,41 @@ export const deleteTag = async (req: Request, res: Response) => {
       [tag_id]
     );
 
-    await pool.query("COMMIT");
-
     res.json({
       message: "Tag deleted successfully",
       deleted: deletedTag,
     });
   } catch (error) {
-    await pool.query("ROLLBACK");
     console.error("Error deleting tag:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const updateTag = async (req: Request, res: Response) => {
+  const { id, name, color } = req.body;
+
+  if (!id || !name || !color) {
+    res.status(400).json({ error: "id, name, and color are required" });
+    return;
+  }
+
+  try {
+    const {
+      rows: [updatedTag],
+    } = await pool.query(
+      `UPDATE tags
+       SET name = $1, color = $2
+       WHERE id = $3
+       RETURNING *`,
+      [name, color, id]
+    );
+
+    res.json({
+      message: "Tag updated successfully",
+      updated: updatedTag,
+    });
+  } catch (error) {
+    console.error("Error updating tag:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

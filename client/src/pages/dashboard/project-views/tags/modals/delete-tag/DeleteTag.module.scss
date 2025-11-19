@@ -1,66 +1,18 @@
 @use "../../../../../../styles/variables" as vars;
-@use "../../../../../../styles/mixins" as mixins;
-@use "sass:map";
+@use "../create-tag/CreateTag.module.scss";
 
-.container {
-  width: 21rem;
-  display: flex;
-  flex-direction: column;
+.warning {
+  font-size: 0.75rem;
+  color: vars.$warning-color;
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
 
-  .title {
-    display: flex;
-    justify-content: center;
-    font-size: 0.9rem;
-    text-decoration: underline;
-    margin-bottom: 1.5rem;
-  }
-
-  .subtitle {
-    font-size: 0.75rem;
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
-
-  .warning {
-    font-size: 0.75rem;
-    color: vars.$warning-color;
-    text-align: center;
-    font-style: italic;
-    margin-bottom: 1.5rem;
-  }
-
-  .input {
-    outline: none;
-    border: none;
-    border-radius: 10px;
-    padding: 0.7rem;
-    font-size: 0.75rem;
-    font-family: inherit;
-
-    @include mixins.themed using ($props) {
-      background-color: map.get($props, "modal-content-bg");
-      color: map.get($props, "font-color");
-    }
-  }
-
-  .inputMsg {
-    height: 1rem;
-    font-size: 0.7rem;
-    margin-bottom: 1rem;
-    padding-left: 0.3rem;
-    color: vars.$error-color;
-  }
-
-  .delete {
-    display: flex;
-    justify-content: flex-end;
-
-    button {
-      font-size: 0.75rem;
-      font-family: inherit;
-      cursor: pointer;
-
-      @include mixins.button();
-    }
-  }
+.inputMsg {
+  height: 1rem;
+  font-size: 0.7rem;
+  margin-bottom: 1rem;
+  padding-left: 0.3rem;
+  color: vars.$error-color;
 }

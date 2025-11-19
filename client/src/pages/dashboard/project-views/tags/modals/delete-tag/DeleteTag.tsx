@@ -86,7 +86,7 @@ const DeleteTag = ({
         autoFocus
       />
       <div className={styles.inputMsg}>Type {CONFIRM_STRING} to confirm</div>
-      <div className={styles.delete}>
+      <div className={styles.button}>
         <button
           onClick={() => setLoading(true)}
           disabled={input !== CONFIRM_STRING}
