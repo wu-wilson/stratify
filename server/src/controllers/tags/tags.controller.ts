@@ -11,7 +11,7 @@ export const getTags = async (req: Request, res: Response) => {
 
   try {
     const { rows: tags } = await pool.query(
-      `SELECT id, name, color, created_on
+      `SELECT *
        FROM tags
        WHERE tags.project_id = $1`,
       [projectId]
@@ -25,10 +25,12 @@ export const getTags = async (req: Request, res: Response) => {
 };
 
 export const createTag = async (req: Request, res: Response) => {
-  const { project_id, name, color } = req.body;
+  const { project_id, name, color, created_by } = req.body;
 
-  if (!project_id || !name || !color) {
-    res.status(400).json({ error: "project_id, name, and color are required" });
+  if (!project_id || !name || !color || !created_by) {
+    res
+      .status(400)
+      .json({ error: "project_id, name, color, and created_by are required" });
     return;
   }
 
@@ -36,10 +38,10 @@ export const createTag = async (req: Request, res: Response) => {
     const {
       rows: [newTag],
     } = await pool.query(
-      `INSERT INTO tags (project_id, name, color)
-       VALUES ($1, $2, $3)
+      `INSERT INTO tags (project_id, name, color, created_by)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [project_id, name, color]
+      [project_id, name, color, created_by]
     );
 
     res.status(201).json({
@@ -48,6 +50,39 @@ export const createTag = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error creating tag:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const deleteTag = async (req: Request, res: Response) => {
+  const { tag_id } = req.params;
+
+  if (!tag_id) {
+    res.status(400).json({ error: "tag_id is required" });
+    return;
+  }
+
+  try {
+    await pool.query("BEGIN");
+
+    const {
+      rows: [deletedTag],
+    } = await pool.query(
+      `DELETE FROM tags
+       WHERE id = $1
+       RETURNING *`,
+      [tag_id]
+    );
+
+    await pool.query("COMMIT");
+
+    res.json({
+      message: "Tag deleted successfully",
+      deleted: deletedTag,
+    });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error("Error deleting tag:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

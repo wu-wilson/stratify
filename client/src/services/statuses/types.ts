@@ -16,7 +16,7 @@ export type CreateStatusResponse = {
   status: StatusEntity;
 };
 
-export type DeleteStatusPayload = {
+export type DeleteStatusParams = {
   project_id: string;
   status_id: string;
   index: number;

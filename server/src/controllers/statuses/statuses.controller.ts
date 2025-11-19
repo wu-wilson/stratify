@@ -62,12 +62,15 @@ export const createStatus = async (req: Request, res: Response) => {
 };
 
 export const deleteStatus = async (req: Request, res: Response) => {
-  const { project_id, status_id, index } = req.body;
+  const status_id = req.params.status_id;
+  const { project_id, index } = req.query;
 
-  if (!project_id || !status_id || typeof index !== "number") {
-    res
-      .status(400)
-      .json({ error: "project_id, status_id, and index are required" });
+  const parsedIndex = Number(index);
+
+  if (!project_id || !status_id || isNaN(parsedIndex)) {
+    res.status(400).json({
+      error: "project_id, status_id, and a numerical index are required",
+    });
     return;
   }
 
@@ -78,7 +81,7 @@ export const deleteStatus = async (req: Request, res: Response) => {
       `UPDATE statuses
        SET position = position - 1
        WHERE position > $1 AND project_id = $2`,
-      [index, project_id]
+      [parsedIndex, project_id]
     );
 
     const deserializedStatusId = deserializeStatusId(status_id);

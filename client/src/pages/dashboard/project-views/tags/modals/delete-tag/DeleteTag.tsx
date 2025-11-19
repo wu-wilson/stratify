@@ -1,59 +1,43 @@
 import { useEffect, useState } from "react";
-import { useKanban } from "../../../../../../hooks/useKanban";
-import { CONFIRM_STRING, SUBTITLE } from "./constants";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
-import { deleteTask } from "../../../../../../services/tasks/tasks.service";
-import {
-  type DeleteTaskParams,
-  type TaskEntity,
-} from "../../../../../../services/tasks/types";
+import { useKanban } from "../../../../../../hooks/useKanban";
+import { deleteTag } from "../../../../../../services/tags/tags.service";
+import { CONFIRM_STRING, SUBTITLE } from "./constants";
+import { type TagEntity } from "../../../../../../services/tags/types";
+import { type TaggingEntity } from "../../../../../../services/taggings/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "./DeleteTask.module.scss";
+import styles from "./DeleteTag.module.scss";
 
-const DeleteTask = ({
-  task,
+const DeleteTag = ({
+  tag,
   closeModal,
 }: {
-  task: TaskEntity;
+  tag: TagEntity;
   closeModal: () => void;
 }) => {
-  const { kanban, setKanban } = useKanban();
+  const { setKanban } = useKanban();
   const { ref, height } = useElementHeight<HTMLDivElement>();
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const removeTask = async () => {
+  const removeTag = async () => {
     try {
-      const params: DeleteTaskParams = {
-        task_id: task.id,
-        status_id: task.status_id,
-        index: task.position,
-      };
-
-      await deleteTask(params);
-
-      const updatedTasks = kanban!.tasks
-        .filter((t) => t.id !== task.id && t.status_id === task.status_id)
-        .sort((a, b) => a.position - b.position)
-        .map((s, idx) => ({
-          ...s,
-          position: idx,
-        }));
-      const untouched = kanban!.tasks.filter(
-        (t) => t.status_id !== task.status_id
-      );
+      await deleteTag(tag.id);
 
       setKanban((prev) => ({
         ...prev!,
-        tasks: [...untouched, ...updatedTasks],
+        tags: prev!.tags.filter((t: TagEntity) => t.id !== tag.id),
+        taggings: prev!.taggings.filter(
+          (t: TaggingEntity) => t.tag_id !== tag.id
+        ),
       }));
 
       closeModal();
     } catch (err) {
-      setError("deleteTask endpoint failed");
+      setError("deleteTag endpoint failed");
     } finally {
       setLoading(false);
     }
@@ -61,7 +45,7 @@ const DeleteTask = ({
 
   useEffect(() => {
     if (loading) {
-      removeTask();
+      removeTag();
     }
   }, [loading]);
 
@@ -71,7 +55,7 @@ const DeleteTask = ({
         className={styles.container}
         style={{ height: height ? `${height}px` : undefined }}
       >
-        <Spinner size={50} text="Removing status..." />
+        <Spinner size={50} text="Removing tag..." />
       </div>
     );
   }
@@ -89,9 +73,9 @@ const DeleteTask = ({
 
   return (
     <div className={styles.container} ref={ref}>
-      <span className={styles.title}>Delete Task</span>
+      <span className={styles.title}>Delete Tag</span>
       <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.warning}>{task.title}</span>
+      <span className={styles.warning}>{tag.name}</span>
       <input
         className={styles.input}
         value={input}
@@ -114,4 +98,4 @@ const DeleteTask = ({
   );
 };
 
-export default DeleteTask;
+export default DeleteTag;

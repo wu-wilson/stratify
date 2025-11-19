@@ -37,9 +37,10 @@ export const getMembers = async (req: Request, res: Response) => {
 };
 
 export const deleteMember = async (req: Request, res: Response) => {
-  const { member_id, project_id, deleted_by } = req.body;
+  const member_id = req.params.member_id;
+  const { project_id, deleted_by } = req.query;
 
-  if (!member_id || !project_id) {
+  if (!member_id || !project_id || !deleted_by) {
     res
       .status(400)
       .json({ error: "member_id, project_id, and deleted_by are required" });

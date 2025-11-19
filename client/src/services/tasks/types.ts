@@ -24,7 +24,7 @@ export type CreateTaskResponse = {
   task: TaskEntity;
 };
 
-export type DeleteTaskPayload = {
+export type DeleteTaskParams = {
   task_id: string;
   status_id: string;
   index: number;

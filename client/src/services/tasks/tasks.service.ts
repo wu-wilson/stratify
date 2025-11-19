@@ -2,7 +2,7 @@ import { BASE_URL } from "./constants";
 import {
   type CreateTaskPayload,
   type CreateTaskResponse,
-  type DeleteTaskPayload,
+  type DeleteTaskParams,
   type DeleteTaskResponse,
   type ReorderTaskPayload,
   type ReorderTaskResponse,
@@ -17,26 +17,31 @@ export const getTasks = async (projectId: string) => {
   return response.data;
 };
 
-export const createTask = async (createTaskPayload: CreateTaskPayload) => {
+export const createTask = async (payload: CreateTaskPayload) => {
   const response = await axios.post<CreateTaskResponse>(
     `${BASE_URL}/create`,
-    createTaskPayload
+    payload
   );
   return response.data;
 };
 
-export const deleteTask = async (deleteTaskPayload: DeleteTaskPayload) => {
+export const deleteTask = async (params: DeleteTaskParams) => {
+  const { task_id, status_id, index } = params;
+
   const response = await axios.delete<DeleteTaskResponse>(
-    `${BASE_URL}/delete`,
-    { data: deleteTaskPayload }
+    `${BASE_URL}/delete/${task_id}`,
+    {
+      params: { index, status_id },
+    }
   );
+
   return response.data;
 };
 
-export const reorderTask = async (reorderTaskPayload: ReorderTaskPayload) => {
+export const reorderTask = async (payload: ReorderTaskPayload) => {
   const response = await axios.patch<ReorderTaskResponse>(
     `${BASE_URL}/reorder`,
-    reorderTaskPayload
+    payload
   );
   return response.data;
 };

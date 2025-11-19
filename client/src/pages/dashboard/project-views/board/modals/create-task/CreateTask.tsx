@@ -49,7 +49,7 @@ const CreateTask = ({
     try {
       const project = getParam("project")!;
 
-      const createTaskPayload: CreateTaskPayload = {
+      const payload: CreateTaskPayload = {
         project_id: project,
         status_id: status,
         created_by: user!.uid,
@@ -59,7 +59,7 @@ const CreateTask = ({
         position: kanban!.tasks.filter((t) => t.status_id === status).length,
       };
 
-      const { task: createdTask } = await createTask(createTaskPayload);
+      const { task: createdTask } = await createTask(payload);
       setKanban((prev) => ({
         ...prev!,
         tasks: [...prev!.tasks, createdTask],

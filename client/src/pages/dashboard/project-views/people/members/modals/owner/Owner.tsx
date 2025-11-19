@@ -35,14 +35,14 @@ const Owner = ({
     try {
       const project = getParam("project")!;
 
-      const makeOwnerPayload: UpdateRolePayload = {
+      const payload: UpdateRolePayload = {
         member_id: member.id,
         project_id: project,
         role: "owner",
         updated_by: user!.uid,
       };
 
-      const updated = await updateRole(makeOwnerPayload);
+      const updated = await updateRole(payload);
       setMembers(
         members!.map((m) => (m.id === member.id ? { ...m, role: "owner" } : m))
       );
@@ -56,7 +56,7 @@ const Owner = ({
 
       closeModal();
     } catch (err) {
-      setError("deleteMember endpoint failed");
+      setError("updateRole endpoint failed");
     } finally {
       setLoading(false);
     }

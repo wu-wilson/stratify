@@ -3,7 +3,7 @@ import {
   type StatusEntity,
   type CreateStatusPayload,
   type CreateStatusResponse,
-  type DeleteStatusPayload,
+  type DeleteStatusParams,
   type DeleteStatusResponse,
   type ReorderStatusPayload,
   type ReorderStatusResponse,
@@ -17,32 +17,29 @@ export const getStatuses = async (projectId: string) => {
   return response.data;
 };
 
-export const createStatus = async (
-  createStatusPayload: CreateStatusPayload
-) => {
+export const createStatus = async (payload: CreateStatusPayload) => {
   const response = await axios.post<CreateStatusResponse>(
     `${BASE_URL}/create`,
-    createStatusPayload
+    payload
   );
   return response.data;
 };
 
-export const deleteStatus = async (
-  deleteStatusPayload: DeleteStatusPayload
-) => {
+export const deleteStatus = async (params: DeleteStatusParams) => {
+  const { project_id, status_id, index } = params;
+
   const response = await axios.delete<DeleteStatusResponse>(
-    `${BASE_URL}/delete`,
-    { data: deleteStatusPayload }
+    `${BASE_URL}/delete/${status_id}`,
+    { params: { project_id, index } }
   );
+
   return response.data;
 };
 
-export const reorderStatus = async (
-  reorderStatusPayload: ReorderStatusPayload
-) => {
+export const reorderStatus = async (payload: ReorderStatusPayload) => {
   const response = await axios.patch<ReorderStatusResponse>(
     `${BASE_URL}/reorder`,
-    reorderStatusPayload
+    payload
   );
   return response.data;
 };

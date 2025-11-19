@@ -13,12 +13,10 @@ export const getProjects = async (userId: string) => {
   return response.data;
 };
 
-export const createProject = async (
-  createProjectPayload: CreateProjectPayload
-) => {
+export const createProject = async (payload: CreateProjectPayload) => {
   const response = await axios.post<CreateProjectResponse>(
     `${BASE_URL}/create`,
-    createProjectPayload
+    payload
   );
   return response.data;
 };

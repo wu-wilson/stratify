@@ -1,0 +1,9 @@
+@use "../../../../../../styles/mixins" as mixins;
+@use "sass:map";
+
+.addTag {
+  min-width: fit-content;
+  font-size: 0.75rem;
+  font-family: inherit;
+  @include mixins.button($height: fit-content);
+}

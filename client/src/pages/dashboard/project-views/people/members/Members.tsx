@@ -2,6 +2,7 @@ import { COLUMNS } from "./constants";
 import { useMemo, useState } from "react";
 import { useMembers } from "../../../../../hooks/useMembers";
 import { useHistory } from "../../../../../hooks/useHistory";
+import { useIsOwner } from "../../../../../hooks/useIsOwner";
 import { getActionIcons } from "./util";
 import { useTimeFormat } from "../../../../../hooks/useTimeFormat";
 import { type MemberEntity } from "../../../../../services/members/types";
@@ -22,6 +23,7 @@ const Members = () => {
   } = useMembers();
   const { loading: historyLoading, error: historyError } = useHistory();
   const { formatString } = useTimeFormat();
+  const isOwner = useIsOwner();
 
   const rows = useMemo(
     () =>
@@ -77,7 +79,7 @@ const Members = () => {
       <SearchTable
         rows={rows}
         columns={COLUMNS}
-        actionIcons={getActionIcons(setModal, setSelectedMember)}
+        actionIcons={getActionIcons(setModal, setSelectedMember, isOwner)}
       />
     </div>
   );

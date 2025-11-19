@@ -7,7 +7,7 @@ export type MemberEntity = {
   joined_on: string;
 };
 
-export type DeleteMemberPayload = {
+export type DeleteMemberParams = {
   member_id: string;
   project_id: string;
   deleted_by: string;

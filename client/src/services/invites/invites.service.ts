@@ -29,32 +29,28 @@ export const getInviteMetadata = async (token: string) => {
   return response.data;
 };
 
-export const createInvite = async (
-  createInvitePayload: CreateInvitePayload
-) => {
+export const createInvite = async (payload: CreateInvitePayload) => {
   const response = await axios.post<CreateInviteResponse>(
     `${BASE_URL}/create`,
-    createInvitePayload
+    payload
   );
   return response.data;
 };
 
 export const updateInviteStatus = async (
-  updateInviteStatusPayload: UpdateInviteStatusPayload
+  payload: UpdateInviteStatusPayload
 ) => {
   const response = await axios.patch<UpdateInviteStatusResponse>(
     `${BASE_URL}/update/status`,
-    updateInviteStatusPayload
+    payload
   );
   return response.data;
 };
 
-export const acceptInvite = async (
-  acceptInvitePayload: AcceptInvitePayload
-) => {
+export const acceptInvite = async (payload: AcceptInvitePayload) => {
   const response = await axios.post<AcceptInviteResponse>(
     `${BASE_URL}/accept`,
-    acceptInvitePayload
+    payload
   );
   return response.data;
 };

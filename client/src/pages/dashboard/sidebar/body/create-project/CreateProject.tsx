@@ -25,13 +25,13 @@ const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
   const addProject = async () => {
     if (!user) return;
     try {
-      const createProjectPayload: CreateProjectPayload = {
+      const payload: CreateProjectPayload = {
         owner_id: user.uid,
         name: name.trim(),
         description: description ?? undefined,
       };
 
-      const newProject = await createProject(createProjectPayload);
+      const newProject = await createProject(payload);
       setParam({ project: newProject.project.id });
       setProjects((prev) => [newProject.project, ...prev!]);
 

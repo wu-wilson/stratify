@@ -25,13 +25,13 @@ const ValidInvite = ({
 
   const joinProject = async () => {
     try {
-      const acceptInvitePayload: AcceptInvitePayload = {
+      const payload: AcceptInvitePayload = {
         member_id: user!.uid,
         project_id: inviteMetadata.project.id,
         token: token,
       };
 
-      await acceptInvite(acceptInvitePayload);
+      await acceptInvite(payload);
       navigate(`/dashboard?project=${inviteMetadata.project.id}`);
     } catch (error) {
       setError("acceptInvite endpoint failed");

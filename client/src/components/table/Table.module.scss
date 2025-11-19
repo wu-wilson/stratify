@@ -41,14 +41,12 @@
 
       .iconCell {
         width: 0;
-        padding-right: 0.7rem;
         line-height: 0;
-      }
 
-      .iconCell {
         .icon {
           height: 1rem;
           width: 1rem;
+          padding-right: 0.7rem;
           cursor: pointer;
 
           &:hover {

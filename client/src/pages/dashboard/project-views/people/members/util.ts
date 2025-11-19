@@ -8,7 +8,8 @@ import {
 
 export const getActionIcons = (
   setModal: Dispatch<SetStateAction<"remove" | "owner" | null>>,
-  setSelectedMember: Dispatch<SetStateAction<MemberEntity | null>>
+  setSelectedMember: Dispatch<SetStateAction<MemberEntity | null>>,
+  userIsOwner: boolean
 ): ActionIcons[] => {
   return [
     {
@@ -17,7 +18,8 @@ export const getActionIcons = (
         setSelectedMember(row as MemberEntity);
         setModal("owner");
       },
-      render: (row: Row) => (row as MemberEntity).role !== "owner",
+      render: (row: Row) =>
+        (row as MemberEntity).role !== "owner" && userIsOwner,
     },
     {
       icon: IoTrashSharp,
@@ -25,7 +27,8 @@ export const getActionIcons = (
         setSelectedMember(row as MemberEntity);
         setModal("remove");
       },
-      render: (row: Row) => (row as MemberEntity).role !== "owner",
+      render: (row: Row) =>
+        (row as MemberEntity).role !== "owner" && userIsOwner,
     },
   ];
 };

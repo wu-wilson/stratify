@@ -24,13 +24,13 @@ const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {
     try {
       const project = getParam("project")!;
 
-      const createStatusPayload: CreateStatusPayload = {
+      const payload: CreateStatusPayload = {
         project_id: project,
         name: input.trim(),
         position: kanban!.statuses.length,
       };
 
-      const { status: createdStatus } = await createStatus(createStatusPayload);
+      const { status: createdStatus } = await createStatus(payload);
       setKanban((prev) => ({
         ...prev!,
         statuses: [...prev!.statuses, createdStatus],

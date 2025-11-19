@@ -3,5 +3,5 @@ import * as util from "./members.controller";
 
 export const membersRouter = express.Router();
 membersRouter.get("/", util.getMembers);
-membersRouter.delete("/delete", util.deleteMember);
+membersRouter.delete("/delete/:member_id", util.deleteMember);
 membersRouter.patch("/update/role", util.updateRole);

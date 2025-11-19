@@ -7,8 +7,6 @@ import { useMemo, useState } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { Draggable } from "../types";
 import { useKanban } from "../../../../../../../hooks/useKanban";
-import { useAuth } from "../../../../../../../hooks/useAuth";
-import { useMembers } from "../../../../../../../hooks/useMembers";
 import { useIsOwner } from "../../../../../../../hooks/useIsOwner";
 import { IoTrashSharp } from "react-icons/io5";
 import { type StatusEntity } from "../../../../../../../services/statuses/types";
@@ -32,10 +30,7 @@ const Status = ({ status }: { status: StatusEntity }) => {
   });
 
   const { kanban } = useKanban();
-  const { user } = useAuth();
-  const { members } = useMembers();
-
-  const isOwner = useIsOwner(user, members);
+  const isOwner = useIsOwner();
 
   const sortedTasks = useMemo(
     () =>
@@ -45,34 +40,24 @@ const Status = ({ status }: { status: StatusEntity }) => {
     [kanban!.tasks, status.id]
   );
 
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-  const [openCreateTaskModal, setOpenCreateTaskModal] =
-    useState<boolean>(false);
-
-  const isModalOpen = openDeleteModal || openCreateTaskModal;
+  const [modal, setModal] = useState<"delete" | "create" | null>(null);
 
   return (
     <div
       ref={setNodeRef}
-      {...(!isModalOpen ? attributes : {})}
-      {...(!isModalOpen ? listeners : {})}
+      {...(!modal ? attributes : {})}
+      {...(!modal ? listeners : {})}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={`${styles.container} ${isDragging && styles.ghost}`}
     >
-      {openDeleteModal && (
-        <Modal close={() => setOpenDeleteModal(false)}>
-          <DeleteStatus
-            status={status}
-            closeModal={() => setOpenDeleteModal(false)}
-          />
+      {modal === "delete" && (
+        <Modal close={() => setModal(null)}>
+          <DeleteStatus status={status} closeModal={() => setModal(null)} />
         </Modal>
       )}
-      {openCreateTaskModal && (
-        <Modal close={() => setOpenCreateTaskModal(false)}>
-          <CreateTask
-            statusId={status.id}
-            closeModal={() => setOpenCreateTaskModal(false)}
-          />
+      {modal === "create" && (
+        <Modal close={() => setModal(null)}>
+          <CreateTask statusId={status.id} closeModal={() => setModal(null)} />
         </Modal>
       )}
       <div className={styles.header}>
@@ -80,7 +65,7 @@ const Status = ({ status }: { status: StatusEntity }) => {
         {isOwner && (
           <IoTrashSharp
             className={styles.trash}
-            onClick={() => setOpenDeleteModal(true)}
+            onClick={() => setModal("delete")}
           />
         )}
       </div>
@@ -94,10 +79,7 @@ const Status = ({ status }: { status: StatusEntity }) => {
           ))}
         </div>
       </SortableContext>
-      <div
-        className={styles.addTask}
-        onClick={() => setOpenCreateTaskModal(true)}
-      >
+      <div className={styles.addTask} onClick={() => setModal("create")}>
         Add Task
       </div>
     </div>

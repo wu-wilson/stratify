@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { PLACEHOLDER, SUBTITLE } from "./constants";
 import { useKanban } from "../../../../../../hooks/useKanban";
+import { useAuth } from "../../../../../../hooks/useAuth";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { validateTagName } from "./util";
 import { createTag } from "../../../../../../services/tags/tags.service";
@@ -15,6 +16,7 @@ import styles from "./CreateTag.module.scss";
 const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
   const { kanban, setKanban } = useKanban();
   const { getParam } = useQueryParams();
+  const { user } = useAuth();
   const { ref, height } = useElementHeight<HTMLDivElement>();
 
   const [name, setName] = useState<string>("");
@@ -27,13 +29,15 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
     try {
       const project = getParam("project")!;
 
-      const createTagPayload: CreateTagPayload = {
+      const payload: CreateTagPayload = {
         project_id: project,
         name: name,
         color: color,
+        created_by: user!.uid,
       };
 
-      const { tag: createdTag } = await createTag(createTagPayload);
+      const { tag: createdTag } = await createTag(payload);
+      console.log(createdTag);
       setKanban((prev) => ({
         ...prev!,
         tags: [...prev!.tags, createdTag],

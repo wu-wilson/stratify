@@ -7,7 +7,7 @@ import { useQueryParams } from "../../../../../../../hooks/query-params/useQuery
 import { CONFIRM_STRING } from "./constants";
 import { useMembers } from "../../../../../../../hooks/useMembers";
 import {
-  type DeleteMemberPayload,
+  type DeleteMemberParams,
   type MemberEntity,
 } from "../../../../../../../services/members/types";
 import Spinner from "../../../../../../../components/spinner/Spinner";
@@ -35,13 +35,13 @@ const Remove = ({
     try {
       const project = getParam("project")!;
 
-      const deleteMemberPayload: DeleteMemberPayload = {
+      const params: DeleteMemberParams = {
         member_id: member.id,
         project_id: project,
         deleted_by: user!.uid,
       };
 
-      const removedMember = await deleteMember(deleteMemberPayload);
+      const removedMember = await deleteMember(params);
       setMembers(members!.filter((m) => m.id !== member.id));
 
       pushToHistory({

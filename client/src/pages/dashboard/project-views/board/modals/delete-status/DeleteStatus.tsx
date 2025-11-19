@@ -5,7 +5,7 @@ import { CONFIRM_STRING, SUBTITLE } from "./constants";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { deleteStatus } from "../../../../../../services/statuses/statuses.service";
 import {
-  type DeleteStatusPayload,
+  type DeleteStatusParams,
   type StatusEntity,
 } from "../../../../../../services/statuses/types";
 import Spinner from "../../../../../../components/spinner/Spinner";
@@ -31,13 +31,13 @@ const DeleteStatus = ({
     try {
       const project = getParam("project")!;
 
-      const deleteStatusPayload: DeleteStatusPayload = {
+      const params: DeleteStatusParams = {
         project_id: project,
         status_id: status.id,
         index: status.position,
       };
 
-      await deleteStatus(deleteStatusPayload);
+      await deleteStatus(params);
 
       const updatedStatuses = kanban!.statuses
         .filter((s) => s.id !== status.id)

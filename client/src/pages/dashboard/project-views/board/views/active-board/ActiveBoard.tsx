@@ -84,14 +84,14 @@ const ActiveBoard = () => {
     try {
       const project = getParam("project")!;
 
-      const reorderStatusPayload: ReorderStatusPayload = {
+      const payload: ReorderStatusPayload = {
         old_index: status.position,
         new_index: newIndex,
         project_id: project,
         status_id: status.id,
       };
 
-      await reorderStatus(reorderStatusPayload);
+      await reorderStatus(payload);
 
       pushMessage({
         type: "info",
@@ -113,7 +113,7 @@ const ActiveBoard = () => {
     }
 
     try {
-      const reorderTaskPayload: ReorderTaskPayload = {
+      const payload: ReorderTaskPayload = {
         old_index: originalActiveItemPosition!,
         new_index: newIndex,
         old_status_id: task.status_id,
@@ -121,7 +121,7 @@ const ActiveBoard = () => {
         task_id: task.id,
       };
 
-      await reorderTask(reorderTaskPayload);
+      await reorderTask(payload);
 
       pushMessage({
         type: "info",

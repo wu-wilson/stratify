@@ -90,17 +90,22 @@ export const createTask = async (req: Request, res: Response) => {
 };
 
 export const deleteTask = async (req: Request, res: Response) => {
-  const { task_id, status_id, index } = req.body;
+  const task_id = req.params.task_id;
+  const { status_id, index } = req.query;
 
-  if (!task_id || !status_id || typeof index !== "number") {
-    res.status(400).json({ error: "task_id and index are required" });
+  const parsedIndex = Number(index);
+
+  if (!task_id || !status_id || isNaN(parsedIndex)) {
+    res.status(400).json({
+      error: "task_id, status_id, and a numerical index are required",
+    });
     return;
   }
 
   try {
     await pool.query("BEGIN");
 
-    const deserializedStatusId = deserializeStatusId(status_id);
+    const deserializedStatusId = deserializeStatusId(status_id as string);
 
     await pool.query(
       `UPDATE tasks

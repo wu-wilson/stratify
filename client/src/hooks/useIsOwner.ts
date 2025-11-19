@@ -1,10 +1,10 @@
-import { type User } from "firebase/auth";
-import { type MemberEntity } from "../services/members/types";
+import { useAuth } from "./useAuth";
+import { useMembers } from "./useMembers";
 
-export const useIsOwner = (
-  user: User | null,
-  members: MemberEntity[] | null
-) => {
+export const useIsOwner = () => {
+  const { user } = useAuth();
+  const { members } = useMembers();
+
   const id = user?.uid;
   if (!id) return false;
 
