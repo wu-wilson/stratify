@@ -99,3 +99,34 @@ CREATE TABLE IF NOT EXISTS taggings (
     tag_id BIGINT NOT NULL REFERENCES tags(id) ON DELETE CASCADE,
     PRIMARY KEY (task_id, tag_id)
 );
+
+CREATE OR REPLACE FUNCTION nullify_member_tasks()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE tasks
+  SET created_by = NULL
+  WHERE created_by = OLD.id AND project_id = OLD.project_id;
+
+  UPDATE tasks
+  SET assigned_to = NULL
+  WHERE assigned_to = OLD.id AND project_id = OLD.project_id;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_nullify_member_tasks
+AFTER DELETE ON members
+FOR EACH ROW
+EXECUTE FUNCTION nullify_member_tasks();
+
+-- DROP TABLE taggings;
+-- DROP TABLE tags;
+-- DROP TABLE tasks;
+-- DROP TABLE statuses;
+-- DROP TABLE invites;
+-- DROP TABLE history;
+-- DROP TABLE members;
+-- DROP TABLE projects;
+-- DROP TRIGGER IF EXISTS trigger_nullify_member_tasks ON members;
+-- DROP FUNCTION IF EXISTS nullify_member_tasks();
