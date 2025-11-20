@@ -13,7 +13,9 @@ const Tabs = ({
   selectedTab: string;
   onClick: (tab: Tab) => void;
 }) => {
-  const selectedIndex = tabs.findIndex((tab) => tab.label === selectedTab);
+  const selectedIndex = tabs.findIndex(
+    (tab) => tab.label.toLowerCase() === selectedTab.toLowerCase()
+  );
 
   return (
     <div className={styles.container}>

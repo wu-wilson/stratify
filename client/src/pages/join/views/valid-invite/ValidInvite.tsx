@@ -13,10 +13,10 @@ import styles from "./ValidInvite.module.scss";
 
 const ValidInvite = ({
   inviteMetadata,
-  token,
+  inviteToken,
 }: {
   inviteMetadata: GetInviteMetadataResponse;
-  token: string;
+  inviteToken: string;
 }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -25,13 +25,15 @@ const ValidInvite = ({
 
   const joinProject = async () => {
     try {
+      const token = await user!.getIdToken();
+
       const payload: AcceptInvitePayload = {
         member_id: user!.uid,
         project_id: inviteMetadata.project.id,
-        token: token,
+        token: inviteToken,
       };
 
-      await acceptInvite(payload);
+      await acceptInvite(payload, token);
       navigate(`/dashboard?project=${inviteMetadata.project.id}`);
     } catch (error) {
       setError("acceptInvite endpoint failed");

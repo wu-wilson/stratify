@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { pool } from "../../index";
 
 export const getProjects = async (req: Request, res: Response) => {
-  const userId = req.query.user_id as string;
+  const userId = req.user_id;
 
   if (!userId) {
     res.status(400).json({ error: "user_id is required" });
@@ -27,10 +27,11 @@ export const getProjects = async (req: Request, res: Response) => {
 };
 
 export const createProject = async (req: Request, res: Response) => {
-  const { owner_id, name, description } = req.body;
+  const { name, description } = req.body;
+  const ownerId = req.user_id;
 
-  if (!owner_id || !name) {
-    res.status(400).json({ error: "owner_id and name are required" });
+  if (!name) {
+    res.status(400).json({ error: "name is required" });
     return;
   }
 
@@ -43,7 +44,7 @@ export const createProject = async (req: Request, res: Response) => {
       `INSERT INTO projects (owner_id, name, description)
        VALUES ($1, $2, $3)
        RETURNING *`,
-      [owner_id, name, description || null]
+      [ownerId, name, description || null]
     );
 
     const {
@@ -52,13 +53,13 @@ export const createProject = async (req: Request, res: Response) => {
       `INSERT INTO members (id, project_id, role)
        VALUES ($1, $2, $3)
        RETURNING *`,
-      [owner_id, newProject.id, "owner"]
+      [ownerId, newProject.id, "owner"]
     );
 
     await pool.query(
       `INSERT INTO history (project_id, performed_by, action_type, occurred_at)
        VALUES($1, $2, $3, $4)`,
-      [newProject.id, owner_id, "joined_project", member.joined_on]
+      [newProject.id, ownerId, "joined_project", member.joined_on]
     );
 
     await pool.query("COMMIT");

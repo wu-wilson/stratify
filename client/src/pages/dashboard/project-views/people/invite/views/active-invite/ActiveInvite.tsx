@@ -52,13 +52,15 @@ const ActiveInvite = ({
   const syncInviteStatus = async () => {
     try {
       const project = getParam("project")!;
+      const token = await user!.getIdToken();
+
       const payload: UpdateInviteStatusPayload = {
         project_id: project,
         paused: !joinsEnabled,
         updated_by: user!.uid,
       };
 
-      const { updated, updated_on } = await updateInviteStatus(payload);
+      const { updated, updated_on } = await updateInviteStatus(payload, token);
 
       setInvite(updated);
       pushToHistory({

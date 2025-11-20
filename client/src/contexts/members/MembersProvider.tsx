@@ -14,7 +14,9 @@ export const MembersProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { user, displayName } = useAuth();
   const { getParam } = useQueryParams();
+
   const project = getParam("project")!;
 
   useEffect(() => {
@@ -23,7 +25,8 @@ export const MembersProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchMembers = async () => {
     try {
-      const membersList = await getMembers(project);
+      const token = await user!.getIdToken();
+      const membersList = await getMembers(project, token);
       setError(null);
       setMembers(membersList);
     } catch (error) {
@@ -38,8 +41,6 @@ export const MembersProvider = ({ children }: { children: ReactNode }) => {
       fetchMembers();
     }
   }, [loading]);
-
-  const { displayName } = useAuth();
 
   useEffect(() => {
     setLoading(true);

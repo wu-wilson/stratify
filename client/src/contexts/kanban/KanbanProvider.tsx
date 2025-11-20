@@ -1,4 +1,5 @@
 import { useQueryParams } from "../../hooks/query-params/useQueryParams";
+import { useAuth } from "../../hooks/useAuth";
 import { getStatuses } from "../../services/statuses/statuses.service";
 import { getTaggings } from "../../services/taggings/taggings.service";
 import { getTags } from "../../services/tags/tags.service";
@@ -16,7 +17,9 @@ export const KanbanProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { user } = useAuth();
   const { getParam } = useQueryParams();
+
   const project = getParam("project")!;
 
   useEffect(() => {
@@ -25,17 +28,22 @@ export const KanbanProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchKanban = async () => {
     try {
+      const token = await user!.getIdToken();
+
       const [statuses, taggings, tags, tasks] = await Promise.all([
         callWithCustomError(
-          getStatuses(project),
+          getStatuses(project, token),
           "getStatuses endpoint failed"
         ),
         callWithCustomError(
-          getTaggings(project),
+          getTaggings(project, token),
           "getTaggings endpoint failed"
         ),
-        callWithCustomError(getTags(project), "getTags endpoint failed"),
-        callWithCustomError(getTasks(project), "getTasks endpoint failed"),
+        callWithCustomError(getTags(project, token), "getTags endpoint failed"),
+        callWithCustomError(
+          getTasks(project, token),
+          "getTasks endpoint failed"
+        ),
       ]);
       setError(null);
       setKanban({ statuses, taggings, tags, tasks });

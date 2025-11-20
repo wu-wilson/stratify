@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { useKanban } from "../../../../../hooks/useKanban";
+import { useQueryParams } from "../../../../../hooks/query-params/useQueryParams";
+import { useAuth } from "../../../../../hooks/useAuth";
 import { validateTagName } from "./create-tag/util";
 import { updateTag } from "../../../../../services/tags/tags.service";
 import { PLACEHOLDER } from "./create-tag/constants";
@@ -22,6 +24,8 @@ const EditTag = ({
 }) => {
   const { kanban, setKanban } = useKanban();
   const { ref, height } = useElementHeight<HTMLDivElement>();
+  const { user } = useAuth();
+  const { getParam } = useQueryParams();
 
   const [name, setName] = useState<string>(tag.name);
   const [color, setColor] = useState<string>(tag.color);
@@ -31,13 +35,17 @@ const EditTag = ({
 
   const editTag = async () => {
     try {
+      const project = getParam("project")!;
+      const token = await user!.getIdToken();
+
       const payload: UpdateTagPayload = {
         id: tag.id,
         name: name,
         color: color,
+        project_id: project,
       };
 
-      const { updated: updatedTag } = await updateTag(payload);
+      const { updated: updatedTag } = await updateTag(payload, token);
 
       setKanban((prev) => ({
         ...prev!,

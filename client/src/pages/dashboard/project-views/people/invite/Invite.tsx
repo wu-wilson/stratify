@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "../../../../../hooks/useHistory";
 import { getInvite } from "../../../../../services/invites/invites.service";
+import { useAuth } from "../../../../../hooks/useAuth";
 import { useQueryParams } from "../../../../../hooks/query-params/useQueryParams";
 import { type InviteEntity } from "../../../../../services/invites/types";
 import Spinner from "../../../../../components/spinner/Spinner";
@@ -15,6 +16,7 @@ const Invite = () => {
   const [inviteLoading, setInviteLoading] = useState<boolean>(true);
   const [inviteError, setInviteError] = useState<string | null>(null);
 
+  const { user } = useAuth();
   const { getParam } = useQueryParams();
   const project = getParam("project")!;
 
@@ -24,7 +26,8 @@ const Invite = () => {
 
   const fetchInvite = async () => {
     try {
-      const invite = await getInvite(project);
+      const token = await user!.getIdToken();
+      const invite = await getInvite(project, token);
       setInviteError(null);
       setInvite(invite);
     } catch (error) {

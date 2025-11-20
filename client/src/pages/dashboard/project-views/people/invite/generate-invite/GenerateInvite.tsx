@@ -58,6 +58,7 @@ const GenerateInvite = ({
   const generateInvite = async () => {
     try {
       const project = getParam("project")!;
+      const token = await user!.getIdToken();
 
       const payload: CreateInvitePayload = {
         project_id: project,
@@ -66,7 +67,7 @@ const GenerateInvite = ({
         paused: invite ? invite.paused : false,
       };
 
-      const { invite: createdInvite } = await createInvite(payload);
+      const { invite: createdInvite } = await createInvite(payload, token);
       setInvite(createdInvite);
       pushToHistory({
         performed_by: displayName ?? user!.uid,

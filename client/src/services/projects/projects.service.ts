@@ -6,17 +6,27 @@ import {
 } from "./types";
 import axios from "axios";
 
-export const getProjects = async (userId: string) => {
+export const getProjects = async (token: string) => {
   const response = await axios.get<ProjectEntity[]>(BASE_URL, {
-    params: { user_id: userId },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   return response.data;
 };
 
-export const createProject = async (payload: CreateProjectPayload) => {
+export const createProject = async (
+  payload: CreateProjectPayload,
+  token: string
+) => {
   const response = await axios.post<CreateProjectResponse>(
     `${BASE_URL}/create`,
-    payload
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return response.data;
 };

@@ -77,9 +77,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     title TEXT NOT NULL,
     description TEXT,
     position INT NOT NULL,
-    created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    FOREIGN KEY (created_by, project_id) REFERENCES members(id, project_id) ON DELETE SET NULL,
-    FOREIGN KEY (assigned_to, project_id) REFERENCES members(id, project_id) ON DELETE SET NULL
+    created_on TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- Create tags table

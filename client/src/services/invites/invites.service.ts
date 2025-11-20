@@ -11,46 +11,77 @@ import {
 } from "./types";
 import axios from "axios";
 
-export const getInvite = async (projectId: string) => {
+export const getInvite = async (projectId: string, token: string) => {
   const response = await axios.get<InviteEntity | null>(BASE_URL, {
     params: { project_id: projectId },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   return response.data;
 };
 
-export const getInviteMetadata = async (token: string) => {
+export const getInviteMetadata = async (
+  inviteToken: string,
+  bearerToken: string
+) => {
   const response = await axios.get<GetInviteMetadataResponse>(
     `${BASE_URL}/metadata`,
     {
-      params: { token: token },
+      params: { token: inviteToken },
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
     }
   );
   return response.data;
 };
 
-export const createInvite = async (payload: CreateInvitePayload) => {
+export const createInvite = async (
+  payload: CreateInvitePayload,
+  token: string
+) => {
   const response = await axios.post<CreateInviteResponse>(
     `${BASE_URL}/create`,
-    payload
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return response.data;
 };
 
 export const updateInviteStatus = async (
-  payload: UpdateInviteStatusPayload
+  payload: UpdateInviteStatusPayload,
+  token: string
 ) => {
   const response = await axios.patch<UpdateInviteStatusResponse>(
     `${BASE_URL}/update/status`,
-    payload
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return response.data;
 };
 
-export const acceptInvite = async (payload: AcceptInvitePayload) => {
+export const acceptInvite = async (
+  payload: AcceptInvitePayload,
+  token: string
+) => {
   const response = await axios.post<AcceptInviteResponse>(
     `${BASE_URL}/accept`,
-    payload
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return response.data;
 };

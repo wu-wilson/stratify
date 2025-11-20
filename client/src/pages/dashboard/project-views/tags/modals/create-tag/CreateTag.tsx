@@ -15,9 +15,9 @@ import styles from "../../../../../../components/modal/BaseModalContent.module.s
 
 const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
   const { kanban, setKanban } = useKanban();
+  const { ref, height } = useElementHeight<HTMLDivElement>();
   const { getParam } = useQueryParams();
   const { user } = useAuth();
-  const { ref, height } = useElementHeight<HTMLDivElement>();
 
   const [name, setName] = useState<string>("");
   const [color, setColor] = useState<string>(getCSSVar("--primary-color"));
@@ -28,6 +28,7 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
   const addTag = async () => {
     try {
       const project = getParam("project")!;
+      const token = await user!.getIdToken();
 
       const payload: CreateTagPayload = {
         project_id: project,
@@ -36,7 +37,7 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
         created_by: user!.uid,
       };
 
-      const { tag: createdTag } = await createTag(payload);
+      const { tag: createdTag } = await createTag(payload, token);
 
       setKanban((prev) => ({
         ...prev!,

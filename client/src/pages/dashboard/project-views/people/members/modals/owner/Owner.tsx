@@ -34,6 +34,7 @@ const Owner = ({
   const makeOwner = async () => {
     try {
       const project = getParam("project")!;
+      const token = await user!.getIdToken();
 
       const payload: UpdateRolePayload = {
         member_id: member.id,
@@ -42,7 +43,7 @@ const Owner = ({
         updated_by: user!.uid,
       };
 
-      const updated = await updateRole(payload);
+      const updated = await updateRole(payload, token);
       setMembers(
         members!.map((m) => (m.id === member.id ? { ...m, role: "owner" } : m))
       );

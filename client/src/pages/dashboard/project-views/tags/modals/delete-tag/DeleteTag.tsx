@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
+import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useKanban } from "../../../../../../hooks/useKanban";
+import { useAuth } from "../../../../../../hooks/useAuth";
 import { deleteTag } from "../../../../../../services/tags/tags.service";
 import { CONFIRM_STRING, SUBTITLE } from "./constants";
 import { type TagEntity } from "../../../../../../services/tags/types";
@@ -18,6 +20,8 @@ const DeleteTag = ({
 }) => {
   const { setKanban } = useKanban();
   const { ref, height } = useElementHeight<HTMLDivElement>();
+  const { getParam } = useQueryParams();
+  const { user } = useAuth();
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -25,7 +29,10 @@ const DeleteTag = ({
 
   const removeTag = async () => {
     try {
-      await deleteTag(tag.id);
+      const project = getParam("project")!;
+      const token = await user!.getIdToken();
+
+      await deleteTag(tag.id, project, token);
 
       setKanban((prev) => ({
         ...prev!,

@@ -32,7 +32,8 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     try {
-      const projectList = await getProjects(user.uid);
+      const token = await user!.getIdToken();
+      const projectList = await getProjects(token);
       setProjects(projectList);
     } catch (error) {
       navigate("/error", {

@@ -48,6 +48,7 @@ const CreateTask = ({
   const addTask = async () => {
     try {
       const project = getParam("project")!;
+      const token = await user!.getIdToken();
 
       const payload: CreateTaskPayload = {
         project_id: project,
@@ -59,7 +60,7 @@ const CreateTask = ({
         position: kanban!.tasks.filter((t) => t.status_id === status).length,
       };
 
-      const { task: createdTask } = await createTask(payload);
+      const { task: createdTask } = await createTask(payload, token);
       setKanban((prev) => ({
         ...prev!,
         tasks: [...prev!.tasks, createdTask],

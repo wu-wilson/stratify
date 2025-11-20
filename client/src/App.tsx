@@ -32,7 +32,7 @@ const App = () => {
           }
         />
         <Route
-          path="/join/:token"
+          path="/join/:inviteToken"
           element={
             <PrivateRoute>
               <Join />

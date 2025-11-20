@@ -7,7 +7,6 @@ export type ProjectEntity = {
 };
 
 export type CreateProjectPayload = {
-  owner_id: string;
   name: string;
   description?: string;
 };

@@ -3,6 +3,8 @@ import { useKanban } from "../../../../../../hooks/useKanban";
 import { CONFIRM_STRING, SUBTITLE } from "./constants";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { deleteTask } from "../../../../../../services/tasks/tasks.service";
+import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
+import { useAuth } from "../../../../../../hooks/useAuth";
 import {
   type DeleteTaskParams,
   type TaskEntity,
@@ -20,6 +22,8 @@ const DeleteTask = ({
 }) => {
   const { kanban, setKanban } = useKanban();
   const { ref, height } = useElementHeight<HTMLDivElement>();
+  const { getParam } = useQueryParams();
+  const { user } = useAuth();
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,13 +31,17 @@ const DeleteTask = ({
 
   const removeTask = async () => {
     try {
+      const project = getParam("project")!;
+      const token = await user!.getIdToken();
+
       const params: DeleteTaskParams = {
         task_id: task.id,
         status_id: task.status_id,
         index: task.position,
+        project_id: project,
       };
 
-      await deleteTask(params);
+      await deleteTask(params, token);
 
       const updatedTasks = kanban!.tasks
         .filter((t) => t.id !== task.id && t.status_id === task.status_id)

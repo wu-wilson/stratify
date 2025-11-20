@@ -12,7 +12,7 @@ import styles from "./Join.module.scss";
 
 const Join = () => {
   const { user } = useAuth();
-  const { token } = useParams();
+  const { inviteToken } = useParams();
   const [metadata, setMetadata] = useState<GetInviteMetadataResponse | null>(
     null
   );
@@ -21,7 +21,8 @@ const Join = () => {
 
   const fetchMetadata = async () => {
     try {
-      const metadata = await getInviteMetadata(token!);
+      const bearerToken = await user!.getIdToken();
+      const metadata = await getInviteMetadata(inviteToken!, bearerToken);
       setError(null);
       setMetadata(metadata);
     } catch (err) {
@@ -63,7 +64,7 @@ const Join = () => {
       {invalidationReason ? (
         <InvalidInvite invalidationReason={invalidationReason} />
       ) : (
-        <ValidInvite inviteMetadata={metadata!} token={token!} />
+        <ValidInvite inviteMetadata={metadata!} inviteToken={inviteToken!} />
       )}
     </div>
   );

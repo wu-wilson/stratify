@@ -26,17 +26,17 @@ const ProjectViews = () => {
           tabWidth="6rem"
           tabs={tabs}
           selectedTab={tab}
-          onClick={(tab) => setParam({ tab: tab.label })}
+          onClick={(tab) => setParam({ tab: tab.label.toLowerCase() })}
         />
       </div>
       <div className={styles.content}>
         <SnackbarProvider>
           <MembersProvider>
             <KanbanProvider>
-              {tab === "Board" && <Board />}
-              {tab === "Tags" && <Tags />}
+              {tab === "board" && <Board />}
+              {tab === "tags" && <Tags />}
             </KanbanProvider>
-            {tab === "People" && <People />}
+            {tab === "people" && <People />}
           </MembersProvider>
         </SnackbarProvider>
       </div>

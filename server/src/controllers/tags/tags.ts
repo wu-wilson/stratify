@@ -1,9 +1,14 @@
+import { verifyToken } from "../../middleware/verifyToken";
+import { requireProjectMember } from "../../middleware/requireProjectMember";
+import { requireProjectOwner } from "../../middleware/requireProjectOwner";
 import express from "express";
 import * as util from "./tags.controller";
 
 export const tagsRouter = express.Router();
 
-tagsRouter.get("/", util.getTags);
-tagsRouter.post("/create", util.createTag);
-tagsRouter.delete("/delete/:tag_id", util.deleteTag);
-tagsRouter.patch("/update", util.updateTag);
+tagsRouter.use(verifyToken);
+
+tagsRouter.get("/", requireProjectMember, util.getTags);
+tagsRouter.post("/create", requireProjectMember, util.createTag);
+tagsRouter.delete("/delete/:tag_id", requireProjectOwner, util.deleteTag);
+tagsRouter.patch("/update", requireProjectMember, util.updateTag);

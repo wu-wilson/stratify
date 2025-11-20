@@ -34,6 +34,7 @@ const Remove = ({
   const removeMember = async () => {
     try {
       const project = getParam("project")!;
+      const token = await user!.getIdToken();
 
       const params: DeleteMemberParams = {
         member_id: member.id,
@@ -41,7 +42,7 @@ const Remove = ({
         deleted_by: user!.uid,
       };
 
-      const removedMember = await deleteMember(params);
+      const removedMember = await deleteMember(params, token);
       setMembers(members!.filter((m) => m.id !== member.id));
 
       pushToHistory({

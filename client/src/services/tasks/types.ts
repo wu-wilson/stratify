@@ -28,6 +28,7 @@ export type DeleteTaskParams = {
   task_id: string;
   status_id: string;
   index: number;
+  project_id: string;
 };
 
 export type DeleteTaskResponse = {
@@ -41,6 +42,7 @@ export type ReorderTaskPayload = {
   old_status_id: string;
   new_status_id: string;
   task_id: string;
+  project_id: string;
 };
 
 export type ReorderTaskResponse = {

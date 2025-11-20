@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
+import { useAuth } from "../../../../../../hooks/useAuth";
 import { CONFIRM_STRING, SUBTITLE } from "./constants";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { deleteStatus } from "../../../../../../services/statuses/statuses.service";
@@ -20,8 +21,9 @@ const DeleteStatus = ({
   closeModal: () => void;
 }) => {
   const { kanban, setKanban } = useKanban();
-  const { getParam } = useQueryParams();
   const { ref, height } = useElementHeight<HTMLDivElement>();
+  const { getParam } = useQueryParams();
+  const { user } = useAuth();
 
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,6 +32,7 @@ const DeleteStatus = ({
   const removeStatus = async () => {
     try {
       const project = getParam("project")!;
+      const token = await user!.getIdToken();
 
       const params: DeleteStatusParams = {
         project_id: project,
@@ -37,7 +40,7 @@ const DeleteStatus = ({
         index: status.position,
       };
 
-      await deleteStatus(params);
+      await deleteStatus(params, token);
 
       const updatedStatuses = kanban!.statuses
         .filter((s) => s.id !== status.id)

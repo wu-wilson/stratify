@@ -27,6 +27,7 @@ export type UpdateTagPayload = {
   id: string;
   name: string;
   color: string;
+  project_id: string;
 };
 
 export type UpdateTagResponse = {

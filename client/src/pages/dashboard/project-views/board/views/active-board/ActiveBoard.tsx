@@ -38,11 +38,14 @@ import CreateStatus from "../../modals/create-status/CreateStatus";
 import Status from "./status/Status";
 import Task from "./status/task/Task";
 import styles from "./ActiveBoard.module.scss";
+import { useAuth } from "../../../../../../hooks/useAuth";
 
 const ActiveBoard = () => {
   const { kanban, setKanban } = useKanban();
-  const { getParam } = useQueryParams();
   const { pushMessage } = useSnackbar();
+  const { getParam } = useQueryParams();
+  const { user } = useAuth();
+  const project = getParam("project")!;
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 3 } })
@@ -82,7 +85,7 @@ const ActiveBoard = () => {
     }
 
     try {
-      const project = getParam("project")!;
+      const token = await user!.getIdToken();
 
       const payload: ReorderStatusPayload = {
         old_index: status.position,
@@ -91,7 +94,7 @@ const ActiveBoard = () => {
         status_id: status.id,
       };
 
-      await reorderStatus(payload);
+      await reorderStatus(payload, token);
 
       pushMessage({
         type: "info",
@@ -113,15 +116,18 @@ const ActiveBoard = () => {
     }
 
     try {
+      const token = await user!.getIdToken();
+
       const payload: ReorderTaskPayload = {
         old_index: originalActiveItemPosition!,
         new_index: newIndex,
         old_status_id: task.status_id,
         new_status_id: newStatusId,
         task_id: task.id,
+        project_id: project,
       };
 
-      await reorderTask(payload);
+      await reorderTask(payload, token);
 
       pushMessage({
         type: "info",

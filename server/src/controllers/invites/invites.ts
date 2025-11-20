@@ -1,9 +1,18 @@
+import { verifyToken } from "../../middleware/verifyToken";
+import { requireProjectMember } from "../../middleware/requireProjectMember";
 import express from "express";
 import * as util from "./invites.controller";
 
 export const invitesRouter = express.Router();
-invitesRouter.get("/", util.getInvite);
+
+invitesRouter.use(verifyToken);
+
+invitesRouter.get("/", requireProjectMember, util.getInvite);
 invitesRouter.get("/metadata", util.getInviteMetadata);
-invitesRouter.post("/create", util.createInvite);
-invitesRouter.patch("/update/status", util.updateInviteStatus);
+invitesRouter.post("/create", requireProjectMember, util.createInvite);
+invitesRouter.patch(
+  "/update/status",
+  requireProjectMember,
+  util.updateInviteStatus
+);
 invitesRouter.post("/accept", util.acceptInvite);

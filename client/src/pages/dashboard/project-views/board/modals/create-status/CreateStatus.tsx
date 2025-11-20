@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PLACEHOLDER, SUBTITLE } from "./constants";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
+import { useAuth } from "../../../../../../hooks/useAuth";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { validateStatusName } from "./util";
 import { createStatus } from "../../../../../../services/statuses/statuses.service";
@@ -12,8 +13,9 @@ import styles from "../../../../../../components/modal/BaseModalContent.module.s
 
 const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {
   const { kanban, setKanban } = useKanban();
-  const { getParam } = useQueryParams();
   const { ref, height } = useElementHeight<HTMLDivElement>();
+  const { getParam } = useQueryParams();
+  const { user } = useAuth();
 
   const [input, setInput] = useState<string>("");
   const [requestError, setRequestError] = useState<string | null>(null);
@@ -23,6 +25,7 @@ const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {
   const addStatus = async () => {
     try {
       const project = getParam("project")!;
+      const token = await user!.getIdToken();
 
       const payload: CreateStatusPayload = {
         project_id: project,
@@ -30,7 +33,7 @@ const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {
         position: kanban!.statuses.length,
       };
 
-      const { status: createdStatus } = await createStatus(payload);
+      const { status: createdStatus } = await createStatus(payload, token);
       setKanban((prev) => ({
         ...prev!,
         statuses: [...prev!.statuses, createdStatus],

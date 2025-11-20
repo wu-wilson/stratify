@@ -9,32 +9,57 @@ import {
 } from "./types";
 import axios from "axios";
 
-export const getTags = async (projectId: string) => {
+export const getTags = async (projectId: string, token: string) => {
   const response = await axios.get<TagEntity[]>(BASE_URL, {
     params: { project_id: projectId },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   return response.data;
 };
 
-export const createTag = async (payload: CreateTagPayload) => {
+export const createTag = async (payload: CreateTagPayload, token: string) => {
   const response = await axios.post<CreateTagResponse>(
     `${BASE_URL}/create`,
-    payload
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return response.data;
 };
 
-export const deleteTag = async (tagId: string) => {
+export const deleteTag = async (
+  tagId: string,
+  projectId: string,
+  token: string
+) => {
   const response = await axios.delete<DeleteTagResponse>(
-    `${BASE_URL}/delete/${tagId}`
+    `${BASE_URL}/delete/${tagId}`,
+    {
+      params: {
+        project_id: projectId,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return response.data;
 };
 
-export const updateTag = async (payload: UpdateTagPayload) => {
+export const updateTag = async (payload: UpdateTagPayload, token: string) => {
   const response = await axios.patch<UpdateTagResponse>(
     `${BASE_URL}/update`,
-    payload
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return response.data;
 };
