@@ -19,7 +19,6 @@ export const getActionIcons = (
         setSelectedTag(row as TagEntity);
         setModal("edit");
       },
-      render: () => true,
     },
     {
       icon: IoTrashSharp,

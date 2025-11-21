@@ -11,7 +11,7 @@ const Table = <T extends Row>({
   actionIcons = [],
 }: {
   columns: Column<T>[];
-  rows: Row[];
+  rows: T[];
   fallback?: string;
   actionIcons?: ActionIcons[];
 }) => {
@@ -61,14 +61,14 @@ const Table = <T extends Row>({
           ) : (
             paginatedRows.map((row, i) => (
               <tr key={i}>
-                {columns.map(({ key }) => (
+                {columns.map(({ key, render }) => (
                   <td className={styles.dataCell} key={key}>
-                    {row[key] ?? fallback}
+                    {render ? render(row[key]) : row[key] ?? fallback}
                   </td>
                 ))}
                 {actionIcons.map((actionIcon, i) => (
                   <td className={styles.iconCell} key={i}>
-                    {actionIcon.render(row) && (
+                    {(actionIcon.render ? actionIcon.render(row) : true) && (
                       <actionIcon.icon
                         onClick={() => actionIcon.onClick(row)}
                         className={styles.icon}

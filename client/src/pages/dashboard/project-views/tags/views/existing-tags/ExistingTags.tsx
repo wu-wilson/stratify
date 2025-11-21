@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useIsOwner } from "../../../../../../hooks/useIsOwner";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useMembers } from "../../../../../../hooks/useMembers";
-import { COLUMNS } from "./constants";
+import { COLUMNS } from "./constants.tsx";
 import { useTimeFormat } from "../../../../../../hooks/useTimeFormat";
 import { getActionIcons } from "./util";
 import { type TaskCountMap } from "./types";

@@ -7,3 +7,14 @@
   font-family: inherit;
   @include mixins.button($height: fit-content);
 }
+
+.color {
+  display: flex;
+  align-items: center;
+
+  .preview {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 0.5rem;
+  }
+}
