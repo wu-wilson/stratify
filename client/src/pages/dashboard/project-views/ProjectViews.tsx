@@ -4,6 +4,7 @@ import { useQueryParams } from "../../../hooks/query-params/useQueryParams";
 import { SnackbarProvider } from "../../../contexts/snackbar/SnackbarProvider";
 import { MembersProvider } from "../../../contexts/members/MembersProvider";
 import { KanbanProvider } from "../../../contexts/kanban/KanbanProvider";
+import { normalize } from "./util";
 import Tabs from "../../../components/tabs/Tabs";
 import People from "./people/People";
 import Tags from "./tags/Tags";
@@ -13,10 +14,13 @@ import styles from "./ProjectViews.module.scss";
 const ProjectViews = () => {
   const { getParam, setParam } = useQueryParams();
 
-  const tab = getParam("tab") ?? tabs[0].label;
+  const tabParam = getParam("tab");
+  const tab = normalize(tabParam ?? tabs[0].label);
 
   useEffect(() => {
-    setParam({ tab: tab });
+    if (!tabParam) {
+      setParam({ tab });
+    }
   }, []);
 
   return (
@@ -25,18 +29,18 @@ const ProjectViews = () => {
         <Tabs
           tabWidth="6rem"
           tabs={tabs}
-          selectedTab={tab}
-          onClick={(tab) => setParam({ tab: tab.label.toLowerCase() })}
+          selected={tab}
+          onClick={(tab) => setParam({ tab: normalize(tab.label) })}
         />
       </div>
       <div className={styles.content}>
         <SnackbarProvider>
           <MembersProvider>
             <KanbanProvider>
-              {tab === "board" && <Board />}
-              {tab === "tags" && <Tags />}
+              {tab === normalize(tabs[0].label) && <Board />}
+              {tab === normalize(tabs[1].label) && <Tags />}
             </KanbanProvider>
-            {tab === "people" && <People />}
+            {tab === normalize(tabs[2].label) && <People />}
           </MembersProvider>
         </SnackbarProvider>
       </div>

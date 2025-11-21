@@ -5,23 +5,21 @@ import styles from "./Tabs.module.scss";
 const Tabs = ({
   tabWidth,
   tabs,
-  selectedTab,
+  selected,
   onClick,
 }: {
   tabWidth: EmRemPx;
   tabs: Tab[];
-  selectedTab: string;
+  selected: string;
   onClick: (tab: Tab) => void;
 }) => {
-  const selectedIndex = tabs.findIndex(
-    (tab) => tab.label.toLowerCase() === selectedTab.toLowerCase()
-  );
+  const selectedIndex = tabs.findIndex((tab) => tab.key === selected);
 
   return (
     <div className={styles.container}>
       {tabs.map((tab) => (
         <div
-          key={tab.label}
+          key={tab.key}
           onClick={() => onClick(tab)}
           className={styles.tab}
           style={{ width: tabWidth }}
