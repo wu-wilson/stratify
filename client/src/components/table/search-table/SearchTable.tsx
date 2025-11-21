@@ -3,13 +3,13 @@ import { type ActionIcons, type Column, type Row } from "../types";
 import Table from "../Table";
 import styles from "./SearchTable.module.scss";
 
-const SearchTable = <T extends Row>({
+const SearchTable = ({
   columns,
   rows,
   fallback = "-",
   actionIcons = [],
 }: {
-  columns: Column<T>[];
+  columns: Column[];
   rows: Row[];
   fallback?: string;
   actionIcons?: ActionIcons[];

@@ -4,13 +4,13 @@ import { type ActionIcons, type Column, type Row } from "./types";
 import styles from "./Table.module.scss";
 import Dropdown from "../dropdown/Dropdown";
 
-const Table = <T extends Row>({
+const Table = ({
   columns,
   rows,
   fallback = "-",
   actionIcons = [],
 }: {
-  columns: Column<T>[];
+  columns: Column[];
   rows: Row[];
   fallback?: string;
   actionIcons?: ActionIcons[];
@@ -63,9 +63,7 @@ const Table = <T extends Row>({
               <tr key={i}>
                 {columns.map(({ key, render }) => (
                   <td className={styles.dataCell} key={key}>
-                    {render
-                      ? render(row[key] as T[Extract<keyof T, string>])
-                      : row[key] ?? fallback}
+                    {render ? render(row[key]) : row[key] ?? fallback}
                   </td>
                 ))}
                 {actionIcons.map((actionIcon, i) => (

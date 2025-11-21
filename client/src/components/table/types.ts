@@ -5,10 +5,10 @@ export type Row = {
   [key: string]: string | number | boolean | undefined | null;
 };
 
-export type Column<T extends Row> = {
-  key: Extract<keyof T, string>;
+export type Column = {
+  key: keyof Row;
   label: string;
-  render?: (value: T[Extract<keyof T, string>]) => ReactNode;
+  render?: (value: Row[keyof Row]) => ReactNode;
 };
 
 export type ActionIcons = {
