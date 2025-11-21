@@ -11,7 +11,7 @@ const Table = <T extends Row>({
   actionIcons = [],
 }: {
   columns: Column<T>[];
-  rows: T[];
+  rows: Row[];
   fallback?: string;
   actionIcons?: ActionIcons[];
 }) => {
@@ -63,7 +63,9 @@ const Table = <T extends Row>({
               <tr key={i}>
                 {columns.map(({ key, render }) => (
                   <td className={styles.dataCell} key={key}>
-                    {render ? render(row[key]) : row[key] ?? fallback}
+                    {render
+                      ? render(row[key] as T[Extract<keyof T, string>])
+                      : row[key] ?? fallback}
                   </td>
                 ))}
                 {actionIcons.map((actionIcon, i) => (
