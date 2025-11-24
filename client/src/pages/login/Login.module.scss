@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: center;
 
-  @include mixins.card($width: 18rem, $padding: 2rem);
+  @include mixins.card($width: 21rem, $padding: 2rem);
   @include mixins.themed using ($props) {
     color: map.get($props, "font-color");
   }
