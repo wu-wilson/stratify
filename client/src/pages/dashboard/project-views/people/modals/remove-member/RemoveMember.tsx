@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { deleteMember } from "../../../../../../../services/members/members.service";
-import { useElementHeight } from "../../../../../../../hooks/useElementHeight";
-import { useAuth } from "../../../../../../../hooks/useAuth";
-import { useHistory } from "../../../../../../../hooks/useHistory";
-import { useQueryParams } from "../../../../../../../hooks/query-params/useQueryParams";
+import { deleteMember } from "../../../../../../services/members/members.service";
+import { useElementHeight } from "../../../../../../hooks/useElementHeight";
+import { useAuth } from "../../../../../../hooks/useAuth";
+import { useHistory } from "../../../../../../hooks/useHistory";
+import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { CONFIRM_STRING, SUBTITLE } from "./constants";
-import { useMembers } from "../../../../../../../hooks/useMembers";
+import { useMembers } from "../../../../../../hooks/useMembers";
 import {
   type DeleteMemberParams,
   type MemberEntity,
-} from "../../../../../../../services/members/types";
-import Spinner from "../../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../../components/error/Error";
-import styles from "../../../../../../../components/modal/BaseModalContent.module.scss";
+} from "../../../../../../services/members/types";
+import Spinner from "../../../../../../components/spinner/Spinner";
+import Error from "../../../../../../components/error/Error";
+import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
 
-const Remove = ({
+const RemoveMember = ({
   member,
   closeModal,
 }: {
@@ -117,4 +117,4 @@ const Remove = ({
   );
 };
 
-export default Remove;
+export default RemoveMember;

@@ -1,10 +1,10 @@
-import { useHistory } from "../../../../../hooks/useHistory";
-import { useTimeFormat } from "../../../../../hooks/useTimeFormat";
+import { useHistory } from "../../../../../../hooks/useHistory";
+import { useTimeFormat } from "../../../../../../hooks/useTimeFormat";
 import { ACTION_TYPE_LABELS, COLUMNS } from "./constants";
 import { useMemo } from "react";
-import Spinner from "../../../../../components/spinner/Spinner";
-import Error from "../../../../../components/error/Error";
-import SearchTable from "../../../../../components/table/search-table/SearchTable";
+import Spinner from "../../../../../../components/spinner/Spinner";
+import Error from "../../../../../../components/error/Error";
+import SearchTable from "../../../../../../components/table/search-table/SearchTable";
 import moment from "moment";
 import styles from "./History.module.scss";
 

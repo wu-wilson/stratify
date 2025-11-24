@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { useHistory } from "../../../../../../../hooks/useHistory";
-import { updateRole } from "../../../../../../../services/members/members.service";
-import { useElementHeight } from "../../../../../../../hooks/useElementHeight";
+import { useHistory } from "../../../../../../hooks/useHistory";
+import { updateRole } from "../../../../../../services/members/members.service";
+import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { CONFIRM_STRING, SUBTITLE } from "./constants";
-import { useMembers } from "../../../../../../../hooks/useMembers";
-import { useQueryParams } from "../../../../../../../hooks/query-params/useQueryParams";
-import { useAuth } from "../../../../../../../hooks/useAuth";
+import { useMembers } from "../../../../../../hooks/useMembers";
+import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
+import { useAuth } from "../../../../../../hooks/useAuth";
 import {
   type MemberEntity,
   type UpdateRolePayload,
-} from "../../../../../../../services/members/types";
-import Spinner from "../../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../../components/error/Error";
-import styles from "../../../../../../../components/modal/BaseModalContent.module.scss";
+} from "../../../../../../services/members/types";
+import Spinner from "../../../../../../components/spinner/Spinner";
+import Error from "../../../../../../components/error/Error";
+import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
 
-const Owner = ({
+const MakeOwner = ({
   member,
   closeModal,
 }: {
@@ -120,4 +120,4 @@ const Owner = ({
   );
 };
 
-export default Owner;
+export default MakeOwner;

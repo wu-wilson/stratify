@@ -1,10 +1,7 @@
-import { type Column } from "../../../../../components/table/types";
-import {
-  type HistoryEntity,
-  type History,
-} from "../../../../../services/history/types";
+import { type Column } from "../../../../../../components/table/types";
+import { type History } from "../../../../../../services/history/types";
 
-export const COLUMNS: Column<HistoryEntity & { row: number }>[] = [
+export const COLUMNS: Column[] = [
   { key: "row", label: "#" },
   { key: "performed_by", label: "Performed By" },
   { key: "action_type", label: "Action" },

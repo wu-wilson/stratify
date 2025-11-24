@@ -1,24 +1,20 @@
-import { useState } from "react";
+import { useModal } from "../../Tags";
 import { BUTTON_LABEL, SUBTEXT, TITLE } from "./constants";
-import Modal from "../../../../../../components/modal/Modal";
 import NotFound from "../../../../../../components/not-found/NotFound";
-import CreateTag from "../../modals/create-tag/CreateTag";
 import styles from "./NoTags.module.scss";
 
 const NoTags = () => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const { setModal } = useModal();
 
   return (
     <div className={styles.container}>
-      {openModal && (
-        <Modal close={() => setOpenModal(false)}>
-          <CreateTag closeModal={() => setOpenModal(false)} />
-        </Modal>
-      )}
       <NotFound
         title={TITLE}
         subtext={SUBTEXT}
-        button={{ label: BUTTON_LABEL, onClick: () => setOpenModal(true) }}
+        button={{
+          label: BUTTON_LABEL,
+          onClick: () => setModal({ type: "createTag" }),
+        }}
       />
     </div>
   );

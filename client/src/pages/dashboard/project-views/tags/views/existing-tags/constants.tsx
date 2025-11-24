@@ -1,22 +1,19 @@
 import { type Column } from "../../../../../../components/table/types";
-import { type TagEntity } from "../../../../../../services/tags/types";
 import styles from "./ExistingTags.module.scss";
 
-export const COLUMNS: Column<
-  TagEntity & { row: number; assigned_tasks: number }
->[] = [
+export const COLUMNS: Column[] = [
   { key: "row", label: "#" },
   { key: "name", label: "Name" },
   {
     key: "color",
     label: "Color",
-    render: (value: string | number) => (
+    render: (hex) => (
       <div className={styles.color}>
         <div
-          style={{ backgroundColor: value as string }}
+          style={{ backgroundColor: hex as string }}
           className={styles.preview}
         />
-        {value}
+        {hex}
       </div>
     ),
   },

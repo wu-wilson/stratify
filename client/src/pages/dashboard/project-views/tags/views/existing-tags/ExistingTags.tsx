@@ -1,24 +1,22 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useIsOwner } from "../../../../../../hooks/useIsOwner";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useMembers } from "../../../../../../hooks/useMembers";
+import { useModal } from "../../Tags.tsx";
 import { COLUMNS } from "./constants.tsx";
 import { useTimeFormat } from "../../../../../../hooks/useTimeFormat";
 import { getActionIcons } from "./util";
 import { type TaskCountMap } from "./types";
-import { type TagEntity } from "../../../../../../services/tags/types";
 import SearchTable from "../../../../../../components/table/search-table/SearchTable";
 import moment from "moment";
-import Modal from "../../../../../../components/modal/Modal";
-import CreateTag from "../../modals/create-tag/CreateTag";
-import DeleteTag from "../../modals/delete-tag/DeleteTag";
-import EditTag from "../../modals/EditTag";
 import styles from "./ExistingTags.module.scss";
 
 const ExistingTags = () => {
   const { kanban } = useKanban();
   const { members } = useMembers();
   const { formatString } = useTimeFormat();
+  const { setModal } = useModal();
+
   const isOwner = useIsOwner();
 
   const taskCounts = useMemo(
@@ -45,36 +43,17 @@ const ExistingTags = () => {
     }));
   }, [kanban, members, formatString]);
 
-  const [selectedTag, setSelectedTag] = useState<TagEntity | null>(null);
-  const [modal, setModal] = useState<"remove" | "edit" | "create" | null>(null);
-  const closeModal = () => {
-    setSelectedTag(null);
-    setModal(null);
-  };
-
   return (
     <>
-      {modal === "remove" && selectedTag && (
-        <Modal close={closeModal}>
-          <DeleteTag tag={selectedTag} closeModal={closeModal} />
-        </Modal>
-      )}
-      {modal === "edit" && selectedTag && (
-        <Modal close={closeModal}>
-          <EditTag tag={selectedTag} closeModal={closeModal} />
-        </Modal>
-      )}
-      {modal === "create" && (
-        <Modal close={closeModal}>
-          <CreateTag closeModal={closeModal} />
-        </Modal>
-      )}
       <SearchTable
         rows={rows}
         columns={COLUMNS}
-        actionIcons={getActionIcons(setModal, setSelectedTag, isOwner)}
+        actionIcons={getActionIcons(setModal, isOwner)}
       />
-      <button className={styles.addTag} onClick={() => setModal("create")}>
+      <button
+        className={styles.addTag}
+        onClick={() => setModal({ type: "createTag" })}
+      >
         Add Tag
       </button>
     </>

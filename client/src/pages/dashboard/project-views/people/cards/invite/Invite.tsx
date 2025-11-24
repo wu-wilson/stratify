@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useHistory } from "../../../../../hooks/useHistory";
-import { getInvite } from "../../../../../services/invites/invites.service";
-import { useAuth } from "../../../../../hooks/useAuth";
-import { useQueryParams } from "../../../../../hooks/query-params/useQueryParams";
-import { type InviteEntity } from "../../../../../services/invites/types";
-import Spinner from "../../../../../components/spinner/Spinner";
-import Error from "../../../../../components/error/Error";
+import { useHistory } from "../../../../../../hooks/useHistory";
+import { getInvite } from "../../../../../../services/invites/invites.service";
+import { useAuth } from "../../../../../../hooks/useAuth";
+import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
+import { type InviteEntity } from "../../../../../../services/invites/types";
+import Spinner from "../../../../../../components/spinner/Spinner";
+import Error from "../../../../../../components/error/Error";
 import ActiveInvite from "./views/active-invite/ActiveInvite";
 import NoActiveInvite from "./views/no-active-invite/NoActiveInvite";
 import styles from "./Invite.module.scss";

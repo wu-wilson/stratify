@@ -6,21 +6,20 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { useQueryParams } from "../../../../../../../hooks/query-params/useQueryParams";
-import { useHistory } from "../../../../../../../hooks/useHistory";
-import { updateInviteStatus } from "../../../../../../../services/invites/invites.service";
-import { useAuth } from "../../../../../../../hooks/useAuth";
-import { useTimeFormat } from "../../../../../../../hooks/useTimeFormat";
+import { useQueryParams } from "../../../../../../../../hooks/query-params/useQueryParams";
+import { useHistory } from "../../../../../../../../hooks/useHistory";
+import { updateInviteStatus } from "../../../../../../../../services/invites/invites.service";
+import { useAuth } from "../../../../../../../../hooks/useAuth";
+import { useModal } from "../../../../People";
+import { useTimeFormat } from "../../../../../../../../hooks/useTimeFormat";
 import {
   type InviteEntity,
   type UpdateInviteStatusPayload,
-} from "../../../../../../../services/invites/types";
-import Modal from "../../../../../../../components/modal/Modal";
-import GenerateInvite from "../../generate-invite/GenerateInvite";
-import Copy from "../../../../../../../components/copy/Copy";
-import Toggle from "../../../../../../../components/toggle/Toggle";
-import Spinner from "../../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../../components/error/Error";
+} from "../../../../../../../../services/invites/types";
+import Copy from "../../../../../../../../components/copy/Copy";
+import Toggle from "../../../../../../../../components/toggle/Toggle";
+import Spinner from "../../../../../../../../components/spinner/Spinner";
+import Error from "../../../../../../../../components/error/Error";
 import moment from "moment-timezone";
 import styles from "./ActiveInvite.module.scss";
 
@@ -33,12 +32,15 @@ const ActiveInvite = ({
 }) => {
   const { pushToHistory } = useHistory();
   const { getParam } = useQueryParams();
+  const { setModal } = useModal();
   const { user, displayName } = useAuth();
   const { formatString } = useTimeFormat();
+
   const createdOn = useMemo(
     () => moment(invite.created_on).format(formatString),
     [invite.created_on, formatString]
   );
+
   const [joinsEnabled, setJoinsEnabled] = useState<boolean>(!invite.paused);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -82,8 +84,6 @@ const ActiveInvite = ({
     }
   }, [loading]);
 
-  const [openModal, setOpenModal] = useState<boolean>(false);
-
   if (loading) {
     return (
       <div className={styles.container}>
@@ -105,15 +105,6 @@ const ActiveInvite = ({
 
   return (
     <div className={styles.container}>
-      {openModal && (
-        <Modal close={() => setOpenModal(false)}>
-          <GenerateInvite
-            invite={invite}
-            setInvite={setInvite}
-            closeModal={() => setOpenModal(false)}
-          />
-        </Modal>
-      )}
       <div className={styles.header}>Invite People to the Team</div>
       <div className={styles.section}>
         <div className={styles.row}>
@@ -144,7 +135,9 @@ const ActiveInvite = ({
         </div>
       </div>
       <div className={styles.generateInvite}>
-        <button onClick={() => setOpenModal(true)}>
+        <button
+          onClick={() => setModal({ type: "createInvite", invite, setInvite })}
+        >
           Generate New Invite Link
         </button>
       </div>
