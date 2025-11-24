@@ -23,7 +23,7 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
     {
       icon: RiLogoutBoxLine,
       label: "Sign Out",
-      onClick: () => setModal("settings"),
+      onClick: () => setSigningOut(true),
     },
   ];
 
