@@ -18,6 +18,8 @@ import {
   restrictToHorizontalAxis,
   restrictToParentElement,
 } from "@dnd-kit/modifiers";
+import { useAuth } from "../../../../../../hooks/useAuth";
+import { useModal } from "../../Board";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useSnackbar } from "../../../../../../hooks/useSnackbar";
@@ -33,18 +35,17 @@ import {
   type StatusEntity,
   type ReorderStatusPayload,
 } from "../../../../../../services/statuses/types";
-import Modal from "../../../../../../components/modal/Modal";
-import CreateStatus from "../../modals/create-status/CreateStatus";
 import Status from "./status/Status";
 import Task from "./status/task/Task";
 import styles from "./ActiveBoard.module.scss";
-import { useAuth } from "../../../../../../hooks/useAuth";
 
 const ActiveBoard = () => {
   const { kanban, setKanban } = useKanban();
   const { pushMessage } = useSnackbar();
   const { getParam } = useQueryParams();
+  const { setModal } = useModal();
   const { user } = useAuth();
+
   const project = getParam("project")!;
 
   const sensors = useSensors(
@@ -263,15 +264,8 @@ const ActiveBoard = () => {
     }
   };
 
-  const [openModal, setOpenModal] = useState<boolean>(false);
-
   return (
     <div className={styles.container}>
-      {openModal && (
-        <Modal close={() => setOpenModal(false)}>
-          <CreateStatus closeModal={() => setOpenModal(false)} />
-        </Modal>
-      )}
       <span className={styles.header}>Kanban Board</span>
       <div className={styles.dragWrapper}>
         <DndContext
@@ -296,7 +290,7 @@ const ActiveBoard = () => {
               ))}
               <button
                 className={styles.addStatus}
-                onClick={() => setOpenModal(true)}
+                onClick={() => setModal({ type: "createStatus" })}
               >
                 Add Status
               </button>

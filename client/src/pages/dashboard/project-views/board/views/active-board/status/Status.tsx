@@ -3,16 +3,14 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { Draggable } from "../types";
 import { useKanban } from "../../../../../../../hooks/useKanban";
 import { useIsOwner } from "../../../../../../../hooks/useIsOwner";
 import { IoTrashSharp } from "react-icons/io5";
+import { useModal } from "../../../Board";
 import { type StatusEntity } from "../../../../../../../services/statuses/types";
-import Modal from "../../../../../../../components/modal/Modal";
-import DeleteStatus from "../../../modals/delete-status/DeleteStatus";
-import CreateTask from "../../../modals/create-task/CreateTask";
 import Task from "./task/Task";
 import styles from "./Status.module.scss";
 
@@ -40,7 +38,7 @@ const Status = ({ status }: { status: StatusEntity }) => {
     [kanban!.tasks, status.id]
   );
 
-  const [modal, setModal] = useState<"delete" | "create" | null>(null);
+  const { modal, setModal } = useModal();
 
   return (
     <div
@@ -50,22 +48,12 @@ const Status = ({ status }: { status: StatusEntity }) => {
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={`${styles.container} ${isDragging && styles.ghost}`}
     >
-      {modal === "delete" && (
-        <Modal close={() => setModal(null)}>
-          <DeleteStatus status={status} closeModal={() => setModal(null)} />
-        </Modal>
-      )}
-      {modal === "create" && (
-        <Modal close={() => setModal(null)}>
-          <CreateTask statusId={status.id} closeModal={() => setModal(null)} />
-        </Modal>
-      )}
       <div className={styles.header}>
         <span className={styles.title}>{status.name}</span>
         {isOwner && (
           <IoTrashSharp
             className={styles.trash}
-            onClick={() => setModal("delete")}
+            onClick={() => setModal({ type: "deleteStatus", entity: status })}
           />
         )}
       </div>
@@ -79,7 +67,10 @@ const Status = ({ status }: { status: StatusEntity }) => {
           ))}
         </div>
       </SortableContext>
-      <div className={styles.addTask} onClick={() => setModal("create")}>
+      <div
+        className={styles.addTask}
+        onClick={() => setModal({ type: "createTask", entity: status })}
+      >
         Add Task
       </div>
     </div>

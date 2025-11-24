@@ -1,13 +1,11 @@
-import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { Draggable } from "../../types";
 import { IoTrashSharp } from "react-icons/io5";
 import { CSS } from "@dnd-kit/utilities";
 import { useMembers } from "../../../../../../../../hooks/useMembers";
 import { useIsOwner } from "../../../../../../../../hooks/useIsOwner";
+import { useModal } from "../../../../Board";
 import { type TaskEntity } from "../../../../../../../../services/tasks/types";
-import Modal from "../../../../../../../../components/modal/Modal";
-import DeleteTask from "../../../../modals/delete-task/DeleteTask";
 import styles from "./Task.module.scss";
 
 const Task = ({ task }: { task: TaskEntity }) => {
@@ -26,27 +24,19 @@ const Task = ({ task }: { task: TaskEntity }) => {
   const { members } = useMembers();
   const isOwner = useIsOwner();
 
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-
   const assignee =
     members!.find((m) => m.id === task.assigned_to)?.name || "Unassigned";
+
+  const { modal, setModal } = useModal();
 
   return (
     <div
       ref={setNodeRef}
-      {...attributes}
-      {...listeners}
+      {...(!modal ? attributes : {})}
+      {...(!modal ? listeners : {})}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={`${styles.container} ${isDragging && styles.ghost}`}
     >
-      {openDeleteModal && (
-        <Modal close={() => setOpenDeleteModal(false)}>
-          <DeleteTask
-            task={task}
-            closeModal={() => setOpenDeleteModal(false)}
-          />
-        </Modal>
-      )}
       <div className={styles.header}>
         <span className={styles.title}>{task.title}</span>
         <span className={styles.assignee}>{assignee}</span>
@@ -55,7 +45,7 @@ const Task = ({ task }: { task: TaskEntity }) => {
         {isOwner && (
           <IoTrashSharp
             className={styles.trash}
-            onClick={() => setOpenDeleteModal(true)}
+            onClick={() => setModal({ type: "deleteTask", entity: task })}
           />
         )}
       </div>
