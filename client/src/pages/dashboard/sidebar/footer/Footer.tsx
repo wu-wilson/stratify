@@ -1,29 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
+import { useModal } from "../Sidebar";
 import { auth } from "../../../../contexts/auth/config";
 import { RiLogoutBoxLine, RiSettings3Line } from "react-icons/ri";
 import { type SidebarFooterItem } from "./types";
 import Spinner from "../../../../components/spinner/Spinner";
 import Tooltip from "../../../../components/tooltip/Tooltip";
-import Modal from "../../../../components/modal/Modal";
-import Settings from "./settings/Settings";
 import styles from "./Footer.module.scss";
 
 const Footer = ({ expanded }: { expanded: boolean }) => {
-  const [openSettings, setOpenSettings] = useState<boolean>(false);
+  const { setModal } = useModal();
+
   const [signingOut, setSigningOut] = useState<boolean>(false);
 
   const footerItems: SidebarFooterItem[] = [
     {
       icon: RiSettings3Line,
       label: "Settings",
-      onClick: () => setOpenSettings(true),
+      onClick: () => setModal("settings"),
     },
     {
       icon: RiLogoutBoxLine,
       label: "Sign Out",
-      onClick: () => setSigningOut(true),
+      onClick: () => setModal("settings"),
     },
   ];
 
@@ -57,11 +57,6 @@ const Footer = ({ expanded }: { expanded: boolean }) => {
 
   return (
     <div className={styles.container}>
-      {openSettings && (
-        <Modal close={() => setOpenSettings(false)}>
-          <Settings />
-        </Modal>
-      )}
       {footerItems.map((item) => (
         <div key={item.label} className={styles.item} onClick={item.onClick}>
           {expanded ? (
