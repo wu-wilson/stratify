@@ -169,15 +169,6 @@ const CreateTask = ({
       {validationError && (
         <div className={styles.criticalInputMsg}>{validationError}</div>
       )}
-      <span className={styles.label}>Task Description</span>
-      <textarea
-        className={styles.textarea}
-        value={description}
-        onChange={(e) => {
-          setDescription(e.target.value);
-        }}
-        placeholder={DESCRIPTION_PLACEHOLDER}
-      />
       {kanban!.tags.length > 0 && (
         <>
           <span className={styles.label}>Tags</span>
@@ -201,6 +192,15 @@ const CreateTask = ({
           )}
         </>
       )}
+      <span className={styles.label}>Task Description</span>
+      <textarea
+        className={styles.textarea}
+        value={description}
+        onChange={(e) => {
+          setDescription(e.target.value);
+        }}
+        placeholder={DESCRIPTION_PLACEHOLDER}
+      />
       <div className={styles.button}>
         <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Create

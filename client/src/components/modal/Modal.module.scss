@@ -17,6 +17,8 @@ $transition-duration: 200ms;
   transition: ease background-color $transition-duration;
 
   .card {
+    max-height: 90vh;
+    overflow: auto;
     position: relative;
     transform: scale(0);
     opacity: 0;
