@@ -8,7 +8,7 @@ export const useElementHeight = <T extends HTMLElement>() => {
     if (ref.current) {
       setHeight(ref.current.offsetHeight);
     }
-  }, []);
+  }, [ref.current?.offsetHeight]);
 
   return { ref, height };
 };
