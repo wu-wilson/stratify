@@ -260,3 +260,110 @@ export const reorderTask = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const editTask = async (req: Request, res: Response) => {
+  const {
+    old_index,
+    old_status_id,
+    new_status_id,
+    title,
+    tags,
+    description,
+    assigned_to,
+    task_id,
+    project_id,
+  } = req.body;
+
+  if (
+    typeof old_index !== "number" ||
+    !old_status_id ||
+    !new_status_id ||
+    !title ||
+    !tags ||
+    !task_id ||
+    !project_id
+  ) {
+    res.status(400).json({
+      error:
+        "old_index, old_status_id, new_status_id, title, tags, task_id, and project_id are required",
+    });
+    return;
+  }
+
+  try {
+    await pool.query("BEGIN");
+
+    const deserializedNewStatusId = deserializeStatusId(
+      new_status_id as string
+    );
+
+    if (old_status_id !== new_status_id) {
+      const deserializedOldStatusId = deserializeStatusId(
+        old_status_id as string
+      );
+
+      await pool.query(
+        `UPDATE tasks
+         SET position = position - 1
+         WHERE status_id = $1
+         AND position > $2`,
+        [deserializedOldStatusId, old_index]
+      );
+
+      await pool.query(
+        `UPDATE tasks
+         SET position = position + 1
+         WHERE status_id = $1
+         AND position >= $2`,
+        [deserializedNewStatusId, 0]
+      );
+    }
+
+    const deserializedTaskId = deserializeTaskId(task_id);
+
+    await pool.query(
+      `DELETE FROM taggings
+       WHERE task_id = $1`,
+      [deserializedTaskId]
+    );
+
+    const tagIds = tags.map((t: { id: string }) => t.id);
+
+    await pool.query(
+      `INSERT INTO taggings (task_id, tag_id)
+       SELECT * FROM unnest($1::bigint[], $2::bigint[])`,
+      [Array(tags.length).fill(deserializedTaskId), tagIds]
+    );
+
+    const {
+      rows: [updatedTask],
+    } = await pool.query(
+      `UPDATE tasks
+       SET title = $1, description = $2, assigned_to = $3, status_id = $4, position = $5
+       WHERE id = $6
+       RETURNING *`,
+      [
+        title,
+        description,
+        assigned_to,
+        deserializedNewStatusId,
+        0,
+        deserializedTaskId,
+      ]
+    );
+
+    await pool.query("COMMIT");
+
+    updatedTask.id = serializeTaskId(updatedTask.id);
+    updatedTask.status_id = serializeStatusId(updatedTask.status_id);
+
+    res.json({
+      message: "Task updated successfully",
+      updated: updatedTask,
+    });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error("Error updating task:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

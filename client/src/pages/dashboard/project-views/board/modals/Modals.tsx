@@ -4,6 +4,7 @@ import CreateStatus from "./create-status/CreateStatus";
 import CreateTask from "./create-task/CreateTask";
 import DeleteStatus from "./delete-status/DeleteStatus";
 import DeleteTask from "./delete-task/DeleteTask";
+import EditTask from "./edit-task/EditTask";
 
 export const Modals = () => {
   const { modal, closeModal } = useModal();
@@ -22,6 +23,9 @@ export const Modals = () => {
         )}
         {modal.type === "deleteTask" && (
           <DeleteTask closeModal={closeModal} task={modal.entity} />
+        )}
+        {modal.type === "editTask" && (
+          <EditTask closeModal={closeModal} task={modal.entity} />
         )}
       </Modal>
     )

@@ -4,6 +4,8 @@ import {
   type CreateTaskResponse,
   type DeleteTaskParams,
   type DeleteTaskResponse,
+  type EditTaskPayload,
+  type EditTaskResponse,
   type ReorderTaskPayload,
   type ReorderTaskResponse,
   type TaskEntity,
@@ -55,6 +57,19 @@ export const reorderTask = async (
 ) => {
   const response = await axios.patch<ReorderTaskResponse>(
     `${BASE_URL}/reorder`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const editTask = async (payload: EditTaskPayload, token: string) => {
+  const response = await axios.patch<EditTaskResponse>(
+    `${BASE_URL}/edit`,
     payload,
     {
       headers: {

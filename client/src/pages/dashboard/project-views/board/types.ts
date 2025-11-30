@@ -16,4 +16,8 @@ export type ModalOptions =
   | {
       type: "createTask";
       entity: StatusEntity;
+    }
+  | {
+      type: "editTask";
+      entity: TaskEntity;
     };

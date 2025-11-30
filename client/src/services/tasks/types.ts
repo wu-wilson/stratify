@@ -52,3 +52,20 @@ export type ReorderTaskResponse = {
   message: string;
   updated: TaskEntity;
 };
+
+export type EditTaskPayload = {
+  old_index: number;
+  old_status_id: string;
+  new_status_id: string;
+  title: string;
+  tags: TagEntity[];
+  description: string | null;
+  assigned_to: string | null;
+  task_id: string;
+  project_id: string;
+};
+
+export type EditTaskResponse = {
+  message: string;
+  updated: TaskEntity;
+};

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { Draggable } from "../../types";
 import { IoTrashSharp } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
 import { CSS } from "@dnd-kit/utilities";
 import { useMembers } from "../../../../../../../../hooks/useMembers";
 import { useIsOwner } from "../../../../../../../../hooks/useIsOwner";
@@ -64,9 +65,13 @@ const Task = ({ task }: { task: TaskEntity }) => {
         </div>
       )}
       <div className={styles.footer}>
+        <FaEdit
+          className={styles.icon}
+          onClick={() => setModal({ type: "editTask", entity: task })}
+        />
         {isOwner && (
           <IoTrashSharp
-            className={styles.trash}
+            className={styles.icon}
             onClick={() => setModal({ type: "deleteTask", entity: task })}
           />
         )}
