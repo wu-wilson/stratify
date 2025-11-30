@@ -59,7 +59,7 @@ const Modal = ({
         onTransitionEnd={handleTransitionEnd}
       >
         <button className={styles.closeBtn} onClick={() => setClosing(true)}>
-          <IoMdClose className={styles.icon} />
+          <IoMdClose />
         </button>
         {children}
       </div>

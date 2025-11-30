@@ -1,0 +1,31 @@
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+
+.container {
+  // width: fit-content;
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 1rem;
+  @include mixins.themed using ($props) {
+    background-color: map.get($props, "tag-bg");
+  }
+
+  .icon {
+    margin-right: 0.5rem;
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .name {
+    margin-right: 0.5rem;
+  }
+
+  .delete {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

@@ -61,6 +61,7 @@
   .textarea {
     resize: none;
     height: 6rem;
+    flex-shrink: 0;
   }
 
   .colorPicker {

@@ -1,3 +1,5 @@
+import { type TagEntity } from "../tags/types";
+
 export type TaskEntity = {
   id: string;
   status_id: string;
@@ -17,6 +19,7 @@ export type CreateTaskPayload = {
   title: string;
   description: string | null;
   position: number;
+  tags: TagEntity[];
 };
 
 export type CreateTaskResponse = {

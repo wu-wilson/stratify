@@ -29,6 +29,8 @@ $themes: (
     toggle-bg: #ccc,
     dropdown-bg: #ededed,
     dropdown-box-shadow: 0 0 5px #c6c6c6,
+    autofill-bg: #ededed,
+    autofill-box-shadow: 0 0 5px #c6c6c6,
     modal-content-bg: #ededed,
     copy-icon: #b2b2b2,
     project-bg: #ededed,
@@ -43,6 +45,7 @@ $themes: (
     draggable-item-bg: white,
     draggable-item-border: 1px solid #d5d4d4,
     dragging-ghost-border: 1px solid $primary-color,
+    tag-bg: #ededed,
   ),
   dark: (
     page-bg: #1c1c1c,
@@ -62,6 +65,8 @@ $themes: (
     toggle-bg: #636363,
     dropdown-bg: #151515,
     dropdown-box-shadow: 0 0 5px black,
+    autofill-bg: #151515,
+    autofill-box-shadow: 0 0 5px black,
     modal-content-bg: #151515,
     copy-icon: #989898,
     project-bg: #151515,
@@ -76,5 +81,6 @@ $themes: (
     draggable-item-bg: #242426,
     draggable-item-border: none,
     dragging-ghost-border: 1px solid $primary-color,
+    tag-bg: #151515,
   ),
 );

@@ -37,6 +37,13 @@
     }
   }
 
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-bottom: 0.5rem;
+  }
+
   .footer {
     display: flex;
     justify-content: flex-end;

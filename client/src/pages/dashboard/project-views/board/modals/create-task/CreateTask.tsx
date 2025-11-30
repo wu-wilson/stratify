@@ -4,7 +4,12 @@ import { useMembers } from "../../../../../../hooks/useMembers";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { useAuth } from "../../../../../../hooks/useAuth";
-import { getAssigneeLabel, getStatusLabel, validateTaskTitle } from "./util";
+import {
+  getAssigneeLabel,
+  getStatusLabel,
+  getTagLabel,
+  validateTaskTitle,
+} from "./util";
 import {
   DESCRIPTION_PLACEHOLDER,
   TITLE_PLACEHOLDER,
@@ -12,10 +17,13 @@ import {
 } from "./constants";
 import { createTask } from "../../../../../../services/tasks/tasks.service";
 import { type CreateTaskPayload } from "../../../../../../services/tasks/types";
+import { type TagEntity } from "../../../../../../services/tags/types";
 import Dropdown from "../../../../../../components/dropdown/Dropdown";
+import Autofill from "../../../../../../components/autofill/Autofill";
+import Tag from "../../../../../../components/tag/Tag";
 import Spinner from "../../../../../../components/spinner/Spinner";
 import Error from "../../../../../../components/error/Error";
-import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
+import styles from "./CreateTask.module.scss";
 
 const CreateTask = ({
   closeModal,
@@ -34,6 +42,7 @@ const CreateTask = ({
   const [assignee, setAssignee] = useState<string | null>(null);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [tags, setTags] = useState<TagEntity[]>([]);
   const [requestError, setRequestError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -58,12 +67,17 @@ const CreateTask = ({
         title: title.trim(),
         description: description.trim() || null,
         position: kanban!.tasks.filter((t) => t.status_id === status).length,
+        tags: tags,
       };
 
       const { task: createdTask } = await createTask(payload, token);
       setKanban((prev) => ({
         ...prev!,
         tasks: [...prev!.tasks, createdTask],
+        taggings: [
+          ...prev!.taggings,
+          ...tags.map((tag) => ({ tag_id: tag.id, task_id: createdTask.id })),
+        ],
       }));
 
       closeModal();
@@ -88,6 +102,16 @@ const CreateTask = ({
       setValidationError(msg);
     }
   }, [title]);
+
+  const onSelectTag = (tag: TagEntity) => {
+    if (!tags.find((t) => t.id === tag.id)) {
+      setTags((prev) => [...prev, tag]);
+    }
+  };
+
+  const onDeleteTag = (tag: TagEntity) => {
+    setTags((prev) => prev.filter((t) => t.id !== tag.id));
+  };
 
   if (loading) {
     return (
@@ -154,6 +178,29 @@ const CreateTask = ({
         }}
         placeholder={DESCRIPTION_PLACEHOLDER}
       />
+      {kanban!.tags.length > 0 && (
+        <>
+          <span className={styles.label}>Tags</span>
+          <Autofill
+            options={kanban!.tags}
+            getLabel={getTagLabel}
+            onSelectOption={onSelectTag}
+            placeholder="Search tags..."
+          />
+          {tags.length > 0 && (
+            <div className={styles.tags}>
+              {tags.map((tag) => (
+                <Tag
+                  tag={tag}
+                  key={tag.id}
+                  deletable={true}
+                  onDelete={onDeleteTag}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      )}
       <div className={styles.button}>
         <button onClick={() => setLoading(true)} disabled={!!validationError}>
           Create

@@ -1,0 +1,57 @@
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+@use "sass:color";
+
+.container {
+  width: 100%;
+  position: relative;
+  font-size: 0.75rem;
+
+  .search {
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem;
+    font-size: 0.75rem;
+    font-family: inherit;
+
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "autofill-bg");
+      color: map.get($props, "font-color");
+    }
+  }
+
+  .menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+
+    @include mixins.themed using ($props) {
+      background-color: map.get($props, "autofill-bg");
+      box-shadow: map.get($props, "autofill-box-shadow");
+    }
+
+    .option {
+      padding: 0.7rem;
+
+      &:hover {
+        cursor: pointer;
+
+        @include mixins.themed using ($props) {
+          background-color: color.adjust(
+            map.get($props, "autofill-bg"),
+            $lightness: -5%
+          );
+        }
+      }
+    }
+  }
+}

@@ -40,6 +40,7 @@ export const createTask = async (req: Request, res: Response) => {
     title,
     description,
     position,
+    tags,
   } = req.body;
 
   if (
@@ -47,16 +48,19 @@ export const createTask = async (req: Request, res: Response) => {
     !status_id ||
     !created_by ||
     !title ||
-    typeof position !== "number"
+    typeof position !== "number" ||
+    !tags
   ) {
     res.status(400).json({
       error:
-        "project_id, status_id, created_by, title, and position are required",
+        "project_id, status_id, created_by, title, position, and tags are required",
     });
     return;
   }
 
   try {
+    await pool.query("BEGIN");
+
     const deserializedStatusId = deserializeStatusId(status_id);
 
     const {
@@ -76,14 +80,25 @@ export const createTask = async (req: Request, res: Response) => {
       ]
     );
 
+    const tagIds = tags.map((t: { id: string }) => t.id);
+
+    await pool.query(
+      `INSERT INTO taggings (task_id, tag_id)
+       SELECT * FROM unnest($1::bigint[], $2::bigint[])`,
+      [Array(tags.length).fill(newTask.id), tagIds]
+    );
+
     newTask.id = serializeTaskId(newTask.id);
     newTask.status_id = serializeStatusId(newTask.status_id);
+
+    await pool.query("COMMIT");
 
     res.status(201).json({
       message: "Task created successfully",
       task: newTask,
     });
   } catch (error) {
+    await pool.query("ROLLBACK");
     console.error("Error creating task:", error);
     res.status(500).json({ error: "Internal server error" });
   }

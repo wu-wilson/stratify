@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { pool } from "../../index";
+import { serializeTaskId } from "../tasks/util";
 
 export const getTaggings = async (req: Request, res: Response) => {
   const projectId = req.query.project_id as string;
@@ -17,6 +18,10 @@ export const getTaggings = async (req: Request, res: Response) => {
        WHERE tags.project_id = $1`,
       [projectId]
     );
+
+    taggings.forEach((tagging) => {
+      tagging.task_id = serializeTaskId(tagging.task_id);
+    });
 
     res.json(taggings);
   } catch (error) {

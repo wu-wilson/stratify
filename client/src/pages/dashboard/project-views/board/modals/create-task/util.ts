@@ -1,5 +1,6 @@
 import { type MemberEntity } from "../../../../../../services/members/types";
 import { type StatusEntity } from "../../../../../../services/statuses/types";
+import { type TagEntity } from "../../../../../../services/tags/types";
 import { type TaskEntity } from "../../../../../../services/tasks/types";
 
 export const validateTaskTitle = (
@@ -41,4 +42,8 @@ export const getAssigneeLabel = (
     throw new Error(`Label not found for the given member id (${memberId})`);
   }
   return label;
+};
+
+export const getTagLabel = (tag: TagEntity) => {
+  return tag.name;
 };
