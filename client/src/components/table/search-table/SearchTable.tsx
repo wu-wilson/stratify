@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { type ActionIcons, type Column, type Row } from "../types";
+import Search from "../../search/Search";
 import Table from "../Table";
 import styles from "./SearchTable.module.scss";
 
@@ -34,14 +35,7 @@ const SearchTable = ({
 
   return (
     <div className={styles.container}>
-      <input
-        className={styles.search}
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-        }}
-        placeholder="Search"
-      />
+      <Search search={search} setSearch={setSearch} />
       <Table
         columns={columns}
         rows={filtered}

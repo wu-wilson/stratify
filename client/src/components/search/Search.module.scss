@@ -1,0 +1,19 @@
+@use "../../styles/mixins" as mixins;
+@use "sass:map";
+
+.search {
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem;
+  font-size: 0.7rem;
+  font-family: inherit;
+  margin-bottom: 0.5rem;
+
+  @include mixins.themed using ($props) {
+    background-color: map.get($props, "table-bg");
+    color: map.get($props, "font-color");
+  }
+}

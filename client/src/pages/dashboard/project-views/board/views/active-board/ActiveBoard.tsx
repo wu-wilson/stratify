@@ -27,6 +27,7 @@ import { useMemo, useState } from "react";
 import { isStatusEntity, isTaskEntity } from "./types";
 import { reorderStatus } from "../../../../../../services/statuses/statuses.service";
 import { reorderTask } from "../../../../../../services/tasks/tasks.service";
+import { SearchProvider } from "../../../../../../contexts/search/SearchProvider";
 import {
   type ReorderTaskPayload,
   type TaskEntity,
@@ -35,6 +36,7 @@ import {
   type StatusEntity,
   type ReorderStatusPayload,
 } from "../../../../../../services/statuses/types";
+import debounce from "lodash.debounce";
 import Status from "./status/Status";
 import Task from "./status/task/Task";
 import styles from "./ActiveBoard.module.scss";
@@ -176,7 +178,41 @@ const ActiveBoard = () => {
         ).length;
         status_id = over!.id as string;
       } else {
-        position = over!.data.current!.sortable.index;
+        const allTasks = kanban!.tasks
+          .filter(
+            (t) =>
+              t.status_id === over!.data.current!.metadata.status_id &&
+              t.id !== activeItem!.id
+          )
+          .sort((a, b) => a.position - b.position);
+
+        const visibleIndex = over!.data.current!.sortable.index;
+        const visibleTasksWithoutActive = (
+          over!.data.current!.sortable.items as string[]
+        ).filter((id) => id !== activeItem.id);
+
+        const visibleTasks = [
+          ...visibleTasksWithoutActive.slice(0, visibleIndex),
+          activeItem.id,
+          ...visibleTasksWithoutActive.slice(visibleIndex),
+        ];
+
+        const beforeTask =
+          allTasks.find((t) => t.id === visibleTasks[visibleIndex - 1]) ?? null;
+        const afterTask =
+          allTasks.find((t) => t.id === visibleTasks[visibleIndex + 1]) ?? null;
+
+        let newIndex;
+
+        if (!beforeTask) {
+          newIndex = 0;
+        } else if (!afterTask) {
+          newIndex = allTasks.length;
+        } else {
+          newIndex = allTasks.find((t) => t.id === beforeTask.id)!.position + 1;
+        }
+
+        position = newIndex;
         status_id = over!.data.current!.metadata.status_id;
       }
 
@@ -208,100 +244,110 @@ const ActiveBoard = () => {
     setOriginalActiveItemPosition(null);
   };
 
+  const debouncedDragOver = useMemo(
+    () =>
+      debounce((event: DragOverEvent) => {
+        const { active, over } = event;
+
+        if (isTaskEntity(activeItem) && over) {
+          setKanban((prev) => {
+            const reordered = prev!.tasks
+              .filter(
+                (t) =>
+                  t.status_id === active.data.current!.metadata.status_id &&
+                  t.id !== active.id
+              )
+              .sort((a, b) => a.position - b.position)
+              .map((t, idx) => ({ ...t, position: idx }));
+            const untouched = prev!.tasks.filter(
+              (t) => t.status_id !== active.data.current!.metadata.status_id
+            );
+            const updated = [
+              ...reordered,
+              ...untouched,
+              {
+                ...activeItem,
+                status_id: isStatusEntity(over.data.current?.metadata)
+                  ? over.id
+                  : over.data.current!.metadata.status_id,
+                position: isStatusEntity(over.data.current?.metadata)
+                  ? prev!.tasks.filter(
+                      (t) => t.status_id === (over.id as string)
+                    ).length
+                  : originalActiveItemPosition!,
+              },
+            ];
+            return {
+              ...prev!,
+              tasks: updated,
+            };
+          });
+        } else if (isStatusEntity(activeItem) && !over) {
+          setKanban((prev) => {
+            const reordered = prev!.statuses
+              .filter((s) => s.id !== active.id)
+              .sort((a, b) => a.position - b.position)
+              .map((s, idx) => ({ ...s, position: idx }));
+
+            return {
+              ...prev!,
+              statuses: [
+                ...reordered,
+                { ...activeItem, position: reordered.length },
+              ],
+            };
+          });
+        }
+      }, 100),
+    [activeItem, originalActiveItemPosition, setKanban]
+  );
+
   const onDragOver = (event: DragOverEvent) => {
-    const { active, over } = event;
-
-    if (isTaskEntity(activeItem) && over) {
-      setKanban((prev) => {
-        const reordered = prev!.tasks
-          .filter(
-            (t) =>
-              t.status_id === active.data.current!.metadata.status_id &&
-              t.id !== active.id
-          )
-          .sort((a, b) => a.position - b.position)
-          .map((t, idx) => ({ ...t, position: idx }));
-
-        const untouched = prev!.tasks.filter(
-          (t) => t.status_id !== active.data.current!.metadata.status_id
-        );
-
-        const updated = [
-          ...reordered,
-          ...untouched,
-          {
-            ...activeItem,
-            status_id: isStatusEntity(over.data.current?.metadata)
-              ? over.id
-              : over.data.current!.metadata.status_id,
-            position: isStatusEntity(over.data.current?.metadata)
-              ? prev!.tasks.filter((t) => t.status_id === (over.id as string))
-                  .length
-              : originalActiveItemPosition!,
-          },
-        ];
-
-        return {
-          ...prev!,
-          tasks: updated,
-        };
-      });
-    } else if (isStatusEntity(activeItem) && !over) {
-      setKanban((prev) => {
-        const reordered = prev!.statuses
-          .filter((s) => s.id !== active.id)
-          .sort((a, b) => a.position - b.position)
-          .map((s, idx) => ({ ...s, position: idx }));
-
-        return {
-          ...prev!,
-          statuses: [
-            ...reordered,
-            { ...activeItem, position: reordered.length },
-          ],
-        };
-      });
-    }
+    debouncedDragOver(event);
   };
 
   return (
     <div className={styles.container}>
       <span className={styles.header}>Kanban Board</span>
-      <div className={styles.dragWrapper}>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={rectIntersection}
-          modifiers={
-            isStatusEntity(activeItem)
-              ? [restrictToHorizontalAxis, restrictToParentElement]
-              : [restrictToFirstScrollableAncestor]
-          }
-          onDragStart={onDragStart}
-          onDragEnd={onDragEnd}
-          onDragOver={onDragOver}
-        >
-          <SortableContext
-            items={sortedStatuses.map((status) => status.id)}
-            strategy={horizontalListSortingStrategy}
+      <SearchProvider placeholder="Search by title, assignee, or tag...">
+        <div className={styles.dragWrapper}>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={rectIntersection}
+            modifiers={
+              isStatusEntity(activeItem)
+                ? [restrictToHorizontalAxis, restrictToParentElement]
+                : [restrictToFirstScrollableAncestor]
+            }
+            onDragStart={onDragStart}
+            onDragEnd={onDragEnd}
+            onDragOver={onDragOver}
           >
-            <div className={styles.dragContainer}>
-              {sortedStatuses.map((status) => (
-                <Status status={status} key={status.id} />
-              ))}
-              <button
-                className={styles.addStatus}
-                onClick={() => setModal({ type: "createStatus" })}
-              >
-                Add Status
-              </button>
-            </div>
-          </SortableContext>
-          <DragOverlay>
-            {isStatusEntity(activeItem) && <Status status={activeItem} />}
-            {isTaskEntity(activeItem) && <Task task={activeItem} />}
-          </DragOverlay>
-        </DndContext>
-      </div>
+            <SortableContext
+              items={sortedStatuses.map((status) => status.id)}
+              strategy={horizontalListSortingStrategy}
+            >
+              <div className={styles.dragContainer}>
+                {sortedStatuses.map((status) => (
+                  <Status status={status} key={status.id} />
+                ))}
+                <button
+                  className={styles.addStatus}
+                  onClick={() => setModal({ type: "createStatus" })}
+                >
+                  Add Status
+                </button>
+              </div>
+            </SortableContext>
+            <DragOverlay>
+              {isStatusEntity(activeItem) && <Status status={activeItem} />}
+              {isTaskEntity(activeItem) && (
+                <Task task={activeItem} key={"ghost"} />
+              )}
+            </DragOverlay>
+          </DndContext>
+        </div>
+      </SearchProvider>
     </div>
   );
 };

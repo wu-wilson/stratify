@@ -347,7 +347,7 @@ export const editTask = async (req: Request, res: Response) => {
         description,
         assigned_to,
         deserializedNewStatusId,
-        0,
+        old_status_id === new_status_id ? old_index : 0,
         deserializedTaskId,
       ]
     );
