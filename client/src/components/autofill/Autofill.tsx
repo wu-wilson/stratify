@@ -1,18 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { type AutofillProps } from "./types";
 import { type EnrichedOption } from "../dropdown/types";
 import styles from "./Autofill.module.scss";
 
-const Autofill = <T,>({
+const Autofill = <T extends { id: string }>({
   options,
-  onSelectOption = () => {},
+  selected,
+  setSelected,
+  renderSelected,
   getLabel = (option: T) => String(option),
   placeholder = "Search",
-}: {
-  options: T[];
-  onSelectOption?: (option: T) => void;
-  getLabel?: (option: T) => string;
-  placeholder?: string;
-}) => {
+}: AutofillProps<T>) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [search, setSearch] = useState<string>("");
@@ -33,7 +31,9 @@ const Autofill = <T,>({
   }, [enrichedOptions, search]);
 
   const onClickOption = (option: T) => {
-    onSelectOption(option);
+    if (!selected.find((item) => item.id === option.id)) {
+      setSelected((prev) => [...prev, option]);
+    }
     setOpen(false);
   };
 
@@ -74,6 +74,11 @@ const Autofill = <T,>({
                 {o.label}
               </div>
             ))}
+        </div>
+      )}
+      {selected.length > 0 && (
+        <div className={styles.selected}>
+          {selected.map((item) => renderSelected(item))}
         </div>
       )}
     </div>

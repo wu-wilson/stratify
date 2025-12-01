@@ -1,14 +1,7 @@
-import {
-  useEffect,
-  useState,
-  type ChangeEvent,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useHistory } from "../../../../../../hooks/useHistory";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useAuth } from "../../../../../../hooks/useAuth";
-import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { createInvite } from "../../../../../../services/invites/invites.service";
 import { validateMaxUses } from "./util";
 import { SUBTITLE } from "./constants";
@@ -16,9 +9,8 @@ import {
   type CreateInvitePayload,
   type InviteEntity,
 } from "../../../../../../services/invites/types";
-import Spinner from "../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../components/error/Error";
-import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
+import { type RequestTemplate } from "../../../../../../components/modal/modal-template/modal-request-template/types";
+import ModalRequestTemplate from "../../../../../../components/modal/modal-template/modal-request-template/ModalRequestTemplate";
 
 const GenerateInvite = ({
   invite,
@@ -32,12 +24,10 @@ const GenerateInvite = ({
   const { pushToHistory } = useHistory();
   const { getParam } = useQueryParams();
   const { user, displayName } = useAuth();
-  const { ref, height } = useElementHeight<HTMLDivElement>();
 
   const [maxUses, setMaxUses] = useState<string>("20");
   const [validationError, setValidationError] = useState<string | null>(null);
-  const onMaxUsesChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
+  const onMaxUsesChange = (val: string) => {
     if (/^\d*$/.test(val)) {
       setMaxUses(val);
     }
@@ -84,54 +74,29 @@ const GenerateInvite = ({
     }
   };
 
-  useEffect(() => {
-    if (loading) {
-      generateInvite();
-    }
-  }, [loading]);
-
-  if (loading) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Spinner size={50} text="Generating link..." />
-      </div>
-    );
-  }
-
-  if (requestError) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Error errorMsg={requestError} />
-      </div>
-    );
-  }
+  const template: RequestTemplate[] = [
+    { type: "title", value: "Generate Invite" },
+    { type: "subtitle", value: SUBTITLE },
+    {
+      type: "input",
+      label: "Max # uses",
+      value: maxUses,
+      setValue: onMaxUsesChange,
+      criticalMsg: validationError,
+      autoFocus: true,
+    },
+  ];
 
   return (
-    <div className={styles.container} ref={ref}>
-      <span className={styles.title}>Generate Invite</span>
-      <span className={styles.subtitle}>{SUBTITLE}</span>
-      <label className={styles.label}>Max # of Uses</label>
-      <input
-        className={styles.input}
-        value={maxUses}
-        onChange={onMaxUsesChange}
-        autoFocus
-      />
-      {validationError && (
-        <div className={styles.criticalInputMsg}>{validationError}</div>
-      )}
-      <div className={styles.button}>
-        <button onClick={() => setLoading(true)} disabled={!!validationError}>
-          Generate
-        </button>
-      </div>
-    </div>
+    <ModalRequestTemplate
+      template={template}
+      loading={loading}
+      setLoading={setLoading}
+      loadingMsg={"Generating invite..."}
+      error={requestError}
+      request={generateInvite}
+      button={{ label: "Generate", disabled: !!validationError }}
+    />
   );
 };
 

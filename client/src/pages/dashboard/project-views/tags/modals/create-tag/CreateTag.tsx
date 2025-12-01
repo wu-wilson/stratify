@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { PLACEHOLDER, SUBTITLE } from "./constants";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useAuth } from "../../../../../../hooks/useAuth";
@@ -7,15 +6,12 @@ import { useQueryParams } from "../../../../../../hooks/query-params/useQueryPar
 import { validateTagName } from "./util";
 import { createTag } from "../../../../../../services/tags/tags.service";
 import { getCSSVar } from "../../../../../../styles/util";
-import { HexColorPicker } from "react-colorful";
 import { type CreateTagPayload } from "../../../../../../services/tags/types";
-import Spinner from "../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../components/error/Error";
-import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
+import { type RequestTemplate } from "../../../../../../components/modal/modal-template/modal-request-template/types";
+import ModalRequestTemplate from "../../../../../../components/modal/modal-template/modal-request-template/ModalRequestTemplate";
 
 const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
   const { kanban, setKanban } = useKanban();
-  const { ref, height } = useElementHeight<HTMLDivElement>();
   const { getParam } = useQueryParams();
   const { user } = useAuth();
 
@@ -53,12 +49,6 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
   };
 
   useEffect(() => {
-    if (loading) {
-      addTag();
-    }
-  }, [loading]);
-
-  useEffect(() => {
     const { valid, msg } = validateTagName(name, kanban!.tags);
     if (valid) {
       setValidationError(null);
@@ -67,55 +57,31 @@ const CreateTag = ({ closeModal }: { closeModal: () => void }) => {
     }
   }, [name]);
 
-  if (loading) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Spinner size={50} text="Creating tag..." />
-      </div>
-    );
-  }
-
-  if (requestError) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Error errorMsg={requestError} />
-      </div>
-    );
-  }
+  const template: RequestTemplate[] = [
+    { type: "title", value: "New Tag" },
+    { type: "subtitle", value: SUBTITLE },
+    {
+      type: "input",
+      label: "Name",
+      value: name,
+      setValue: setName,
+      placeholder: PLACEHOLDER,
+      criticalMsg: validationError,
+      autoFocus: true,
+    },
+    { type: "color-picker", color, setColor },
+  ];
 
   return (
-    <div className={styles.container} ref={ref}>
-      <span className={styles.title}>New Tag</span>
-      <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.label}>Name</span>
-      <input
-        className={styles.input}
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-        placeholder={PLACEHOLDER}
-        autoFocus
-      />
-      {validationError && (
-        <div className={styles.criticalInputMsg}>{validationError}</div>
-      )}
-      <span className={styles.label}>Color</span>
-      <div className={styles.colorPicker}>
-        <HexColorPicker color={color} onChange={setColor} />
-      </div>
-      <div className={styles.button}>
-        <button onClick={() => setLoading(true)} disabled={!!validationError}>
-          Create
-        </button>
-      </div>
-    </div>
+    <ModalRequestTemplate
+      template={template}
+      loading={loading}
+      setLoading={setLoading}
+      loadingMsg={"Creating tag..."}
+      error={requestError}
+      request={addTag}
+      button={{ label: "Create", disabled: !!validationError }}
+    />
   );
 };
 

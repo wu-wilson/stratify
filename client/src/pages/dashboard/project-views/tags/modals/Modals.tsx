@@ -2,7 +2,7 @@ import { useModal } from "../Tags";
 import Modal from "../../../../../components/modal/Modal";
 import CreateTag from "./create-tag/CreateTag";
 import DeleteTag from "./delete-tag/DeleteTag";
-import EditTag from "./EditTag";
+import EditTag from "./edit-tag/EditTag";
 
 export const Modals = () => {
   const { modal, closeModal } = useModal();

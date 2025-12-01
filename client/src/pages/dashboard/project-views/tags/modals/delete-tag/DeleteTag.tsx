@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useElementHeight } from "../../../../../../hooks/useElementHeight";
+import { useState } from "react";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useAuth } from "../../../../../../hooks/useAuth";
@@ -7,9 +6,8 @@ import { deleteTag } from "../../../../../../services/tags/tags.service";
 import { CONFIRM_STRING, SUBTITLE } from "./constants";
 import { type TagEntity } from "../../../../../../services/tags/types";
 import { type TaggingEntity } from "../../../../../../services/taggings/types";
-import Spinner from "../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../components/error/Error";
-import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
+import { type RequestTemplate } from "../../../../../../components/modal/modal-template/modal-request-template/types";
+import ModalRequestTemplate from "../../../../../../components/modal/modal-template/modal-request-template/ModalRequestTemplate";
 
 const DeleteTag = ({
   tag,
@@ -19,7 +17,6 @@ const DeleteTag = ({
   closeModal: () => void;
 }) => {
   const { setKanban } = useKanban();
-  const { ref, height } = useElementHeight<HTMLDivElement>();
   const { getParam } = useQueryParams();
   const { user } = useAuth();
 
@@ -50,60 +47,30 @@ const DeleteTag = ({
     }
   };
 
-  useEffect(() => {
-    if (loading) {
-      removeTag();
-    }
-  }, [loading]);
-
-  if (loading) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Spinner size={50} text="Removing tag..." />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Error errorMsg={error} />
-      </div>
-    );
-  }
+  const template: RequestTemplate[] = [
+    { type: "title", value: "Delete Tag" },
+    { type: "subtitle", value: SUBTITLE },
+    { type: "highlight", value: tag.name },
+    {
+      type: "input",
+      value: input,
+      setValue: setInput,
+      placeholder: CONFIRM_STRING,
+      criticalMsg: `Type ${CONFIRM_STRING} to confirm`,
+      autoFocus: true,
+    },
+  ];
 
   return (
-    <div className={styles.container} ref={ref}>
-      <span className={styles.title}>Delete Tag</span>
-      <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.highlightedMsg}>{tag.name}</span>
-      <input
-        className={styles.input}
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value);
-        }}
-        placeholder={CONFIRM_STRING}
-        autoFocus
-      />
-      <div className={styles.criticalInputMsg}>
-        Type {CONFIRM_STRING} to confirm
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() => setLoading(true)}
-          disabled={input !== CONFIRM_STRING}
-        >
-          Delete
-        </button>
-      </div>
-    </div>
+    <ModalRequestTemplate
+      template={template}
+      loading={loading}
+      setLoading={setLoading}
+      loadingMsg={"Updating role..."}
+      error={error}
+      request={removeTag}
+      button={{ label: "Delete", disabled: input !== CONFIRM_STRING }}
+    />
   );
 };
 

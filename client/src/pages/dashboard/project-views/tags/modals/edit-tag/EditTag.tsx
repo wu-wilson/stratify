@@ -1,70 +1,87 @@
 import { useEffect, useState } from "react";
-import { PLACEHOLDER, SUBTITLE } from "./constants";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useAuth } from "../../../../../../hooks/useAuth";
-import { validateStatusName } from "./util";
-import { createStatus } from "../../../../../../services/statuses/statuses.service";
-import { type CreateStatusPayload } from "../../../../../../services/statuses/types";
+import { validateTagName } from "../create-tag/util";
+import { updateTag } from "../../../../../../services/tags/tags.service";
+import { PLACEHOLDER } from "../create-tag/constants";
+import {
+  type TagEntity,
+  type UpdateTagPayload,
+} from "../../../../../../services/tags/types";
 import { type RequestTemplate } from "../../../../../../components/modal/modal-template/modal-request-template/types";
 import ModalRequestTemplate from "../../../../../../components/modal/modal-template/modal-request-template/ModalRequestTemplate";
 
-const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {
+const EditTag = ({
+  tag,
+  closeModal,
+}: {
+  tag: TagEntity;
+  closeModal: () => void;
+}) => {
   const { kanban, setKanban } = useKanban();
-  const { getParam } = useQueryParams();
   const { user } = useAuth();
+  const { getParam } = useQueryParams();
 
-  const [input, setInput] = useState<string>("");
+  const [name, setName] = useState<string>(tag.name);
+  const [color, setColor] = useState<string>(tag.color);
   const [requestError, setRequestError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const addStatus = async () => {
+  const editTag = async () => {
     try {
       const project = getParam("project")!;
       const token = await user!.getIdToken();
 
-      const payload: CreateStatusPayload = {
+      const payload: UpdateTagPayload = {
+        id: tag.id,
+        name: name,
+        color: color,
         project_id: project,
-        name: input.trim(),
-        position: kanban!.statuses.length,
       };
 
-      const { status: createdStatus } = await createStatus(payload, token);
+      const { updated: updatedTag } = await updateTag(payload, token);
+
       setKanban((prev) => ({
         ...prev!,
-        statuses: [...prev!.statuses, createdStatus],
+        tags: prev!.tags.map((tag) =>
+          tag.id === updatedTag.id ? updatedTag : tag
+        ),
       }));
 
       closeModal();
     } catch (err) {
-      setRequestError("createStatus endpoint failed");
+      setRequestError("updateTag endpoint failed");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const { valid, msg } = validateStatusName(input, kanban!.statuses);
+    const { valid, msg } = validateTagName(
+      name,
+      kanban!.tags.filter((t) => t.id !== tag.id)
+    );
     if (valid) {
       setValidationError(null);
     } else {
       setValidationError(msg);
     }
-  }, [input]);
+  }, [name]);
 
   const template: RequestTemplate[] = [
-    { type: "title", value: "New Status" },
-    { type: "subtitle", value: SUBTITLE },
+    { type: "title", value: "Edit Tag" },
     {
       type: "input",
-      label: "Status Name",
-      value: input,
-      setValue: setInput,
+      label: "Name",
+      value: name,
+      setValue: setName,
       placeholder: PLACEHOLDER,
       criticalMsg: validationError,
       autoFocus: true,
     },
+    { type: "color-picker", color, setColor },
   ];
 
   return (
@@ -72,12 +89,12 @@ const CreateStatus = ({ closeModal }: { closeModal: () => void }) => {
       template={template}
       loading={loading}
       setLoading={setLoading}
-      loadingMsg={"Creating status..."}
+      loadingMsg={"Generating invite..."}
       error={requestError}
-      request={addStatus}
-      button={{ label: "Create", disabled: !!validationError }}
+      request={editTag}
+      button={{ label: "Save", disabled: !!validationError }}
     />
   );
 };
 
-export default CreateStatus;
+export default EditTag;

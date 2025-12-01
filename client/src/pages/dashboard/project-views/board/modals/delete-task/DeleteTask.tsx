@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { CONFIRM_STRING, SUBTITLE } from "./constants";
-import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { deleteTask } from "../../../../../../services/tasks/tasks.service";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useAuth } from "../../../../../../hooks/useAuth";
@@ -9,9 +8,8 @@ import {
   type DeleteTaskParams,
   type TaskEntity,
 } from "../../../../../../services/tasks/types";
-import Spinner from "../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../components/error/Error";
-import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
+import { type RequestTemplate } from "../../../../../../components/modal/modal-template/modal-request-template/types";
+import ModalRequestTemplate from "../../../../../../components/modal/modal-template/modal-request-template/ModalRequestTemplate";
 
 const DeleteTask = ({
   task,
@@ -21,7 +19,6 @@ const DeleteTask = ({
   closeModal: () => void;
 }) => {
   const { kanban, setKanban } = useKanban();
-  const { ref, height } = useElementHeight<HTMLDivElement>();
   const { getParam } = useQueryParams();
   const { user } = useAuth();
 
@@ -67,60 +64,30 @@ const DeleteTask = ({
     }
   };
 
-  useEffect(() => {
-    if (loading) {
-      removeTask();
-    }
-  }, [loading]);
-
-  if (loading) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Spinner size={50} text="Removing status..." />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Error errorMsg={error} />
-      </div>
-    );
-  }
+  const template: RequestTemplate[] = [
+    { type: "title", value: "Delete Task" },
+    { type: "subtitle", value: SUBTITLE },
+    { type: "highlight", value: task.title },
+    {
+      type: "input",
+      value: input,
+      setValue: setInput,
+      placeholder: CONFIRM_STRING,
+      criticalMsg: `Type ${CONFIRM_STRING} to confirm`,
+      autoFocus: true,
+    },
+  ];
 
   return (
-    <div className={styles.container} ref={ref}>
-      <span className={styles.title}>Delete Task</span>
-      <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.highlightedMsg}>{task.title}</span>
-      <input
-        className={styles.input}
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value);
-        }}
-        placeholder={CONFIRM_STRING}
-        autoFocus
-      />
-      <div className={styles.criticalInputMsg}>
-        Type {CONFIRM_STRING} to confirm
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() => setLoading(true)}
-          disabled={input !== CONFIRM_STRING}
-        >
-          Delete
-        </button>
-      </div>
-    </div>
+    <ModalRequestTemplate
+      template={template}
+      loading={loading}
+      setLoading={setLoading}
+      loadingMsg={"Deleting task..."}
+      error={error}
+      request={removeTask}
+      button={{ label: "Delete", disabled: input !== CONFIRM_STRING }}
+    />
   );
 };
 

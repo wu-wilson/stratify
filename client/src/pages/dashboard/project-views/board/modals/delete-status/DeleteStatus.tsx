@@ -1,17 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useAuth } from "../../../../../../hooks/useAuth";
 import { CONFIRM_STRING, SUBTITLE } from "./constants";
-import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { deleteStatus } from "../../../../../../services/statuses/statuses.service";
 import {
   type DeleteStatusParams,
   type StatusEntity,
 } from "../../../../../../services/statuses/types";
-import Spinner from "../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../components/error/Error";
-import styles from "../../../../../../components/modal/BaseModalContent.module.scss";
+import { type RequestTemplate } from "../../../../../../components/modal/modal-template/modal-request-template/types";
+import ModalRequestTemplate from "../../../../../../components/modal/modal-template/modal-request-template/ModalRequestTemplate";
 
 const DeleteStatus = ({
   status,
@@ -21,7 +19,6 @@ const DeleteStatus = ({
   closeModal: () => void;
 }) => {
   const { kanban, setKanban } = useKanban();
-  const { ref, height } = useElementHeight<HTMLDivElement>();
   const { getParam } = useQueryParams();
   const { user } = useAuth();
 
@@ -67,60 +64,30 @@ const DeleteStatus = ({
     }
   };
 
-  useEffect(() => {
-    if (loading) {
-      removeStatus();
-    }
-  }, [loading]);
-
-  if (loading) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Spinner size={50} text="Removing status..." />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Error errorMsg={error} />
-      </div>
-    );
-  }
+  const template: RequestTemplate[] = [
+    { type: "title", value: "Delete Status" },
+    { type: "subtitle", value: SUBTITLE },
+    { type: "highlight", value: status.name },
+    {
+      type: "input",
+      value: input,
+      setValue: setInput,
+      placeholder: CONFIRM_STRING,
+      criticalMsg: `Type ${CONFIRM_STRING} to confirm`,
+      autoFocus: true,
+    },
+  ];
 
   return (
-    <div className={styles.container} ref={ref}>
-      <span className={styles.title}>Delete Status</span>
-      <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.highlightedMsg}>{status.name}</span>
-      <input
-        className={styles.input}
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value);
-        }}
-        placeholder={CONFIRM_STRING}
-        autoFocus
-      />
-      <div className={styles.criticalInputMsg}>
-        Type {CONFIRM_STRING} to confirm
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() => setLoading(true)}
-          disabled={input !== CONFIRM_STRING}
-        >
-          Delete
-        </button>
-      </div>
-    </div>
+    <ModalRequestTemplate
+      template={template}
+      loading={loading}
+      setLoading={setLoading}
+      loadingMsg={"Deleting status..."}
+      error={error}
+      request={removeStatus}
+      button={{ label: "Delete", disabled: input !== CONFIRM_STRING }}
+    />
   );
 };
 

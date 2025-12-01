@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQueryParams } from "../../../../../../hooks/query-params/useQueryParams";
 import { useAuth } from "../../../../../../hooks/useAuth";
-import { useElementHeight } from "../../../../../../hooks/useElementHeight";
 import { useKanban } from "../../../../../../hooks/useKanban";
 import { useMembers } from "../../../../../../hooks/useMembers";
 import { editTask } from "../../../../../../services/tasks/tasks.service";
@@ -17,16 +16,13 @@ import {
   validateTaskTitle,
 } from "../create-task/util";
 import { type TagEntity } from "../../../../../../services/tags/types";
+import { type RequestTemplate } from "../../../../../../components/modal/modal-template/modal-request-template/types";
 import {
   type EditTaskPayload,
   type TaskEntity,
 } from "../../../../../../services/tasks/types";
-import Dropdown from "../../../../../../components/dropdown/Dropdown";
-import Autofill from "../../../../../../components/autofill/Autofill";
 import Tag from "../../../../../../components/tag/Tag";
-import Spinner from "../../../../../../components/spinner/Spinner";
-import Error from "../../../../../../components/error/Error";
-import styles from "../create-task/CreateTask.module.scss";
+import ModalRequestTemplate from "../../../../../../components/modal/modal-template/modal-request-template/ModalRequestTemplate";
 
 const EditTask = ({
   closeModal,
@@ -37,7 +33,6 @@ const EditTask = ({
 }) => {
   const { kanban, setKanban } = useKanban();
   const { getParam } = useQueryParams();
-  const { ref, height } = useElementHeight<HTMLDivElement>();
   const { user } = useAuth();
   const { members } = useMembers();
 
@@ -51,7 +46,7 @@ const EditTask = ({
     return tags;
   }, [task, kanban!.taggings, kanban!.tags]);
 
-  const [status, setStatus] = useState<string>(task.status_id);
+  const [status, setStatus] = useState<string | null>(task.status_id);
   const [assignee, setAssignee] = useState<string | null>(
     members!.find((m) => m.id === task.assigned_to)?.id || null
   );
@@ -79,7 +74,7 @@ const EditTask = ({
       const payload: EditTaskPayload = {
         old_index: task.position,
         old_status_id: task.status_id,
-        new_status_id: status,
+        new_status_id: status!,
         title: title,
         tags: tags,
         description: description,
@@ -107,12 +102,6 @@ const EditTask = ({
   };
 
   useEffect(() => {
-    if (loading) {
-      updateTask();
-    }
-  }, [loading]);
-
-  useEffect(() => {
     const { valid, msg } = validateTaskTitle(
       title,
       kanban!.tasks.filter((t) => t.id !== task.id)
@@ -124,109 +113,70 @@ const EditTask = ({
     }
   }, [title]);
 
-  const onSelectTag = (tag: TagEntity) => {
-    if (!tags.find((t) => t.id === tag.id)) {
-      setTags((prev) => [...prev, tag]);
-    }
-  };
-
   const onDeleteTag = (tag: TagEntity) => {
     setTags((prev) => prev.filter((t) => t.id !== tag.id));
   };
 
-  if (loading) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Spinner size={50} text="Updating task..." />
-      </div>
-    );
-  }
-
-  if (requestError) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Error errorMsg={requestError} />
-      </div>
-    );
-  }
+  const template: RequestTemplate<string, TagEntity>[] = [
+    { type: "title", value: "Edit Task" },
+    { type: "subtitle", value: SUBTITLE },
+    {
+      type: "dropdown",
+      label: "Status",
+      getLabel: (o) => getStatusLabel(kanban!.statuses, o!),
+      options: statusOptions,
+      selected: status,
+      setSelected: setStatus,
+    },
+    {
+      type: "dropdown",
+      label: "Assignee",
+      getLabel: (o) => getAssigneeLabel(members!, o),
+      options: assigneeOptions,
+      selected: assignee,
+      setSelected: setAssignee,
+    },
+    {
+      type: "input",
+      label: "Title",
+      value: title,
+      setValue: setTitle,
+      placeholder: TITLE_PLACEHOLDER,
+      criticalMsg: validationError,
+      autoFocus: true,
+    },
+    {
+      type: "autofill",
+      label: "Tags",
+      options: kanban!.tags,
+      selected: tags,
+      setSelected: setTags,
+      renderSelected: (t: TagEntity) => (
+        <Tag tag={t} key={t.id} deletable={true} onDelete={onDeleteTag} />
+      ),
+      getLabel: getTagLabel,
+      placeholder: "Search tags...",
+    },
+    {
+      type: "textarea",
+      label: "Description",
+      value: description,
+      setValue: setDescription,
+      placeholder: DESCRIPTION_PLACEHOLDER,
+      criticalMsg: null,
+    },
+  ];
 
   return (
-    <div className={styles.container} ref={ref}>
-      <span className={styles.title}>Edit Task</span>
-      <span className={styles.subtitle}>{SUBTITLE}</span>
-      <span className={styles.label}>Status</span>
-      <Dropdown
-        options={statusOptions}
-        selected={status}
-        setSelected={setStatus}
-        getLabel={(o) => getStatusLabel(kanban!.statuses, o)}
-        maxTextLength={48}
-      />
-      <span className={styles.label}>Assignee</span>
-      <Dropdown
-        options={assigneeOptions}
-        selected={assignee}
-        setSelected={setAssignee}
-        getLabel={(o) => getAssigneeLabel(members!, o)}
-        placeholder="Select assignee"
-        maxTextLength={48}
-      />
-      <span className={styles.label}>Task Title</span>
-      <input
-        className={styles.input}
-        value={title}
-        onChange={(e) => {
-          setTitle(e.target.value);
-        }}
-        placeholder={TITLE_PLACEHOLDER}
-      />
-      {validationError && (
-        <div className={styles.criticalInputMsg}>{validationError}</div>
-      )}
-      {kanban!.tags.length > 0 && (
-        <>
-          <span className={styles.label}>Tags</span>
-          <Autofill
-            options={kanban!.tags}
-            getLabel={getTagLabel}
-            onSelectOption={onSelectTag}
-            placeholder="Search tags..."
-          />
-          {tags.length > 0 && (
-            <div className={styles.tags}>
-              {tags.map((tag) => (
-                <Tag
-                  tag={tag}
-                  key={tag.id}
-                  deletable={true}
-                  onDelete={onDeleteTag}
-                />
-              ))}
-            </div>
-          )}
-        </>
-      )}
-      <span className={styles.label}>Task Description</span>
-      <textarea
-        className={styles.textarea}
-        value={description}
-        onChange={(e) => {
-          setDescription(e.target.value);
-        }}
-        placeholder={DESCRIPTION_PLACEHOLDER}
-      />
-      <div className={styles.button}>
-        <button onClick={() => setLoading(true)} disabled={!!validationError}>
-          Save
-        </button>
-      </div>
-    </div>
+    <ModalRequestTemplate
+      template={template}
+      loading={loading}
+      setLoading={setLoading}
+      loadingMsg={"Updating task..."}
+      error={requestError}
+      request={updateTask}
+      button={{ label: "Save", disabled: !!validationError }}
+    />
   );
 };
 

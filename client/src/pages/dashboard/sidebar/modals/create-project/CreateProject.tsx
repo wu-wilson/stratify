@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { useElementHeight } from "../../../../../hooks/useElementHeight";
 import { useAuth } from "../../../../../hooks/useAuth";
 import { useProjects } from "../../../../../hooks/useProjects";
 import { useQueryParams } from "../../../../../hooks/query-params/useQueryParams";
 import { createProject } from "../../../../../services/projects/projects.service";
 import { validateProjectName } from "./util";
-import { type CreateProjectPayload } from "../../../../../services/projects/types";
-import Spinner from "../../../../../components/spinner/Spinner";
-import Error from "../../../../../components/error/Error";
-import styles from "../../../../../components/modal/BaseModalContent.module.scss";
 import { DESCRIPTION_PLACEHOLDER, NAME_PLACEHOLDER } from "./constants";
+import { type CreateProjectPayload } from "../../../../../services/projects/types";
+import { type RequestTemplate } from "../../../../../components/modal/modal-template/modal-request-template/types";
+import ModalRequestTemplate from "../../../../../components/modal/modal-template/modal-request-template/ModalRequestTemplate";
 
 const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
-  const { ref, height } = useElementHeight<HTMLDivElement>();
   const { user } = useAuth();
   const { projects, setProjects } = useProjects();
   const { setParam } = useQueryParams();
@@ -46,12 +43,6 @@ const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
   };
 
   useEffect(() => {
-    if (loading) {
-      addProject();
-    }
-  }, [loading]);
-
-  useEffect(() => {
     const { valid, msg } = validateProjectName(name, projects!);
     if (valid) {
       setValidationError(null);
@@ -60,55 +51,37 @@ const CreateProject = ({ closeModal }: { closeModal: () => void }) => {
     }
   }, [name]);
 
-  if (loading) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Spinner size={50} text="Creating project..." />
-      </div>
-    );
-  }
-
-  if (requestError) {
-    return (
-      <div
-        className={styles.container}
-        style={{ height: height ? `${height}px` : undefined }}
-      >
-        <Error errorMsg={requestError} />
-      </div>
-    );
-  }
+  const template: RequestTemplate[] = [
+    { type: "title", value: "New Project" },
+    {
+      type: "input",
+      label: "Name",
+      value: name,
+      setValue: setName,
+      placeholder: NAME_PLACEHOLDER,
+      criticalMsg: validationError,
+      autoFocus: true,
+    },
+    {
+      type: "textarea",
+      label: "Description",
+      value: description,
+      setValue: setDescription,
+      placeholder: DESCRIPTION_PLACEHOLDER,
+      criticalMsg: null,
+    },
+  ];
 
   return (
-    <div className={styles.container} ref={ref}>
-      <span className={styles.title}>New Project</span>
-      <span className={styles.label}>Name</span>
-      <input
-        className={styles.input}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder={NAME_PLACEHOLDER}
-        autoFocus
-      />
-      {validationError && (
-        <div className={styles.criticalInputMsg}>{validationError}</div>
-      )}
-      <span className={styles.label}>Description</span>
-      <textarea
-        className={styles.textarea}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder={DESCRIPTION_PLACEHOLDER}
-      />
-      <div className={styles.button}>
-        <button onClick={() => setLoading(true)} disabled={!!validationError}>
-          Create
-        </button>
-      </div>
-    </div>
+    <ModalRequestTemplate
+      template={template}
+      loading={loading}
+      setLoading={setLoading}
+      loadingMsg={"Creating project..."}
+      error={requestError}
+      request={addProject}
+      button={{ label: "Create", disabled: !!validationError }}
+    />
   );
 };
 

@@ -1,14 +1,7 @@
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import { getTruncatedText } from "../../util";
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
-import { type EnrichedOption } from "./types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { type DropdownProps, type EnrichedOption } from "./types";
 import styles from "./Dropdown.module.scss";
 
 const Dropdown = <T,>({
@@ -18,14 +11,7 @@ const Dropdown = <T,>({
   getLabel = (option: T) => String(option),
   placeholder = "Select an option",
   maxTextLength = null,
-}: {
-  options: T[];
-  selected: T;
-  setSelected: Dispatch<SetStateAction<T>>;
-  getLabel?: (option: T) => string;
-  placeholder?: string;
-  maxTextLength?: number | null;
-}) => {
+}: DropdownProps<T>) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [open, setOpen] = useState<boolean>(false);
