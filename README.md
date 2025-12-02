@@ -25,18 +25,33 @@ git clone https://github.com/wu-wilson/stratify.git
 cd stratify
 ```
 
-#### 2. SSL Certs
+#### 2. Generate SSL Certs
 
 Follow these [instructions](https://github.com/wu-wilson/stratify/tree/master/certs) to download SSL certs in the certs directory.
 
-#### 3. Setting up Firebase
+#### 3. Set Up Firebase
 
-1. Set up a new [Firebase](https://console.firebase.google.com/) project.
-2. Add [Authentication](https://firebase.google.com/docs/auth?hl=en-US&authuser=0&_gl=1*1h7if5a*_ga*MTQ3OTkxOTg5My4xNzQ4MTE4ODAy*_ga_CW55HF8NVT*czE3NjQ3MDAxMjUkbzE3JGcxJHQxNzY0NzAxMjA2JGo0NSRsMCRoMA..) with Google, Twitter, and GitHub as sign-in providers.
-3. Add `https://localhost:5173/\_\_/auth/handler` as an authorized redirect URI.
-4. Download a new private key for your service account.
-   1. Rename the file to `service-account.json`.
-   2. Place the file in the `server/src/firebase`.
+1. **Create a Firebase project**  
+   Go to the [Firebase console](https://console.firebase.google.com/) and set up a new project.
+
+2. **Enable authentication**  
+   Add [Authentication](https://firebase.google.com/docs/auth) with the following sign-in providers:
+
+   - Google
+   - Twitter
+   - GitHub
+
+3. **Configure redirect URI**  
+   Add the following as an authorized redirect URI in your Firebase project:
+
+   ```bash
+   https://localhost:5173/\_\_/auth/handler
+   ```
+
+4. **Set up the service account**
+   - Download a new private key for your Firebase service account.
+   - Rename the downloaded JSON file to `service-account.json`.
+   - Place the file in `server/src/firebase`.
 
 #### 4. Configure environment variables
 
