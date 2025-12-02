@@ -1,1 +1,3 @@
-export const BASE_URL = import.meta.env.VITE_API_DOMAIN + "/taggings";
+import { API_DOMAIN } from "../constants";
+
+export const BASE_URL = API_DOMAIN + "/taggings";

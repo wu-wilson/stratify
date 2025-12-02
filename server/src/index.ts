@@ -56,6 +56,8 @@ const options = {
   cert: fs.readFileSync(path.join(__dirname, "../../certs/localhost.pem")),
 };
 
-https.createServer(options, app).listen(process.env.PORT, () => {
-  console.log(`listening on port ${process.env.PORT}...`);
+const PORT = 3000;
+
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`listening on port ${PORT}...`);
 });

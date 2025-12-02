@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const env = import.meta.env;
+const DISABLED = true;
 
 export const useSmallScreenRedirect = (redirectPath = "/no-support") => {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export const useSmallScreenRedirect = (redirectPath = "/no-support") => {
 
   useEffect(() => {
     const redirect = (): void => {
-      if (env.VITE_ENV === "dev") {
+      if (DISABLED) {
         return;
       }
 

@@ -10,8 +10,6 @@ CREATE TABLE IF NOT EXISTS projects (
     name TEXT NOT NULL,
     description TEXT,
     created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    
-    -- Unique constraint to prevent duplicate project names per owner
     CONSTRAINT uq_projects_owner_name UNIQUE (owner_id, name)
 );
 
@@ -62,8 +60,6 @@ CREATE TABLE IF NOT EXISTS statuses (
     name TEXT NOT NULL,
     position INT NOT NULL,
     created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-
-    -- Unique constraint to prevent duplicate status names per project
     CONSTRAINT uq_project_status_name UNIQUE (project_id, name)
 );
 
@@ -88,8 +84,6 @@ CREATE TABLE IF NOT EXISTS tags (
     color TEXT NOT NULL,
     created_by TEXT,
     created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-
-    -- Unique constraint to prevent duplicate tags per project
     CONSTRAINT uq_project_tag_name UNIQUE (project_id, name)
 );
 
