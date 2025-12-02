@@ -40,7 +40,7 @@ Follow these [instructions](https://github.com/wu-wilson/stratify/tree/master/ce
 
 #### 4. Configure environment variables
 
-Both the **client** and **server** require `.env` files. An example `.env.example` file is provided for both the client and server.
+Both the **client** and **server** require `.env` files. Fill out the values in the provided `.env.example` files and rename them to `.env`.
 
 - **Client:** Firebase API keys. You can retrieve these from your project settings in the firebase console.
 
