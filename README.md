@@ -29,7 +29,7 @@ cd stratify
 
 Follow these [instructions](https://github.com/wu-wilson/stratify/tree/master/certs) to download SSL certs in the certs directory.
 
-#### 3. Set Up Firebase
+#### 3. Firebase Setup
 
 1. **Create a Firebase project**  
    Go to the [Firebase console](https://console.firebase.google.com/) and set up a new project.
@@ -45,7 +45,7 @@ Follow these [instructions](https://github.com/wu-wilson/stratify/tree/master/ce
    Add the following as an authorized redirect URI in your Firebase project:
 
    ```bash
-   https://localhost:5173/\_\_/auth/handler
+   https://localhost:5173/__/auth/handler
    ```
 
 4. **Set up the service account**
