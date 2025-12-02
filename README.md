@@ -25,16 +25,20 @@ git clone https://github.com/wu-wilson/stratify.git
 cd stratify
 ```
 
-#### 2. Setting up Firebase
+#### 2. SSL Certs
+
+Follow these [instructions](https://github.com/wu-wilson/stratify/tree/master/certs) to download SSL certs in the certs directory.
+
+#### 3. Setting up Firebase
 
 1. Set up a new [Firebase](https://console.firebase.google.com/) project.
-   1. Add [Authentication](https://firebase.google.com/docs/auth?hl=en-US&authuser=0&_gl=1*1h7if5a*_ga*MTQ3OTkxOTg5My4xNzQ4MTE4ODAy*_ga_CW55HF8NVT*czE3NjQ3MDAxMjUkbzE3JGcxJHQxNzY0NzAxMjA2JGo0NSRsMCRoMA..) to your new project with Google, Twitter, and GitHub as sign-in providers.
-2. Add `https://localhost:5173/\_\_/auth/handler` as an authorized redirect URI and JS origin to your Firebase project's GCP service account.
-3. Download a new private key for your Firebase service account from the Firebase console.
+2. Add [Authentication](https://firebase.google.com/docs/auth?hl=en-US&authuser=0&_gl=1*1h7if5a*_ga*MTQ3OTkxOTg5My4xNzQ4MTE4ODAy*_ga_CW55HF8NVT*czE3NjQ3MDAxMjUkbzE3JGcxJHQxNzY0NzAxMjA2JGo0NSRsMCRoMA..) with Google, Twitter, and GitHub as sign-in providers.
+3. Add `https://localhost:5173/\_\_/auth/handler` as an authorized redirect URI.
+4. Download a new private key for your service account.
    1. Rename the file to `service-account.json`.
    2. Place the file in the `server/src/firebase`.
 
-#### 3. Configure environment variables
+#### 4. Configure environment variables
 
 Both the **client** and **server** require `.env` files. An example `.env.example` file is provided for both the client and server.
 
@@ -42,11 +46,11 @@ Both the **client** and **server** require `.env` files. An example `.env.exampl
 
 - **Server:** PSQL database configurations. You can retrieve these from your local database setup.
 
-#### 4. Set up the PostgreSQL database
+#### 5. Set up the PostgreSQL database
 
 Make sure you have [PostgreSQL](https://www.postgresql.org/) installed and running locally. Then, run the psql queries in `server/init.example.sql`.
 
-#### 5. Start the client and server
+#### 6. Start the client and server
 
 ```bash
 cd client
