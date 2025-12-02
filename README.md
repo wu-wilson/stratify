@@ -29,7 +29,7 @@ cd stratify
 
 Follow these [instructions](https://github.com/wu-wilson/stratify/tree/master/certs) to download SSL certs in the certs directory.
 
-#### 3. Firebase Setup
+#### 3. Set up Firebase
 
 1. **Create a Firebase project**  
    Go to the [Firebase console](https://console.firebase.google.com/) and set up a new project.
@@ -63,7 +63,8 @@ Both the **client** and **server** require `.env` files. Fill out the values in 
 
 #### 5. Set up the PostgreSQL database
 
-Make sure you have [PostgreSQL](https://www.postgresql.org/) installed and running locally. Then, run the psql queries in `server/init.example.sql`.
+1. Make sure you have [PostgreSQL](https://www.postgresql.org/) installed and running locally.
+2. Run the SQL queries in `server/init.example.sql` to initialize the database.
 
 #### 6. Start the client and server
 
