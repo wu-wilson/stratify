@@ -2,6 +2,10 @@
 
 **Stratify** is a lightweight, intuitive Kanban board application built to help small teams manage tasks without the complexity of full enterprise tools.
 
+## 🎬 Video Demo
+
+[![Stratify Video Demo](https://img.youtube.com/vi/L6OkIlJknIc/maxresdefault.jpg)](https://www.youtube.com/watch?v=L6OkIlJknIc)
+
 ## 🚀 Stack
 
 #### Client
