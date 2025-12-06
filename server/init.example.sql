@@ -3,8 +3,20 @@
 
 -- Switch to the database (psql: \c stratify)
 
+-- Remove existing schema objects if they exist
+DROP TABLE IF EXISTS taggings;
+DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS statuses;
+DROP TABLE IF EXISTS invites;
+DROP TABLE IF EXISTS history;
+DROP TABLE IF EXISTS members;
+DROP TABLE IF EXISTS projects;
+DROP TRIGGER IF EXISTS trigger_nullify_member_tasks ON members;
+DROP FUNCTION IF EXISTS nullify_member_tasks();
+
 -- Create projects table
-CREATE TABLE IF NOT EXISTS projects (
+CREATE TABLE projects (
     id BIGSERIAL PRIMARY KEY CHECK (id > 0),
     owner_id TEXT NOT NULL,
     name TEXT NOT NULL,
@@ -14,7 +26,7 @@ CREATE TABLE IF NOT EXISTS projects (
 );
 
 -- Create members table
-CREATE TABLE IF NOT EXISTS members (
+CREATE TABLE members (
     id TEXT NOT NULL,
     project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     role TEXT NOT NULL CHECK (role IN ('owner', 'member')),
@@ -23,7 +35,7 @@ CREATE TABLE IF NOT EXISTS members (
 );
 
 -- Create invites table
-CREATE TABLE IF NOT EXISTS invites (
+CREATE TABLE invites (
     token TEXT PRIMARY KEY,
     project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     created_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -34,7 +46,7 @@ CREATE TABLE IF NOT EXISTS invites (
 );
 
 -- Create history table
-CREATE TABLE IF NOT EXISTS history (
+CREATE TABLE history (
     id BIGSERIAL PRIMARY KEY,
     project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     performed_by TEXT NOT NULL,
@@ -54,7 +66,7 @@ CREATE TABLE IF NOT EXISTS history (
 );
 
 -- Create statuses table
-CREATE TABLE IF NOT EXISTS statuses (
+CREATE TABLE statuses (
     id BIGSERIAL PRIMARY KEY,
     project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
@@ -64,7 +76,7 @@ CREATE TABLE IF NOT EXISTS statuses (
 );
 
 -- Create tasks table
-CREATE TABLE IF NOT EXISTS tasks (
+CREATE TABLE tasks (
     id BIGSERIAL PRIMARY KEY,
     project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     status_id BIGINT NOT NULL REFERENCES statuses(id) ON DELETE CASCADE,
@@ -77,7 +89,7 @@ CREATE TABLE IF NOT EXISTS tasks (
 );
 
 -- Create tags table
-CREATE TABLE IF NOT EXISTS tags (
+CREATE TABLE tags (
     id BIGSERIAL PRIMARY KEY,
     project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
@@ -88,13 +100,13 @@ CREATE TABLE IF NOT EXISTS tags (
 );
 
 -- Create taggings table
-CREATE TABLE IF NOT EXISTS taggings (
+CREATE TABLE taggings (
     task_id BIGINT NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
     tag_id BIGINT NOT NULL REFERENCES tags(id) ON DELETE CASCADE,
     PRIMARY KEY (task_id, tag_id)
 );
 
-CREATE OR REPLACE FUNCTION nullify_member_tasks()
+CREATE FUNCTION nullify_member_tasks()
 RETURNS TRIGGER AS $$
 BEGIN
   UPDATE tasks
@@ -113,14 +125,3 @@ CREATE TRIGGER trigger_nullify_member_tasks
 AFTER DELETE ON members
 FOR EACH ROW
 EXECUTE FUNCTION nullify_member_tasks();
-
--- DROP TABLE taggings;
--- DROP TABLE tags;
--- DROP TABLE tasks;
--- DROP TABLE statuses;
--- DROP TABLE invites;
--- DROP TABLE history;
--- DROP TABLE members;
--- DROP TABLE projects;
--- DROP TRIGGER IF EXISTS trigger_nullify_member_tasks ON members;
--- DROP FUNCTION IF EXISTS nullify_member_tasks();
