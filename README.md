@@ -10,14 +10,13 @@
 
 #### Client
 
-- React
-- TypeScript
+- React (TS)
 - SASS
 - Firebase (Auth)
 
 #### Backend
 
-- Node.js / Express
+- Node.js (Express)
 - PostgreSQL
 
 ## 🛠️ Local Setup
