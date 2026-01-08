@@ -4,7 +4,7 @@
 
 ## 🎬 Video Demo
 
-[![Stratify Video Demo](https://img.youtube.com/vi/L6OkIlJknIc/maxresdefault.jpg)](https://www.youtube.com/watch?v=L6OkIlJknIc)
+[![Stratify Video Demo](https://img.youtube.com/vi/oEfJazUEyto/maxresdefault.jpg)](https://www.youtube.com/watch?v=oEfJazUEyto)
 
 ## 🚀 Stack
 
